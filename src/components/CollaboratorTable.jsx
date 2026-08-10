@@ -213,8 +213,8 @@ export default function CollaboratorTable({
           </button>
         </div>
 
-        {/* Crextio Action Buttons Toolbar */}
-        <div className="flex items-center gap-2 flex-wrap">
+        {/* Crextio Action Buttons Toolbar (Moved to Right) */}
+        <div className="flex items-center gap-2 flex-wrap xl:ml-auto justify-end">
           {/* Add Collaborator Button */}
           <button
             onClick={onOpenAddModal}
