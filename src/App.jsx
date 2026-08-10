@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import Header from './components/Header';
 import KpiCards from './components/KpiCards';
-import RightSidebar from './components/RightSidebar';
+import FilterBar from './components/FilterBar';
 import CollaboratorTable from './components/CollaboratorTable';
 import HeatmapMatrix from './components/HeatmapMatrix';
 import AnalyticsCharts from './components/AnalyticsCharts';
@@ -150,7 +150,6 @@ export default function App() {
   const [collaboratorToEdit, setCollaboratorToEdit] = useState(null);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [collaboratorToDelete, setCollaboratorToDelete] = useState(null);
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   // Exclude 'AIDE LIVREUR', 'AIDE VENDEUR' and employees marked 'IgnoredThisMonth' from active calculations
   const activeCollabList = useMemo(() => {
@@ -305,7 +304,6 @@ export default function App() {
         onOpenAddCollab={handleOpenAddCollab}
         currentUser={currentUser}
         onLogout={handleLogout}
-        onOpenFilters={() => setIsSidebarOpen(true)}
       />
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6">
@@ -319,10 +317,8 @@ export default function App() {
           weekFilter={selectedWeek}
         />
 
-        {/* Right Sidebar Filters & Navigation */}
-        <RightSidebar
-          isOpen={isSidebarOpen}
-          onClose={() => setIsSidebarOpen(false)}
+        {/* Global Filter Toolbar */}
+        <FilterBar
           months={months}
           weeks={weeks}
           entities={entities}
@@ -341,7 +337,7 @@ export default function App() {
           searchQuery={searchQuery}
           setSearchQuery={setSearchQuery}
           viewMode={viewMode}
-          setViewMode={(mode) => { setViewMode(mode); setIsSidebarOpen(false); }}
+          setViewMode={setViewMode}
         />
 
         {viewMode === 'table' && (
