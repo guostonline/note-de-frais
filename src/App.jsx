@@ -148,13 +148,18 @@ export default function App() {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [collaboratorToDelete, setCollaboratorToDelete] = useState(null);
 
+  // Exclude 'AIDE LIVREUR' from collaborators for expense note calculations
+  const activeCollabList = useMemo(() => {
+    return collabList.filter(c => !c.Fonction || !c.Fonction.toLowerCase().includes('aide livreur'));
+  }, [collabList]);
+
   // Calculate submission map for current period filter
   const { map: submissionMap, filteredFraisCount } = useMemo(() => {
-    return buildSubmissionMap(collabList, fraisList, selectedMonth, selectedWeek, aliasMap);
-  }, [collabList, fraisList, selectedMonth, selectedWeek, aliasMap]);
+    return buildSubmissionMap(activeCollabList, fraisList, selectedMonth, selectedWeek, aliasMap);
+  }, [activeCollabList, fraisList, selectedMonth, selectedWeek, aliasMap]);
 
-  // Counts
-  const totalCollab = collabList.length;
+  // Counts (excluding Aide Livreur)
+  const totalCollab = activeCollabList.length;
   const totalFrais = fraisList.length;
 
   let submittedCount = 0;
@@ -330,7 +335,7 @@ export default function App() {
         {viewMode === 'table' && (
           <CollaboratorTable
             submissionMap={submissionMap}
-            collabList={collabList}
+            collabList={activeCollabList}
             searchQuery={searchQuery}
             selectedEntity={selectedEntity}
             selectedCdz={selectedCdz}
@@ -366,7 +371,7 @@ export default function App() {
 
         {viewMode === 'matrix' && (
           <HeatmapMatrix
-            collabList={collabList}
+            collabList={activeCollabList}
             fraisList={fraisList}
             monthFilter={selectedMonth}
             selectedEntity={selectedEntity}
@@ -377,7 +382,7 @@ export default function App() {
 
         {viewMode === 'analytics' && (
           <AnalyticsCharts
-            collabList={collabList}
+            collabList={activeCollabList}
             fraisList={fraisList}
             submissionMap={submissionMap}
             monthFilter={selectedMonth}
