@@ -31,17 +31,17 @@ export default function FilterBar({
   const fonctionArray = Array.isArray(selectedFonction) ? selectedFonction : (selectedFonction === 'ALL' ? [] : [selectedFonction]);
 
   return (
-    <div className="glass-panel p-4 rounded-2xl mb-6 space-y-4">
+    <div className="glass-panel p-5 rounded-3xl mb-8 space-y-4 shadow-sm">
       {/* Top row: View switcher & Search */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-        {/* View Mode Tabs */}
-        <div className="flex items-center gap-1 bg-slate-100 p-1 rounded-xl border border-slate-200 self-start md:self-auto flex-wrap">
+        {/* Crextio View Mode Pill Tabs */}
+        <div className="flex items-center gap-1.5 bg-[#EFE8D6]/60 p-1.5 rounded-full border border-stone-200/80 self-start md:self-auto flex-wrap shadow-inner">
           <button
             onClick={() => setViewMode('table')}
-            className={`flex items-center gap-2 px-3 py-2 text-xs font-semibold rounded-lg transition-all ${
+            className={`flex items-center gap-2 px-4 py-2 text-xs font-bold rounded-full transition-all ${
               viewMode === 'table'
-                ? 'bg-sky-500 text-white shadow-md shadow-sky-500/20'
-                : 'text-slate-600 hover:text-slate-900 hover:bg-slate-200/70'
+                ? 'bg-[#22252A] text-white shadow-md shadow-[#22252A]/15'
+                : 'text-stone-600 hover:text-stone-900 hover:bg-[#EFE8D6]'
             }`}
           >
             <Table className="w-4 h-4" />
@@ -50,10 +50,10 @@ export default function FilterBar({
 
           <button
             onClick={() => setViewMode('collaborateurs')}
-            className={`flex items-center gap-2 px-3 py-2 text-xs font-semibold rounded-lg transition-all ${
+            className={`flex items-center gap-2 px-4 py-2 text-xs font-bold rounded-full transition-all ${
               viewMode === 'collaborateurs'
-                ? 'bg-sky-500 text-white shadow-md shadow-sky-500/20'
-                : 'text-slate-600 hover:text-slate-900 hover:bg-slate-200/70'
+                ? 'bg-[#22252A] text-white shadow-md shadow-[#22252A]/15'
+                : 'text-stone-600 hover:text-stone-900 hover:bg-[#EFE8D6]'
             }`}
           >
             <Users className="w-4 h-4" />
@@ -62,10 +62,10 @@ export default function FilterBar({
 
           <button
             onClick={() => setViewMode('matrix')}
-            className={`flex items-center gap-2 px-3 py-2 text-xs font-semibold rounded-lg transition-all ${
+            className={`flex items-center gap-2 px-4 py-2 text-xs font-bold rounded-full transition-all ${
               viewMode === 'matrix'
-                ? 'bg-sky-500 text-white shadow-md shadow-sky-500/20'
-                : 'text-slate-600 hover:text-slate-900 hover:bg-slate-200/70'
+                ? 'bg-[#22252A] text-white shadow-md shadow-[#22252A]/15'
+                : 'text-stone-600 hover:text-stone-900 hover:bg-[#EFE8D6]'
             }`}
           >
             <Grid className="w-4 h-4" />
@@ -74,10 +74,10 @@ export default function FilterBar({
 
           <button
             onClick={() => setViewMode('analytics')}
-            className={`flex items-center gap-2 px-3 py-2 text-xs font-semibold rounded-lg transition-all ${
+            className={`flex items-center gap-2 px-4 py-2 text-xs font-bold rounded-full transition-all ${
               viewMode === 'analytics'
-                ? 'bg-sky-500 text-white shadow-md shadow-sky-500/20'
-                : 'text-slate-600 hover:text-slate-900 hover:bg-slate-200/70'
+                ? 'bg-[#22252A] text-white shadow-md shadow-[#22252A]/15'
+                : 'text-stone-600 hover:text-stone-900 hover:bg-[#EFE8D6]'
             }`}
           >
             <BarChart3 className="w-4 h-4" />
@@ -87,18 +87,18 @@ export default function FilterBar({
 
         {/* Search input */}
         <div className="relative flex-1 max-w-md">
-          <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
+          <Search className="w-4 h-4 absolute left-4 top-1/2 -translate-y-1/2 text-stone-400" />
           <input
             type="text"
             placeholder="Rechercher par Nom, Matricule, Fonction..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full bg-white border border-slate-200 focus:border-sky-500 rounded-xl pl-10 pr-9 py-2 text-xs text-slate-800 placeholder-slate-400 outline-none transition-all shadow-sm"
+            className="w-full bg-white border border-stone-200/80 focus:border-[#EBC046] rounded-full pl-11 pr-10 py-2.5 text-xs text-[#1E2024] placeholder-stone-400 outline-none transition-all shadow-xs"
           />
           {searchQuery && (
             <button
               onClick={() => setSearchQuery('')}
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
+              className="absolute right-3.5 top-1/2 -translate-y-1/2 text-stone-400 hover:text-stone-700 p-0.5 rounded-full"
             >
               <X className="w-3.5 h-3.5" />
             </button>

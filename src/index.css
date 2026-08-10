@@ -4,39 +4,95 @@
 
 @layer base {
   body {
-    @apply bg-white text-slate-900 antialiased font-sans min-h-screen;
-    background: #ffffff;
+    font-family: 'Plus Jakarta Sans', 'Outfit', sans-serif;
+    background-color: #F6F4EB;
+    background-image: 
+      radial-gradient(at 90% 0%, rgba(243, 207, 85, 0.22) 0px, transparent 60%),
+      radial-gradient(at 10% 100%, rgba(235, 227, 205, 0.5) 0px, transparent 50%),
+      linear-gradient(180deg, #F8F6EE 0%, #F4EFE3 100%);
+    background-attachment: fixed;
+    color: #1E2024;
+    -webkit-font-smoothing: antialiased;
+    min-height: 100vh;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    letter-spacing: -0.02em;
   }
 }
 
-/* Custom Scrollbars */
+/* Custom Nixtio Cream Scrollbars */
 ::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+  width: 7px;
+  height: 7px;
 }
 ::-webkit-scrollbar-track {
-  background: #f1f5f9;
+  background: #F1EDDF;
 }
 ::-webkit-scrollbar-thumb {
-  background: #cbd5e1;
-  border-radius: 4px;
+  background: #D9D2BE;
+  border-radius: 9999px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #94a3b8;
+  background: #BDB399;
 }
 
-/* Clean Card Panel Style */
+/* Crextio / Nixtio Signature Card Style */
 .glass-panel {
-  background: #ffffff;
-  border: 1px solid #e2e8f0;
-  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05), 0 1px 2px -1px rgba(0, 0, 0, 0.05);
+  background: #FFFFFF;
+  border: 1px solid rgba(225, 218, 198, 0.6);
+  border-radius: 1.75rem;
+  box-shadow: 0 12px 35px -8px rgba(45, 40, 20, 0.04), 0 2px 6px -1px rgba(0, 0, 0, 0.02);
+}
+
+.glass-panel-dark {
+  background: #22252A;
+  color: #FFFFFF;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 1.75rem;
+  box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.25);
+}
+
+.glass-panel-gold {
+  background: linear-gradient(135deg, #F5D76E 0%, #EBC046 100%);
+  color: #1E2024;
+  border-radius: 1.75rem;
+  box-shadow: 0 10px 25px -5px rgba(235, 192, 70, 0.3);
 }
 
 .glass-panel-hover {
-  transition: all 0.2s ease-in-out;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
 .glass-panel-hover:hover {
-  border-color: #38bdf8;
-  box-shadow: 0 4px 12px 0 rgba(14, 165, 233, 0.12);
-  transform: translateY(-2px);
+  border-color: #EBC046;
+  box-shadow: 0 16px 40px -10px rgba(235, 192, 70, 0.25);
+  transform: translateY(-3px);
+}
+
+/* Crextio Pill Tabs */
+.nixtio-pill {
+  border-radius: 9999px;
+  transition: all 0.2s ease;
+}
+
+.nixtio-pill-active {
+  background-color: #22252A;
+  color: #FFFFFF;
+  box-shadow: 0 4px 14px rgba(34, 37, 42, 0.2);
+}
+
+.nixtio-pill-gold {
+  background-color: #F3CF55;
+  color: #1E2024;
+  font-weight: 600;
+}
+
+.nixtio-pill-inactive {
+  background-color: transparent;
+  color: #555A65;
+}
+.nixtio-pill-inactive:hover {
+  background-color: rgba(235, 227, 205, 0.5);
+  color: #1E2024;
 }

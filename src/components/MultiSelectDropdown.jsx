@@ -8,7 +8,7 @@ export default function MultiSelectDropdown({
   onChange,
   icon: Icon = Filter,
   placeholder = "Tous",
-  colorClass = "text-sky-500"
+  colorClass = "text-[#22252A]"
 }) {
   const [isOpen, setIsOpen] = useState(false);
   const [search, setSearch] = useState('');
@@ -64,51 +64,51 @@ export default function MultiSelectDropdown({
       <button
         type="button"
         onClick={() => setIsOpen(!isOpen)}
-        className="w-full flex items-center justify-between gap-2 bg-white border border-slate-200 hover:border-slate-300 rounded-xl px-3 py-2 text-left shadow-sm transition-all outline-none"
+        className="w-full flex items-center justify-between gap-2 bg-white border border-stone-200/80 hover:border-stone-300 rounded-2xl px-3.5 py-2 text-left shadow-2xs transition-all outline-none"
       >
-        <div className="flex items-center gap-2 min-w-0">
+        <div className="flex items-center gap-2.5 min-w-0">
           {Icon && <Icon className={`w-4 h-4 shrink-0 ${colorClass}`} />}
           <div className="min-w-0">
-            <span className="block text-[10px] font-semibold text-slate-400 uppercase tracking-wider leading-tight">
+            <span className="block text-[10px] font-bold text-stone-400 uppercase tracking-wider leading-tight">
               {label}
             </span>
-            <span className="block text-xs font-semibold text-slate-800 truncate leading-tight mt-0.5">
+            <span className="block text-xs font-bold text-[#1E2024] truncate leading-tight mt-0.5">
               {renderTriggerText()}
             </span>
           </div>
         </div>
         <div className="flex items-center gap-1 shrink-0">
           {!isAllSelected && (
-            <span className="px-1.5 py-0.5 text-[10px] font-bold bg-sky-100 text-sky-700 rounded-full">
+            <span className="px-2 py-0.5 text-[10px] font-bold bg-[#F3CF55] text-[#1E2024] rounded-full shadow-2xs">
               {selectedValues.length}
             </span>
           )}
-          <ChevronDown className={`w-3.5 h-3.5 text-slate-400 transition-transform ${isOpen ? 'rotate-180' : ''}`} />
+          <ChevronDown className={`w-3.5 h-3.5 text-stone-400 transition-transform ${isOpen ? 'rotate-180' : ''}`} />
         </div>
       </button>
 
       {isOpen && (
-        <div className="absolute left-0 right-0 top-full mt-1 z-50 bg-white rounded-2xl shadow-xl border border-slate-200 p-2 space-y-2 animate-fade-in min-w-[220px]">
+        <div className="absolute left-0 right-0 top-full mt-1.5 z-50 bg-white rounded-2xl shadow-xl border border-stone-200/80 p-2.5 space-y-2 animate-fade-in min-w-[230px]">
           {/* Internal Search */}
           {options.length > 5 && (
             <div className="relative">
-              <Search className="w-3.5 h-3.5 absolute left-2.5 top-1/2 -translate-y-1/2 text-slate-400" />
+              <Search className="w-3.5 h-3.5 absolute left-3 top-1/2 -translate-y-1/2 text-stone-400" />
               <input
                 type="text"
                 placeholder="Rechercher..."
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                className="w-full pl-8 pr-2 py-1 text-xs bg-slate-50 border border-slate-200 rounded-lg outline-none focus:border-sky-500"
+                className="w-full pl-8 pr-2 py-1.5 text-xs bg-[#F6F4EB] border border-stone-200 rounded-xl outline-none focus:border-[#EBC046]"
               />
             </div>
           )}
 
           {/* Controls Bar */}
-          <div className="flex items-center justify-between text-[11px] px-1 py-0.5 text-slate-500 border-b border-slate-100 pb-1">
+          <div className="flex items-center justify-between text-[11px] px-1 py-0.5 text-stone-500 border-b border-stone-100 pb-1.5">
             <button
               type="button"
               onClick={handleSelectAll}
-              className={`hover:text-sky-600 font-medium ${isAllSelected ? 'text-sky-600 font-bold' : ''}`}
+              className={`hover:text-[#1E2024] font-semibold ${isAllSelected ? 'text-[#1E2024] font-extrabold underline' : ''}`}
             >
               Tous sélectionner
             </button>
@@ -116,7 +116,7 @@ export default function MultiSelectDropdown({
               <button
                 type="button"
                 onClick={() => onChange([])}
-                className="text-rose-500 hover:underline font-medium"
+                className="text-rose-500 hover:underline font-semibold"
               >
                 Réinitialiser
               </button>
@@ -124,9 +124,9 @@ export default function MultiSelectDropdown({
           </div>
 
           {/* Options List */}
-          <div className="max-h-48 overflow-y-auto space-y-0.5 pr-1">
+          <div className="max-h-48 overflow-y-auto space-y-1 pr-1">
             {filteredOptions.length === 0 ? (
-              <div className="text-center py-3 text-xs text-slate-400">Aucun résultat</div>
+              <div className="text-center py-3 text-xs text-stone-400">Aucun résultat</div>
             ) : (
               filteredOptions.map((opt) => {
                 const val = opt.value !== undefined ? opt.value : opt;
@@ -138,12 +138,14 @@ export default function MultiSelectDropdown({
                     type="button"
                     key={val}
                     onClick={() => toggleOption(val)}
-                    className={`w-full flex items-center justify-between px-2.5 py-1.5 text-xs rounded-lg transition-colors text-left ${
-                      isSelected ? 'bg-sky-50 text-sky-900 font-semibold' : 'hover:bg-slate-50 text-slate-700'
+                    className={`w-full flex items-center justify-between px-3 py-1.5 text-xs rounded-xl transition-all text-left ${
+                      isSelected 
+                        ? 'bg-[#22252A] text-white font-semibold shadow-2xs' 
+                        : 'hover:bg-[#F6F4EB] text-stone-700'
                     }`}
                   >
                     <span className="truncate">{displayLabel}</span>
-                    {isSelected && <Check className="w-3.5 h-3.5 text-sky-600 shrink-0 ml-2" />}
+                    {isSelected && <Check className="w-3.5 h-3.5 text-[#F3CF55] shrink-0 ml-2" />}
                   </button>
                 );
               })
