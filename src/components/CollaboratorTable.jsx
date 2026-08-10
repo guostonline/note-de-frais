@@ -271,12 +271,6 @@ export default function CollaboratorTable({
               >
                 Collaborateur {sortField === 'Nom' && (sortOrder === 'asc' ? '↑' : '↓')}
               </th>
-              <th 
-                onClick={() => toggleSort('Entite')}
-                className="py-3 px-4 cursor-pointer hover:text-slate-900 transition-colors"
-              >
-                Entité / Service {sortField === 'Entite' && (sortOrder === 'asc' ? '↑' : '↓')}
-              </th>
               <th className="py-3 px-4">Fonction</th>
               <th className="py-3 px-4">Responsable CDZ / CDA</th>
               <th 
@@ -292,7 +286,7 @@ export default function CollaboratorTable({
           <tbody className="divide-y divide-slate-200">
             {sortedRows.length === 0 ? (
               <tr>
-                <td colSpan="8" className="py-12 text-center text-slate-500">
+                <td colSpan="7" className="py-12 text-center text-slate-500">
                   Aucun collaborateur ne correspond aux critères sélectionnés.
                 </td>
               </tr>
@@ -319,11 +313,6 @@ export default function CollaboratorTable({
                             #{collaborateur.Matricule}
                           </span>
                         )}
-                      </td>
-                      <td className="py-3 px-4">
-                        <span className={`px-2.5 py-1 rounded-md border text-[11px] font-medium shadow-2xs ${getEntityBadgeColor(collaborateur.Entite)}`}>
-                          {collaborateur.Entite}
-                        </span>
                       </td>
                       <td className="py-3 px-4 text-[11px]">
                         {collaborateur.Fonction ? (
