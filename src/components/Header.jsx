@@ -1,5 +1,5 @@
 import React from 'react';
-import { Upload, Link, RefreshCw, UserPlus, LogOut, ShieldCheck } from 'lucide-react';
+import { Upload, Link, RefreshCw, UserPlus, LogOut, ShieldCheck, SlidersHorizontal } from 'lucide-react';
 import logoImg from '../../assets/logo.png';
 
 export default function Header({ 
@@ -9,6 +9,7 @@ export default function Header({
   onOpenAliasMapper, 
   onResetData,
   onOpenAddCollab,
+  onOpenFilters,
   currentUser,
   onLogout
 }) {
@@ -64,6 +65,18 @@ export default function Header({
             <Link className="w-4 h-4 text-[#22252A]" />
             <span>Correspondances</span>
           </button>
+
+          {/* Filtres Sidebar Button */}
+          {onOpenFilters && (
+            <button
+              onClick={onOpenFilters}
+              className="flex items-center gap-2 px-4 py-2 text-xs font-bold text-white bg-[#22252A] hover:bg-stone-700 rounded-full shadow-md transition-all cursor-pointer transform hover:-translate-y-0.5 active:translate-y-0 border border-stone-700"
+              title="Ouvrir les filtres & la navigation"
+            >
+              <SlidersHorizontal className="w-4 h-4 text-[#F3CF55]" />
+              <span>Filtres & Navigation</span>
+            </button>
+          )}
 
           {/* Gold Action Button */}
           <button
