@@ -20,11 +20,9 @@ export default function CdzReminderModal({
   const [selectedCdz, setSelectedCdz] = useState('ALL');
   const [copied, setCopied] = useState(false);
 
-  if (!isOpen) return null;
-
   // Filter missing rows (hasSubmitted === false)
   const missingRows = useMemo(() => {
-    return rows.filter(r => !r.hasSubmitted);
+    return (rows || []).filter(r => !r.hasSubmitted);
   }, [rows]);
 
   // Filter missing rows for selected CDZ
@@ -33,6 +31,8 @@ export default function CdzReminderModal({
     if (selectedCdz === 'NONE') return missingRows.filter(r => !r.collaborateur.Responsable);
     return missingRows.filter(r => r.collaborateur.Responsable === selectedCdz);
   }, [missingRows, selectedCdz]);
+
+  if (!isOpen) return null;
 
   // Format Period String
   const periodStr = `${monthFilter === 'ALL' || !monthFilter.length ? 'Tous les mois' : Array.isArray(monthFilter) ? monthFilter.join(', ') : monthFilter} ${weekFilter === 'ALL' || !weekFilter.length ? '' : `(${Array.isArray(weekFilter) ? weekFilter.join(', ') : weekFilter})`}`;
