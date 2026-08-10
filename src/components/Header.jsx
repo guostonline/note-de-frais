@@ -1,5 +1,6 @@
 import React from 'react';
-import { FileSpreadsheet, Upload, Link, RefreshCw, UserPlus, LogOut, ShieldCheck, Sparkles } from 'lucide-react';
+import { Upload, Link, RefreshCw, UserPlus, LogOut, ShieldCheck } from 'lucide-react';
+import logoImg from '../../assets/logo.png';
 
 export default function Header({ 
   totalCollab, 
@@ -14,20 +15,17 @@ export default function Header({
   return (
     <header className="glass-panel sticky top-3 z-30 border border-stone-200/80 px-6 py-3.5 mb-8 shadow-sm">
       <div className="max-w-7xl mx-auto flex flex-col md:flex-row md:items-center justify-between gap-4">
-        {/* Crextio Signature Logo & Brand */}
-        <div className="flex items-center gap-3">
-          <div className="px-4 py-2 bg-[#22252A] text-white rounded-full flex items-center gap-2.5 shadow-md shadow-[#22252A]/10">
-            <div className="p-1 bg-[#F3CF55] text-[#1E2024] rounded-full">
-              <Sparkles className="w-3.5 h-3.5 fill-[#1E2024]" />
-            </div>
-            <span className="font-bold text-sm tracking-tight font-sans">Crextio</span>
+        {/* MADEC Logo & Brand */}
+        <div className="flex items-center gap-3.5">
+          <div className="px-4 py-1.5 bg-white rounded-full flex items-center justify-center shadow-sm border border-stone-200/80 hover:shadow-md transition-all">
+            <img src={logoImg} alt="MADEC Logo" className="h-7 w-auto object-contain max-w-[130px]" />
           </div>
 
           <div>
             <h1 className="text-lg font-extrabold text-[#1E2024] tracking-tight flex items-center gap-2">
               Note de Frais <span className="text-[#EBC046] font-bold">Comparator</span>
               <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-[#F3CF55]/20 text-[#22252A] border border-[#F3CF55]/40">
-                Nixtio v1.0
+                v1.0
               </span>
             </h1>
             <p className="text-[11px] text-stone-500 font-medium">
