@@ -130,9 +130,12 @@ export default function App() {
   const fonctions = useMemo(() => getUniqueFonctions(collabList), [collabList]);
   const cdzCdaList = useMemo(() => getUniqueCdzCda(collabList), [collabList]);
 
-  // Default functions selection: ALL EXCEPT 'aide livreur'
+  // Default functions selection: ALL EXCEPT 'aide livreur' AND 'aide vendeur'
   const defaultFonctions = useMemo(() => {
-    return fonctions.filter(f => !f.toLowerCase().includes('aide livreur'));
+    return fonctions.filter(f => {
+      const lower = f.toLowerCase();
+      return !lower.includes('aide livreur') && !lower.includes('aide vendeur');
+    });
   }, [fonctions]);
 
   const [selectedFonctionState, setSelectedFonctionState] = useState(null);
@@ -148,9 +151,13 @@ export default function App() {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [collaboratorToDelete, setCollaboratorToDelete] = useState(null);
 
-  // Exclude 'AIDE LIVREUR' from collaborators for expense note calculations
+  // Exclude 'AIDE LIVREUR' & 'AIDE VENDEUR' from collaborators for expense note calculations
   const activeCollabList = useMemo(() => {
-    return collabList.filter(c => !c.Fonction || !c.Fonction.toLowerCase().includes('aide livreur'));
+    return collabList.filter(c => {
+      if (!c.Fonction) return true;
+      const lower = c.Fonction.toLowerCase();
+      return !lower.includes('aide livreur') && !lower.includes('aide vendeur');
+    });
   }, [collabList]);
 
   // Calculate submission map for current period filter

@@ -163,66 +163,66 @@ export default function CollaboratorTable({
   };
 
   return (
-    <div className="glass-panel rounded-2xl overflow-hidden">
-      {/* Header Tabs & Actions */}
-      <div className="p-4 border-b border-slate-200 flex flex-col lg:flex-row lg:items-center justify-between gap-4">
-        {/* Tabs */}
-        <div className="flex items-center gap-2 overflow-x-auto pb-1 lg:pb-0">
+    <div className="glass-panel rounded-3xl overflow-hidden shadow-sm border border-stone-200/80">
+      {/* Header Tabs & Actions Toolbar */}
+      <div className="p-5 border-b border-stone-200/80 flex flex-col xl:flex-row xl:items-center justify-between gap-4">
+        {/* Crextio Pill Tabs */}
+        <div className="flex items-center gap-1.5 bg-[#EFE8D6]/60 p-1.5 rounded-full border border-stone-200/80 self-start xl:self-auto flex-wrap shadow-inner">
           <button
             onClick={() => setActiveTab('ALL')}
-            className={`px-4 py-2 text-xs font-semibold rounded-xl transition-all whitespace-nowrap flex items-center gap-2 ${
+            className={`px-4 py-2 text-xs font-bold rounded-full transition-all whitespace-nowrap flex items-center gap-2 ${
               activeTab === 'ALL'
-                ? 'bg-slate-800 text-white border border-slate-700 shadow-sm'
-                : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
+                ? 'bg-[#22252A] text-white shadow-md shadow-[#22252A]/15'
+                : 'text-stone-600 hover:text-stone-900 hover:bg-[#EFE8D6]'
             }`}
           >
             <span>Tous les Collaborateurs</span>
-            <span className="px-2 py-0.5 rounded-full bg-slate-100 text-slate-700 text-[10px] font-bold">
+            <span className={`px-2 py-0.5 rounded-full text-[10px] font-extrabold ${activeTab === 'ALL' ? 'bg-[#F3CF55] text-[#1E2024]' : 'bg-stone-200 text-stone-700'}`}>
               {allCount}
             </span>
           </button>
 
           <button
             onClick={() => setActiveTab('SUBMITTED')}
-            className={`px-4 py-2 text-xs font-semibold rounded-xl transition-all whitespace-nowrap flex items-center gap-2 ${
+            className={`px-4 py-2 text-xs font-bold rounded-full transition-all whitespace-nowrap flex items-center gap-2 ${
               activeTab === 'SUBMITTED'
-                ? 'bg-emerald-600 text-white border border-emerald-700 shadow-sm'
-                : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
+                ? 'bg-[#22252A] text-white shadow-md shadow-[#22252A]/15'
+                : 'text-stone-600 hover:text-stone-900 hover:bg-[#EFE8D6]'
             }`}
           >
-            <CheckCircle2 className="w-3.5 h-3.5" />
+            <CheckCircle2 className={`w-3.5 h-3.5 ${activeTab === 'SUBMITTED' ? 'text-[#F3CF55]' : 'text-emerald-600'}`} />
             <span>Ont Rempli</span>
-            <span className="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 text-[10px] font-bold">
+            <span className={`px-2 py-0.5 rounded-full text-[10px] font-extrabold ${activeTab === 'SUBMITTED' ? 'bg-[#F3CF55] text-[#1E2024]' : 'bg-emerald-100 text-emerald-800'}`}>
               {submittedCount}
             </span>
           </button>
 
           <button
             onClick={() => setActiveTab('MISSING')}
-            className={`px-4 py-2 text-xs font-semibold rounded-xl transition-all whitespace-nowrap flex items-center gap-2 ${
+            className={`px-4 py-2 text-xs font-bold rounded-full transition-all whitespace-nowrap flex items-center gap-2 ${
               activeTab === 'MISSING'
-                ? 'bg-rose-600 text-white border border-rose-700 shadow-sm'
-                : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
+                ? 'bg-[#22252A] text-white shadow-md shadow-[#22252A]/15'
+                : 'text-stone-600 hover:text-stone-900 hover:bg-[#EFE8D6]'
             }`}
           >
-            <XCircle className="w-3.5 h-3.5" />
+            <XCircle className={`w-3.5 h-3.5 ${activeTab === 'MISSING' ? 'text-rose-400' : 'text-rose-600'}`} />
             <span>Non Remplis (En Retard)</span>
-            <span className="px-2 py-0.5 rounded-full bg-rose-100 text-rose-800 text-[10px] font-bold">
+            <span className={`px-2 py-0.5 rounded-full text-[10px] font-extrabold ${activeTab === 'MISSING' ? 'bg-rose-500 text-white' : 'bg-rose-100 text-rose-800'}`}>
               {missingCount}
             </span>
           </button>
         </div>
 
-        {/* Action Buttons */}
+        {/* Crextio Action Buttons Toolbar */}
         <div className="flex items-center gap-2 flex-wrap">
           {/* Add Collaborator Button */}
           <button
             onClick={onOpenAddModal}
-            className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-white bg-sky-600 hover:bg-sky-500 rounded-lg transition-all shadow-sm"
+            className="flex items-center gap-2 px-4 py-2 text-xs font-bold text-[#1E2024] bg-white hover:bg-stone-50 border border-stone-200/80 rounded-full transition-all shadow-xs"
             title="Ajouter un nouveau collaborateur"
           >
-            <UserPlus className="w-3.5 h-3.5" />
-            <span>+ Nouveau Collaborateur</span>
+            <UserPlus className="w-4 h-4 text-[#22252A]" />
+            <span>+ Collaborateur</span>
           </button>
 
           {missingCount > 0 && (
@@ -230,28 +230,28 @@ export default function CollaboratorTable({
               {/* Relancer CDZ (WhatsApp & Email) Button */}
               <button
                 onClick={() => setIsCdzModalOpen(true)}
-                className="flex items-center gap-2 px-3.5 py-1.5 text-xs font-bold text-white bg-[#25D366] hover:bg-[#20bd5a] rounded-full shadow-md shadow-emerald-500/20 transition-all cursor-pointer transform hover:-translate-y-0.5"
+                className="flex items-center gap-2 px-4 py-2 text-xs font-bold text-white bg-[#25D366] hover:bg-[#20bd5a] rounded-full shadow-md shadow-emerald-500/20 transition-all cursor-pointer transform hover:-translate-y-0.5 active:translate-y-0"
                 title="Envoyer la liste des retardataires à un CDZ spécifique via WhatsApp ou Email"
               >
-                <MessageSquare className="w-3.5 h-3.5" />
+                <MessageSquare className="w-4 h-4" />
                 <span>Relancer CDZ (WhatsApp & Email)</span>
               </button>
 
               <button
                 onClick={copyEmailReminder}
-                className="flex items-center gap-2 px-3 py-1.5 text-xs font-medium text-amber-800 bg-amber-50 hover:bg-amber-100 border border-amber-200 rounded-full transition-all shadow-2xs"
+                className="flex items-center gap-2 px-4 py-2 text-xs font-bold text-[#1E2024] bg-[#F3CF55] hover:bg-[#EBC046] rounded-full shadow-md shadow-[#F3CF55]/20 transition-all cursor-pointer"
                 title="Copier un modèle d'email de relance pour les retardataires"
               >
-                {copiedEmail ? <Check className="w-3.5 h-3.5 text-amber-600" /> : <Mail className="w-3.5 h-3.5 text-amber-600" />}
+                {copiedEmail ? <Check className="w-4 h-4 text-[#1E2024]" /> : <Mail className="w-4 h-4 text-[#1E2024]" />}
                 <span>{copiedEmail ? 'Email Copié !' : 'Relance Rapide'}</span>
               </button>
 
               <button
                 onClick={exportMissingToExcel}
-                className="flex items-center gap-2 px-3 py-1.5 text-xs font-medium text-emerald-800 bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 rounded-full transition-all shadow-2xs"
+                className="flex items-center gap-2 px-4 py-2 text-xs font-bold text-stone-700 bg-white hover:bg-stone-50 border border-stone-200/80 rounded-full transition-all shadow-xs"
                 title="Télécharger la liste Excel des retardataires"
               >
-                <Download className="w-3.5 h-3.5 text-emerald-600" />
+                <Download className="w-4 h-4 text-emerald-600" />
                 <span>Exporter Retardataires</span>
               </button>
             </>
