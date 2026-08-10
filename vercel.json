@@ -1,4 +1,5 @@
 {
+  "name": "note-de-frais",
   "buildCommand": "npm run build",
   "outputDirectory": "dist",
   "framework": "vite",

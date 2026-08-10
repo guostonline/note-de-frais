@@ -20,7 +20,8 @@ import {
   getUniqueWeeks, 
   getUniqueEntities,
   getUniqueFonctions,
-  getUniqueCdzCda
+  getUniqueCdzCda,
+  normalizeFraisData
 } from './utils/matching';
 
 import { 
@@ -168,8 +169,9 @@ export default function App() {
       await db.collaborateurs.bulkPut(newCollab);
     }
     if (newFrais && newFrais.length > 0) {
-      setFraisList(newFrais);
-      await dbSaveFraisBatch(newFrais);
+      const normalizedFrais = normalizeFraisData(newFrais);
+      setFraisList(normalizedFrais);
+      await dbSaveFraisBatch(normalizedFrais);
     }
     notifyAutoSave();
   };

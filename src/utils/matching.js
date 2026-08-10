@@ -99,19 +99,71 @@ export function matchDemandeurToCollaborateur(demandeurName, colaboradoresList, 
 }
 
 /**
+ * Normalizes Frais objects array from Excel uploads
+ */
+export function normalizeFraisData(fraisArray = []) {
+  if (!Array.isArray(fraisArray)) return [];
+  return fraisArray.map((item, index) => {
+    if (!item || typeof item !== 'object') return item;
+    const keys = Object.keys(item);
+
+    // Dynamic column matching regexes
+    const demandeurKey = keys.find(k => /demandeur|vendeur|employe|employé|collaborateur|commercial|représentant/i.test(k)) || 'Demandeur';
+    const moisKey = keys.find(k => /^mois/i.test(k)) || 'Mois';
+    const semaineKey = keys.find(k => /^semaine|sem/i.test(k)) || 'Semaine';
+    const refKey = keys.find(k => /ref|référence|code|id|num/i.test(k)) || 'Reference';
+    const socKey = keys.find(k => /société|societe|entité|entreprise/i.test(k)) || 'Societe';
+
+    const demandeurVal = item[demandeurKey] !== undefined ? String(item[demandeurKey]).trim() : (item.Demandeur || '');
+    const moisVal = item[moisKey] !== undefined ? String(item[moisKey]).trim() : (item.Mois || '');
+    const semaineVal = item[semaineKey] !== undefined ? String(item[semaineKey]).trim() : (item.Semaine || '');
+    const refVal = item[refKey] !== undefined ? String(item[refKey]).trim() : (item.Reference || '');
+    const socVal = item[socKey] !== undefined ? String(item[socKey]).trim() : (item.Societe || '');
+
+    return {
+      ...item,
+      id: item.id || index + 1,
+      Demandeur: demandeurVal,
+      Mois: moisVal,
+      Semaine: semaineVal,
+      Reference: refVal,
+      Societe: socVal
+    };
+  });
+}
+
+/**
  * Builds a map of Collaborateur Nom -> Array of submitted Frais records for a filtered period
  */
 export function buildSubmissionMap(collabList, fraisList, monthFilter = 'ALL', weekFilter = 'ALL', aliasMap = {}) {
-  // Filter frais by period
-  const filteredFrais = fraisList.filter(item => {
-    const matchMonth = monthFilter === 'ALL' || item.Mois === monthFilter;
-    const matchWeek = weekFilter === 'ALL' || item.Semaine === weekFilter;
+  // Filter frais by period (supporting string 'ALL', empty array [], or multi-select array)
+  const filteredFrais = (fraisList || []).filter(item => {
+    // Month filter check
+    let matchMonth = true;
+    if (Array.isArray(monthFilter)) {
+      if (monthFilter.length > 0 && !monthFilter.includes('ALL')) {
+        matchMonth = monthFilter.includes(item.Mois);
+      }
+    } else if (monthFilter !== 'ALL' && monthFilter !== '') {
+      matchMonth = item.Mois === monthFilter;
+    }
+
+    // Week filter check
+    let matchWeek = true;
+    if (Array.isArray(weekFilter)) {
+      if (weekFilter.length > 0 && !weekFilter.includes('ALL')) {
+        matchWeek = weekFilter.includes(item.Semaine);
+      }
+    } else if (weekFilter !== 'ALL' && weekFilter !== '') {
+      matchWeek = item.Semaine === weekFilter;
+    }
+
     return matchMonth && matchWeek;
   });
 
   // Map each collaborator
   const map = {};
-  collabList.forEach(collab => {
+  (collabList || []).forEach(collab => {
     map[collab.Nom] = {
       collaborateur: collab,
       submissions: [],
@@ -137,19 +189,23 @@ export function buildSubmissionMap(collabList, fraisList, monthFilter = 'ALL', w
 /**
  * Extracts unique months from frais list in order
  */
-export function getUniqueMonths(fraisList) {
+export function getUniqueMonths(fraisList = []) {
   const monthOrder = ['Mai', 'Juin', 'Juillet', 'Août', 'Aot', 'Septembre', 'Octobre', 'Novembre', 'Décembre'];
-  const set = new Set(fraisList.map(f => f.Mois).filter(Boolean));
+  const set = new Set((fraisList || []).map(f => f.Mois).filter(Boolean));
   return monthOrder.filter(m => set.has(m) || set.has(m.replace('û', '')));
 }
 
 /**
  * Extracts unique weeks from frais list for a specific month
  */
-export function getUniqueWeeks(fraisList, month = 'ALL') {
-  let list = fraisList;
-  if (month !== 'ALL') {
-    list = fraisList.filter(f => f.Mois === month);
+export function getUniqueWeeks(fraisList = [], month = 'ALL') {
+  let list = fraisList || [];
+  if (Array.isArray(month)) {
+    if (month.length > 0 && !month.includes('ALL')) {
+      list = list.filter(f => month.includes(f.Mois));
+    }
+  } else if (month !== 'ALL' && month !== '') {
+    list = list.filter(f => f.Mois === month);
   }
   const weeks = Array.from(new Set(list.map(f => f.Semaine).filter(Boolean)));
   // Sort weeks numerically if S1, S2, etc.
