@@ -112,3 +112,12 @@
 .animate-fade-in {
   animation: fade-in 0.2s ease both;
 }
+
+/* Popup Modal Scale-in Animation */
+@keyframes scale-in {
+  from { transform: scale(0.92) translateY(12px); opacity: 0; }
+  to   { transform: scale(1)    translateY(0);    opacity: 1; }
+}
+.animate-scale-in {
+  animation: scale-in 0.25s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
