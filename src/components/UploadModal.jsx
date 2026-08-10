@@ -1,50 +1,61 @@
 import React, { useState } from 'react';
-import { Upload, FileSpreadsheet, X, Check, AlertTriangle, ArrowRight } from 'lucide-react';
+import { Upload, FileSpreadsheet, X, Check, AlertTriangle, ArrowRight, FileText } from 'lucide-react';
 import * as XLSX from 'xlsx';
 
 export default function UploadModal({ isOpen, onClose, onDataUploaded }) {
-  const [collabFile, setCollabFile] = useState(null);
   const [fraisFile, setFraisFile] = useState(null);
+  const [isDragging, setIsDragging] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
   if (!isOpen) return null;
 
-  const handleFileUpload = (e, type) => {
-    const file = e.target.files[0];
+  const handleFileChange = (file) => {
     if (file) {
-      if (type === 'collab') setCollabFile(file);
-      if (type === 'frais') setFraisFile(file);
+      if (!file.name.endsWith('.xlsx') && !file.name.endsWith('.xls')) {
+        setError('Veuillez sélectionner un fichier Excel valide (.xlsx ou .xls)');
+        return;
+      }
+      setError(null);
+      setFraisFile(file);
     }
   };
 
+  const handleDrop = (e) => {
+    e.preventDefault();
+    setIsDragging(false);
+    if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+      handleFileChange(e.dataTransfer.files[0]);
+    }
+  };
+
+  const handleDragOver = (e) => {
+    e.preventDefault();
+    setIsDragging(true);
+  };
+
+  const handleDragLeave = (e) => {
+    e.preventDefault();
+    setIsDragging(false);
+  };
+
   const processExcel = async () => {
+    if (!fraisFile) return;
+
     try {
       setLoading(true);
       setError(null);
 
-      let newCollab = null;
-      let newFrais = null;
+      const fraisBuffer = await fraisFile.arrayBuffer();
+      const wbFrais = XLSX.read(fraisBuffer);
+      const sheetName = wbFrais.SheetNames[0];
+      const newFrais = XLSX.utils.sheet_to_json(wbFrais.Sheets[sheetName], { defval: '' });
 
-      if (collabFile) {
-        const collabBuffer = await collabFile.arrayBuffer();
-        const wbCollab = XLSX.read(collabBuffer);
-        const sheetName = wbCollab.SheetNames[0];
-        newCollab = XLSX.utils.sheet_to_json(wbCollab.Sheets[sheetName], { defval: '' });
-      }
-
-      if (fraisFile) {
-        const fraisBuffer = await fraisFile.arrayBuffer();
-        const wbFrais = XLSX.read(fraisBuffer);
-        const sheetName = wbFrais.SheetNames[0];
-        newFrais = XLSX.utils.sheet_to_json(wbFrais.Sheets[sheetName], { defval: '' });
-      }
-
-      onDataUploaded({ newCollab, newFrais });
+      onDataUploaded({ newFrais });
       onClose();
     } catch (err) {
       console.error(err);
-      setError("Erreur lors de la lecture des fichiers Excel. Vérifiez le format des colonnes.");
+      setError("Erreur lors de la lecture du fichier Excel. Vérifiez le format des colonnes.");
     } finally {
       setLoading(false);
     }
@@ -55,7 +66,7 @@ export default function UploadModal({ isOpen, onClose, onDataUploaded }) {
       <div className="glass-panel w-full max-w-lg rounded-2xl border border-slate-200 shadow-2xl p-6 relative">
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 text-slate-400 hover:text-slate-800 p-1 rounded-lg hover:bg-slate-100"
+          className="absolute top-4 right-4 text-slate-400 hover:text-slate-800 p-1 rounded-lg hover:bg-slate-100 transition-colors"
         >
           <X className="w-5 h-5" />
         </button>
@@ -65,9 +76,9 @@ export default function UploadModal({ isOpen, onClose, onDataUploaded }) {
             <Upload className="w-6 h-6" />
           </div>
           <div>
-            <h3 className="text-lg font-bold text-slate-900">Importer un Fichier Note de Frais</h3>
+            <h3 className="text-lg font-bold text-slate-900">Importer Note de Frais</h3>
             <p className="text-xs text-slate-500">
-              Chargez un nouveau fichier Excel <code className="text-sky-600 font-semibold">frais.xlsx</code> (Demandes GED)
+              Mise à jour des demandes GED (<code className="text-sky-600 font-semibold">frais.xlsx</code>)
             </p>
           </div>
         </div>
@@ -79,33 +90,63 @@ export default function UploadModal({ isOpen, onClose, onDataUploaded }) {
           </div>
         )}
 
-        <div className="space-y-4 my-5">
-          {/* Frais File Drop */}
-          <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 hover:border-slate-300 transition-all">
-            <label className="block text-xs font-semibold text-slate-700 mb-1">
-              Fichier Note de Frais (Demandes GED)
+        {/* Drag and Drop Zone */}
+        <div className="my-5">
+          <input
+            type="file"
+            accept=".xlsx, .xls"
+            onChange={(e) => e.target.files[0] && handleFileChange(e.target.files[0])}
+            className="hidden"
+            id="frais-file-dropzone"
+          />
+
+          {!fraisFile ? (
+            <label
+              htmlFor="frais-file-dropzone"
+              onDragOver={handleDragOver}
+              onDragLeave={handleDragLeave}
+              onDrop={handleDrop}
+              className={`border-2 border-dashed rounded-2xl p-8 flex flex-col items-center justify-center gap-3 text-center cursor-pointer transition-all ${
+                isDragging
+                  ? 'border-sky-500 bg-sky-50 shadow-inner scale-[0.99]'
+                  : 'border-slate-300 hover:border-sky-400 bg-slate-50/60 hover:bg-sky-50/40'
+              }`}
+            >
+              <div className="p-4 bg-white rounded-2xl shadow-sm border border-slate-200 text-sky-500">
+                <FileSpreadsheet className="w-8 h-8" />
+              </div>
+              <div className="space-y-1">
+                <p className="text-xs font-bold text-slate-800">
+                  Glissez & déposez votre fichier <span className="text-sky-600">frais.xlsx</span> ici
+                </p>
+                <p className="text-[11px] text-slate-400">
+                  ou <span className="text-sky-600 font-semibold underline">cliquez pour parcourir</span> (Formats .xlsx, .xls)
+                </p>
+              </div>
             </label>
-            <div className="flex items-center gap-3">
-              <input
-                type="file"
-                accept=".xlsx, .xls"
-                onChange={(e) => handleFileUpload(e, 'frais')}
-                className="hidden"
-                id="frais-file-input"
-              />
-              <label
-                htmlFor="frais-file-input"
-                className="px-3 py-2 text-xs font-medium text-slate-800 bg-white hover:bg-slate-100 rounded-lg cursor-pointer border border-slate-200 flex items-center gap-2 shadow-2xs"
+          ) : (
+            <div className="p-4 rounded-2xl bg-emerald-50/80 border border-emerald-200 flex items-center justify-between gap-3 shadow-xs">
+              <div className="flex items-center gap-3 min-w-0">
+                <div className="p-2.5 bg-emerald-500 text-white rounded-xl shadow-sm shrink-0">
+                  <FileSpreadsheet className="w-5 h-5" />
+                </div>
+                <div className="min-w-0">
+                  <p className="text-xs font-bold text-slate-900 truncate">{fraisFile.name}</p>
+                  <p className="text-[10px] text-emerald-700 font-medium mt-0.5">
+                    {(fraisFile.size / 1024).toFixed(1)} KB • Fichier prêt pour l'analyse
+                  </p>
+                </div>
+              </div>
+              <button
+                type="button"
+                onClick={() => setFraisFile(null)}
+                className="p-1.5 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition-colors shrink-0"
+                title="Changer de fichier"
               >
-                <FileSpreadsheet className="w-4 h-4 text-sky-600" />
-                <span>Parcourir...</span>
-              </label>
-              <span className="text-xs text-slate-500 truncate flex-1">
-                {fraisFile ? fraisFile.name : 'Aucun fichier sélectionné (utilise les données actuelles)'}
-              </span>
-              {fraisFile && <Check className="w-4 h-4 text-emerald-600 shrink-0" />}
+                <X className="w-4 h-4" />
+              </button>
             </div>
-          </div>
+          )}
         </div>
 
         <div className="flex items-center justify-end gap-3 pt-4 border-t border-slate-200">
