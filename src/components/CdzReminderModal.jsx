@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { X, Send, Mail, Copy, Check, ShieldCheck, Users, AlertCircle, MessageSquare } from 'lucide-react';
 
 const CDZ_EMAILS = {
