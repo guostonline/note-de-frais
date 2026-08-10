@@ -65,9 +65,9 @@ export default function UploadModal({ isOpen, onClose, onDataUploaded }) {
             <Upload className="w-6 h-6" />
           </div>
           <div>
-            <h3 className="text-lg font-bold text-slate-900">Importer vos Fichiers Excel</h3>
+            <h3 className="text-lg font-bold text-slate-900">Importer un Fichier Note de Frais</h3>
             <p className="text-xs text-slate-500">
-              Chargez de nouveaux fichiers <code className="text-sky-600 font-semibold">Collaborateurs.xlsx</code> et/ou <code className="text-sky-600 font-semibold">frais.xlsx</code>
+              Chargez un nouveau fichier Excel <code className="text-sky-600 font-semibold">frais.xlsx</code> (Demandes GED)
             </p>
           </div>
         </div>
@@ -80,33 +80,6 @@ export default function UploadModal({ isOpen, onClose, onDataUploaded }) {
         )}
 
         <div className="space-y-4 my-5">
-          {/* Collaborateurs File Drop */}
-          <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 hover:border-slate-300 transition-all">
-            <label className="block text-xs font-semibold text-slate-700 mb-1">
-              Fichier Collaborateurs (Liste des employés)
-            </label>
-            <div className="flex items-center gap-3">
-              <input
-                type="file"
-                accept=".xlsx, .xls"
-                onChange={(e) => handleFileUpload(e, 'collab')}
-                className="hidden"
-                id="collab-file-input"
-              />
-              <label
-                htmlFor="collab-file-input"
-                className="px-3 py-2 text-xs font-medium text-slate-800 bg-white hover:bg-slate-100 rounded-lg cursor-pointer border border-slate-200 flex items-center gap-2 shadow-2xs"
-              >
-                <FileSpreadsheet className="w-4 h-4 text-emerald-600" />
-                <span>Parcourir...</span>
-              </label>
-              <span className="text-xs text-slate-500 truncate flex-1">
-                {collabFile ? collabFile.name : 'Aucun fichier sélectionné (utilise les données actuelles)'}
-              </span>
-              {collabFile && <Check className="w-4 h-4 text-emerald-600 shrink-0" />}
-            </div>
-          </div>
-
           {/* Frais File Drop */}
           <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 hover:border-slate-300 transition-all">
             <label className="block text-xs font-semibold text-slate-700 mb-1">
@@ -144,9 +117,9 @@ export default function UploadModal({ isOpen, onClose, onDataUploaded }) {
           </button>
           <button
             onClick={processExcel}
-            disabled={!collabFile && !fraisFile || loading}
+            disabled={!fraisFile || loading}
             className={`px-5 py-2 text-xs font-semibold text-white bg-gradient-to-r from-sky-500 to-blue-600 rounded-xl shadow-lg shadow-sky-500/20 flex items-center gap-2 ${
-              (!collabFile && !fraisFile) || loading ? 'opacity-50 cursor-not-allowed' : 'hover:from-sky-400 hover:to-blue-500 cursor-pointer'
+              !fraisFile || loading ? 'opacity-50 cursor-not-allowed' : 'hover:from-sky-400 hover:to-blue-500 cursor-pointer'
             }`}
           >
             <span>{loading ? 'Traitement en cours...' : 'Mettre à jour l\'analyse'}</span>
