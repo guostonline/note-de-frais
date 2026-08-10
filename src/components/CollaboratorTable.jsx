@@ -2,10 +2,11 @@ import React, { useState } from 'react';
 import { 
   CheckCircle2, XCircle, ChevronDown, ChevronRight, ExternalLink, 
   Mail, Download, Copy, Check, Info, FileSpreadsheet,
-  UserPlus, Edit3, Trash2
+  UserPlus, Edit3, Trash2, MessageSquare
 } from 'lucide-react';
 import * as XLSX from 'xlsx';
 import { getEntityBadgeColor, getFonctionBadgeColor, getResponsableSelectStyle } from '../utils/colors';
+import CdzReminderModal from './CdzReminderModal';
 
 export default function CollaboratorTable({ 
   submissionMap, 
@@ -25,6 +26,7 @@ export default function CollaboratorTable({
   const [activeTab, setActiveTab] = useState('ALL'); // 'ALL', 'SUBMITTED', 'MISSING'
   const [expandedRows, setExpandedRows] = useState(new Set());
   const [copiedEmail, setCopiedEmail] = useState(false);
+  const [isCdzModalOpen, setIsCdzModalOpen] = useState(false);
   const [sortField, setSortField] = useState('Nom');
   const [sortOrder, setSortOrder] = useState('asc');
 
@@ -225,18 +227,28 @@ export default function CollaboratorTable({
 
           {missingCount > 0 && (
             <>
+              {/* Relancer CDZ (WhatsApp & Email) Button */}
+              <button
+                onClick={() => setIsCdzModalOpen(true)}
+                className="flex items-center gap-2 px-3.5 py-1.5 text-xs font-bold text-white bg-[#25D366] hover:bg-[#20bd5a] rounded-full shadow-md shadow-emerald-500/20 transition-all cursor-pointer transform hover:-translate-y-0.5"
+                title="Envoyer la liste des retardataires à un CDZ spécifique via WhatsApp ou Email"
+              >
+                <MessageSquare className="w-3.5 h-3.5" />
+                <span>Relancer CDZ (WhatsApp & Email)</span>
+              </button>
+
               <button
                 onClick={copyEmailReminder}
-                className="flex items-center gap-2 px-3 py-1.5 text-xs font-medium text-amber-800 bg-amber-50 hover:bg-amber-100 border border-amber-200 rounded-lg transition-all shadow-sm"
+                className="flex items-center gap-2 px-3 py-1.5 text-xs font-medium text-amber-800 bg-amber-50 hover:bg-amber-100 border border-amber-200 rounded-full transition-all shadow-2xs"
                 title="Copier un modèle d'email de relance pour les retardataires"
               >
                 {copiedEmail ? <Check className="w-3.5 h-3.5 text-amber-600" /> : <Mail className="w-3.5 h-3.5 text-amber-600" />}
-                <span>{copiedEmail ? 'Email Copié !' : 'Relance Email'}</span>
+                <span>{copiedEmail ? 'Email Copié !' : 'Relance Rapide'}</span>
               </button>
 
               <button
                 onClick={exportMissingToExcel}
-                className="flex items-center gap-2 px-3 py-1.5 text-xs font-medium text-emerald-800 bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 rounded-lg transition-all shadow-sm"
+                className="flex items-center gap-2 px-3 py-1.5 text-xs font-medium text-emerald-800 bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 rounded-full transition-all shadow-2xs"
                 title="Télécharger la liste Excel des retardataires"
               >
                 <Download className="w-3.5 h-3.5 text-emerald-600" />
@@ -468,6 +480,16 @@ export default function CollaboratorTable({
           <Info className="w-3.5 h-3.5 text-slate-400" /> Cliquez sur n'importe quelle ligne avec des soumissions pour afficher ses détails
         </span>
       </div>
+
+      {/* CDZ WhatsApp & Email Reminder Modal */}
+      <CdzReminderModal
+        isOpen={isCdzModalOpen}
+        onClose={() => setIsCdzModalOpen(false)}
+        rows={rows}
+        cdzCdaList={cdzCdaList}
+        monthFilter={monthFilter}
+        weekFilter={weekFilter}
+      />
     </div>
   );
 }
