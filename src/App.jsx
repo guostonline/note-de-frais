@@ -21,7 +21,8 @@ import {
   getUniqueEntities,
   getUniqueFonctions,
   getUniqueCdzCda,
-  normalizeFraisData
+  normalizeFraisData,
+  ensureCollaborateursHasResponsable
 } from './utils/matching';
 
 import { 
@@ -34,7 +35,8 @@ import {
   dbSaveFraisBatch, 
   dbGetAliasMap, 
   dbSaveAliasMap, 
-  dbResetToDefaults 
+  dbResetToDefaults,
+  dbSaveCollaborateursBatch
 } from './data/db';
 
 const defaultAliasMap = {
@@ -55,9 +57,10 @@ export default function App() {
   const [collabList, setCollabList] = useState(() => {
     try {
       const saved = localStorage.getItem('ndf_collab_list');
-      return saved ? JSON.parse(saved) : initialCollaborateurs;
+      const list = saved ? JSON.parse(saved) : initialCollaborateurs;
+      return ensureCollaborateursHasResponsable(list);
     } catch (e) {
-      return initialCollaborateurs;
+      return ensureCollaborateursHasResponsable(initialCollaborateurs);
     }
   });
   const [fraisList, setFraisList] = useState(initialFrais);
@@ -92,12 +95,19 @@ export default function App() {
   // Initialize and seed fast IndexedDB database on app start
   useEffect(() => {
     async function initDb() {
-      await seedDatabaseIfEmpty(initialCollaborateurs, initialFrais, defaultAliasMap);
+      const preparedCollabs = ensureCollaborateursHasResponsable(initialCollaborateurs);
+      await seedDatabaseIfEmpty(preparedCollabs, initialFrais, defaultAliasMap);
       const dbCollabs = await dbGetAllCollaborateurs();
       const dbFrais = await dbGetAllFrais();
       const dbAliases = await dbGetAliasMap();
 
-      if (dbCollabs && dbCollabs.length > 0) setCollabList(dbCollabs);
+      if (dbCollabs && dbCollabs.length > 0) {
+        const enriched = ensureCollaborateursHasResponsable(dbCollabs);
+        setCollabList(enriched);
+        await dbSaveCollaborateursBatch(enriched);
+      } else {
+        setCollabList(preparedCollabs);
+      }
       if (dbFrais && dbFrais.length > 0) setFraisList(dbFrais);
       if (dbAliases && Object.keys(dbAliases).length > 0) setAliasMap(dbAliases);
       setIsDbLoaded(true);

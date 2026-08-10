@@ -4,31 +4,36 @@ export const initialCollaborateurs = [
     "Entite": "Direction Commerciale CDZ",
     "Matricule": 900001,
     "Nom": "CHAKIB EL FIL",
-    "Fonction": "CDZ"
+    "Fonction": "CDZ",
+    "Responsable": "CHAKIB EL FIL"
   },
   {
     "Entite": "Direction Commerciale CDZ",
     "Matricule": 900002,
     "Nom": "EL MOSTAFA BOUTMEZGUINE",
-    "Fonction": "CDZ"
+    "Fonction": "CDZ",
+    "Responsable": "EL MOSTAFA BOUTMEZGUINE"
   },
   {
     "Entite": "Direction Commerciale CDZ",
     "Matricule": 900003,
     "Nom": "EL BESTIRI SOUFIANE",
-    "Fonction": "CDZ"
+    "Fonction": "CDZ",
+    "Responsable": "EL BESTIRI SOUFIANE"
   },
   {
     "Entite": "Direction Commerciale CDZ",
     "Matricule": 900004,
     "Nom": "MOHAMMED MAAIZ",
-    "Fonction": "CDZ"
+    "Fonction": "CDZ",
+    "Responsable": "MOHAMMED MAAIZ"
   },
   {
     "Entite": "Direction Commerciale CDZ",
     "Matricule": 900005,
     "Nom": "BENSALEM NOUREDDINE",
-    "Fonction": "CDZ"
+    "Fonction": "CDZ",
+    "Responsable": "BENSALEM NOUREDDINE"
   },
   {
     "Entite": "Commercial CHD Agadir",
@@ -43,7 +48,8 @@ export const initialCollaborateurs = [
     "Absence jour férié aprém": "",
     "Absence autorisée matin": "",
     "Absence autorisée aprém": "",
-    "Validée par": ""
+    "Validée par": "",
+    "Responsable": "MOHAMMED MAAIZ"
   },
   {
     "Entite": "Commercial Traditionnel Vital Agadir",
@@ -58,7 +64,8 @@ export const initialCollaborateurs = [
     "Absence jour férié aprém": "",
     "Absence autorisée matin": "",
     "Absence autorisée aprém": "",
-    "Validée par": ""
+    "Validée par": "",
+    "Responsable": "BENSALEM NOUREDDINE"
   },
   {
     "Entite": "Commercial Traditionnel Vital Agadir",
@@ -73,7 +80,8 @@ export const initialCollaborateurs = [
     "Absence jour férié aprém": "",
     "Absence autorisée matin": "",
     "Absence autorisée aprém": "",
-    "Validée par": ""
+    "Validée par": "",
+    "Responsable": "CHAKIB EL FIL"
   },
   {
     "Entite": "Commercial Traditionnel Vital Agadir",
@@ -88,7 +96,8 @@ export const initialCollaborateurs = [
     "Absence jour férié aprém": "",
     "Absence autorisée matin": "",
     "Absence autorisée aprém": "",
-    "Validée par": ""
+    "Validée par": "",
+    "Responsable": "MOHAMMED MAAIZ"
   },
   {
     "Entite": "Commercial Traditionnel Vital Agadir",
@@ -103,7 +112,8 @@ export const initialCollaborateurs = [
     "Absence jour férié aprém": "",
     "Absence autorisée matin": "",
     "Absence autorisée aprém": "",
-    "Validée par": ""
+    "Validée par": "",
+    "Responsable": "CHAKIB EL FIL"
   },
   {
     "Entite": "Commercial Traditionnel Vital Agadir",
@@ -118,7 +128,8 @@ export const initialCollaborateurs = [
     "Absence jour férié aprém": "",
     "Absence autorisée matin": "",
     "Absence autorisée aprém": "",
-    "Validée par": ""
+    "Validée par": "",
+    "Responsable": "BENSALEM NOUREDDINE"
   },
   {
     "Entite": "Commercial Traditionnel Vital Agadir",
@@ -133,7 +144,8 @@ export const initialCollaborateurs = [
     "Absence jour férié aprém": "",
     "Absence autorisée matin": "",
     "Absence autorisée aprém": "",
-    "Validée par": ""
+    "Validée par": "",
+    "Responsable": "MOHAMMED MAAIZ"
   },
   {
     "Entite": "Livreurs Vital Agadir",
@@ -148,7 +160,8 @@ export const initialCollaborateurs = [
     "Absence jour férié aprém": "",
     "Absence autorisée matin": "",
     "Absence autorisée aprém": "",
-    "Validée par": ""
+    "Validée par": "",
+    "Responsable": "CHAKIB EL FIL"
   },
   {
     "Entite": "Livreurs Vital Agadir",
@@ -163,7 +176,8 @@ export const initialCollaborateurs = [
     "Absence jour férié aprém": "",
     "Absence autorisée matin": "",
     "Absence autorisée aprém": "",
-    "Validée par": ""
+    "Validée par": "",
+    "Responsable": "EL MOSTAFA BOUTMEZGUINE"
   },
   {
     "Entite": "Livreurs Vital Agadir",
@@ -178,7 +192,8 @@ export const initialCollaborateurs = [
     "Absence jour férié aprém": "",
     "Absence autorisée matin": "",
     "Absence autorisée aprém": "",
-    "Validée par": ""
+    "Validée par": "",
+    "Responsable": "EL BESTIRI SOUFIANE"
   },
   {
     "Entite": "Livreurs Agadir",
@@ -193,7 +208,8 @@ export const initialCollaborateurs = [
     "Absence jour férié aprém": "",
     "Absence autorisée matin": "",
     "Absence autorisée aprém": "",
-    "Validée par": ""
+    "Validée par": "",
+    "Responsable": "BENSALEM NOUREDDINE"
   },
   {
     "Entite": "Livreurs Agadir",
@@ -208,7 +224,8 @@ export const initialCollaborateurs = [
     "Absence jour férié aprém": "",
     "Absence autorisée matin": "",
     "Absence autorisée aprém": "",
-    "Validée par": ""
+    "Validée par": "",
+    "Responsable": "EL MOSTAFA BOUTMEZGUINE"
   },
   {
     "Entite": "Livreurs Agadir",
@@ -223,7 +240,8 @@ export const initialCollaborateurs = [
     "Absence jour férié aprém": "",
     "Absence autorisée matin": "",
     "Absence autorisée aprém": "",
-    "Validée par": ""
+    "Validée par": "",
+    "Responsable": "EL MOSTAFA BOUTMEZGUINE"
   },
   {
     "Entite": "Livreurs Agadir",
@@ -238,7 +256,8 @@ export const initialCollaborateurs = [
     "Absence jour férié aprém": "",
     "Absence autorisée matin": "",
     "Absence autorisée aprém": "",
-    "Validée par": ""
+    "Validée par": "",
+    "Responsable": "CHAKIB EL FIL"
   },
   {
     "Entite": "Livreurs Agadir",
@@ -253,7 +272,8 @@ export const initialCollaborateurs = [
     "Absence jour férié aprém": "",
     "Absence autorisée matin": "",
     "Absence autorisée aprém": "",
-    "Validée par": ""
+    "Validée par": "",
+    "Responsable": "EL MOSTAFA BOUTMEZGUINE"
   },
   {
     "Entite": "Livreurs Agadir",
@@ -268,7 +288,8 @@ export const initialCollaborateurs = [
     "Absence jour férié aprém": "",
     "Absence autorisée matin": "",
     "Absence autorisée aprém": "",
-    "Validée par": ""
+    "Validée par": "",
+    "Responsable": "BENSALEM NOUREDDINE"
   },
   {
     "Entite": "Livreurs Agadir",
@@ -283,7 +304,8 @@ export const initialCollaborateurs = [
     "Absence jour férié aprém": "",
     "Absence autorisée matin": "",
     "Absence autorisée aprém": "",
-    "Validée par": ""
+    "Validée par": "",
+    "Responsable": "BENSALEM NOUREDDINE"
   },
   {
     "Entite": "Livreurs Agadir",
@@ -298,7 +320,8 @@ export const initialCollaborateurs = [
     "Absence jour férié aprém": "",
     "Absence autorisée matin": "",
     "Absence autorisée aprém": "",
-    "Validée par": ""
+    "Validée par": "",
+    "Responsable": "EL BESTIRI SOUFIANE"
   },
   {
     "Entite": "Livreurs Agadir",
@@ -313,7 +336,8 @@ export const initialCollaborateurs = [
     "Absence jour férié aprém": "",
     "Absence autorisée matin": "",
     "Absence autorisée aprém": "",
-    "Validée par": ""
+    "Validée par": "",
+    "Responsable": "EL BESTIRI SOUFIANE"
   },
   {
     "Entite": "Livreurs Agadir",
@@ -328,7 +352,8 @@ export const initialCollaborateurs = [
     "Absence jour férié aprém": "",
     "Absence autorisée matin": "",
     "Absence autorisée aprém": "",
-    "Validée par": ""
+    "Validée par": "",
+    "Responsable": "MOHAMMED MAAIZ"
   },
   {
     "Entite": "Livreurs Agadir",
@@ -343,7 +368,8 @@ export const initialCollaborateurs = [
     "Absence jour férié aprém": "",
     "Absence autorisée matin": "",
     "Absence autorisée aprém": "",
-    "Validée par": ""
+    "Validée par": "",
+    "Responsable": "EL BESTIRI SOUFIANE"
   },
   {
     "Entite": "Livreurs Agadir",
@@ -358,7 +384,8 @@ export const initialCollaborateurs = [
     "Absence jour férié aprém": "",
     "Absence autorisée matin": "",
     "Absence autorisée aprém": "",
-    "Validée par": ""
+    "Validée par": "",
+    "Responsable": "BENSALEM NOUREDDINE"
   },
   {
     "Entite": "Livreurs Agadir",
@@ -373,7 +400,8 @@ export const initialCollaborateurs = [
     "Absence jour férié aprém": "",
     "Absence autorisée matin": "",
     "Absence autorisée aprém": "",
-    "Validée par": ""
+    "Validée par": "",
+    "Responsable": "CHAKIB EL FIL"
   },
   {
     "Entite": "Livreurs Agadir",
@@ -388,7 +416,8 @@ export const initialCollaborateurs = [
     "Absence jour férié aprém": "",
     "Absence autorisée matin": "",
     "Absence autorisée aprém": "",
-    "Validée par": ""
+    "Validée par": "",
+    "Responsable": "EL MOSTAFA BOUTMEZGUINE"
   },
   {
     "Entite": "Livreurs Agadir",
@@ -403,7 +432,8 @@ export const initialCollaborateurs = [
     "Absence jour férié aprém": "",
     "Absence autorisée matin": "",
     "Absence autorisée aprém": "",
-    "Validée par": ""
+    "Validée par": "",
+    "Responsable": "MOHAMMED MAAIZ"
   },
   {
     "Entite": "Livreurs Agadir",
@@ -418,7 +448,8 @@ export const initialCollaborateurs = [
     "Absence jour férié aprém": "",
     "Absence autorisée matin": "",
     "Absence autorisée aprém": "",
-    "Validée par": ""
+    "Validée par": "",
+    "Responsable": "EL BESTIRI SOUFIANE"
   },
   {
     "Entite": "Livreurs Agadir",
@@ -433,7 +464,8 @@ export const initialCollaborateurs = [
     "Absence jour férié aprém": "",
     "Absence autorisée matin": "",
     "Absence autorisée aprém": "",
-    "Validée par": ""
+    "Validée par": "",
+    "Responsable": "EL MOSTAFA BOUTMEZGUINE"
   },
   {
     "Entite": "Livreurs Agadir",
@@ -448,7 +480,8 @@ export const initialCollaborateurs = [
     "Absence jour férié aprém": "",
     "Absence autorisée matin": "",
     "Absence autorisée aprém": "",
-    "Validée par": ""
+    "Validée par": "",
+    "Responsable": "BENSALEM NOUREDDINE"
   },
   {
     "Entite": "Livreurs Agadir",
@@ -463,7 +496,8 @@ export const initialCollaborateurs = [
     "Absence jour férié aprém": "",
     "Absence autorisée matin": "",
     "Absence autorisée aprém": "",
-    "Validée par": ""
+    "Validée par": "",
+    "Responsable": "EL BESTIRI SOUFIANE"
   },
   {
     "Entite": "Livreurs Agadir",
@@ -478,7 +512,8 @@ export const initialCollaborateurs = [
     "Absence jour férié aprém": "",
     "Absence autorisée matin": "",
     "Absence autorisée aprém": "",
-    "Validée par": ""
+    "Validée par": "",
+    "Responsable": "EL BESTIRI SOUFIANE"
   },
   {
     "Entite": "Livreurs Agadir",
@@ -493,7 +528,8 @@ export const initialCollaborateurs = [
     "Absence jour férié aprém": "",
     "Absence autorisée matin": "",
     "Absence autorisée aprém": "",
-    "Validée par": ""
+    "Validée par": "",
+    "Responsable": "MOHAMMED MAAIZ"
   },
   {
     "Entite": "Livreurs Agadir",
@@ -508,7 +544,8 @@ export const initialCollaborateurs = [
     "Absence jour férié aprém": "",
     "Absence autorisée matin": "",
     "Absence autorisée aprém": "",
-    "Validée par": ""
+    "Validée par": "",
+    "Responsable": "EL MOSTAFA BOUTMEZGUINE"
   },
   {
     "Entite": "Livreurs Agadir",
@@ -523,7 +560,8 @@ export const initialCollaborateurs = [
     "Absence jour férié aprém": "",
     "Absence autorisée matin": "",
     "Absence autorisée aprém": "",
-    "Validée par": ""
+    "Validée par": "",
+    "Responsable": "BENSALEM NOUREDDINE"
   },
   {
     "Entite": "Livreurs Agadir",
@@ -538,7 +576,8 @@ export const initialCollaborateurs = [
     "Absence jour férié aprém": "",
     "Absence autorisée matin": "",
     "Absence autorisée aprém": "",
-    "Validée par": ""
+    "Validée par": "",
+    "Responsable": "EL MOSTAFA BOUTMEZGUINE"
   },
   {
     "Entite": "Livreurs Agadir",
@@ -553,7 +592,8 @@ export const initialCollaborateurs = [
     "Absence jour férié aprém": "",
     "Absence autorisée matin": "",
     "Absence autorisée aprém": "",
-    "Validée par": ""
+    "Validée par": "",
+    "Responsable": "MOHAMMED MAAIZ"
   },
   {
     "Entite": "Livreurs Agadir",
@@ -568,7 +608,8 @@ export const initialCollaborateurs = [
     "Absence jour férié aprém": "",
     "Absence autorisée matin": "",
     "Absence autorisée aprém": "",
-    "Validée par": ""
+    "Validée par": "",
+    "Responsable": "MOHAMMED MAAIZ"
   },
   {
     "Entite": "Commercial Traditionnel SOM/VMM Agadir",
@@ -583,7 +624,8 @@ export const initialCollaborateurs = [
     "Absence jour férié aprém": "",
     "Absence autorisée matin": "",
     "Absence autorisée aprém": "",
-    "Validée par": ""
+    "Validée par": "",
+    "Responsable": "MOHAMMED MAAIZ"
   },
   {
     "Entite": "Commercial Traditionnel SOM/VMM Agadir",
@@ -598,7 +640,8 @@ export const initialCollaborateurs = [
     "Absence jour férié aprém": "",
     "Absence autorisée matin": "",
     "Absence autorisée aprém": "",
-    "Validée par": ""
+    "Validée par": "",
+    "Responsable": "EL MOSTAFA BOUTMEZGUINE"
   },
   {
     "Entite": "Commercial Traditionnel Charcuterie Agadir",
@@ -613,7 +656,8 @@ export const initialCollaborateurs = [
     "Absence jour férié aprém": "",
     "Absence autorisée matin": "",
     "Absence autorisée aprém": "",
-    "Validée par": ""
+    "Validée par": "",
+    "Responsable": "EL MOSTAFA BOUTMEZGUINE"
   },
   {
     "Entite": "Commercial Traditionnel SOM/VMM Agadir",
@@ -628,7 +672,8 @@ export const initialCollaborateurs = [
     "Absence jour férié aprém": "",
     "Absence autorisée matin": "",
     "Absence autorisée aprém": "",
-    "Validée par": ""
+    "Validée par": "",
+    "Responsable": "EL MOSTAFA BOUTMEZGUINE"
   },
   {
     "Entite": "Commercial Traditionnel SOM/VMM Agadir",
@@ -643,7 +688,8 @@ export const initialCollaborateurs = [
     "Absence jour férié aprém": "",
     "Absence autorisée matin": "",
     "Absence autorisée aprém": "",
-    "Validée par": ""
+    "Validée par": "",
+    "Responsable": "EL MOSTAFA BOUTMEZGUINE"
   },
   {
     "Entite": "Commercial Traditionnel SOM/VMM Agadir",
@@ -658,7 +704,8 @@ export const initialCollaborateurs = [
     "Absence jour férié aprém": "",
     "Absence autorisée matin": "",
     "Absence autorisée aprém": "",
-    "Validée par": ""
+    "Validée par": "",
+    "Responsable": "BENSALEM NOUREDDINE"
   },
   {
     "Entite": "Commercial Traditionnel SOM/VMM Agadir",
@@ -673,7 +720,8 @@ export const initialCollaborateurs = [
     "Absence jour férié aprém": "",
     "Absence autorisée matin": "",
     "Absence autorisée aprém": "",
-    "Validée par": ""
+    "Validée par": "",
+    "Responsable": "EL BESTIRI SOUFIANE"
   },
   {
     "Entite": "Commercial Traditionnel SOM/VMM Agadir",
@@ -688,7 +736,8 @@ export const initialCollaborateurs = [
     "Absence jour férié aprém": "",
     "Absence autorisée matin": "",
     "Absence autorisée aprém": "",
-    "Validée par": ""
+    "Validée par": "",
+    "Responsable": "CHAKIB EL FIL"
   },
   {
     "Entite": "Commercial Traditionnel SOM/VMM Agadir",
@@ -703,7 +752,8 @@ export const initialCollaborateurs = [
     "Absence jour férié aprém": "",
     "Absence autorisée matin": "",
     "Absence autorisée aprém": "",
-    "Validée par": ""
+    "Validée par": "",
+    "Responsable": "BENSALEM NOUREDDINE"
   },
   {
     "Entite": "Commercial Traditionnel SOM/VMM Agadir",
@@ -718,7 +768,8 @@ export const initialCollaborateurs = [
     "Absence jour férié aprém": "",
     "Absence autorisée matin": "",
     "Absence autorisée aprém": "",
-    "Validée par": ""
+    "Validée par": "",
+    "Responsable": "CHAKIB EL FIL"
   },
   {
     "Entite": "Commercial Traditionnel SOM/VMM Agadir",
@@ -733,7 +784,8 @@ export const initialCollaborateurs = [
     "Absence jour férié aprém": "",
     "Absence autorisée matin": "",
     "Absence autorisée aprém": "",
-    "Validée par": ""
+    "Validée par": "",
+    "Responsable": "MOHAMMED MAAIZ"
   },
   {
     "Entite": "Commercial Traditionnel SOM/VMM Agadir",
@@ -748,7 +800,8 @@ export const initialCollaborateurs = [
     "Absence jour férié aprém": "",
     "Absence autorisée matin": "",
     "Absence autorisée aprém": "",
-    "Validée par": ""
+    "Validée par": "",
+    "Responsable": "BENSALEM NOUREDDINE"
   },
   {
     "Entite": "Commercial Traditionnel SOM/VMM Agadir",
@@ -763,7 +816,8 @@ export const initialCollaborateurs = [
     "Absence jour férié aprém": "",
     "Absence autorisée matin": "",
     "Absence autorisée aprém": "",
-    "Validée par": ""
+    "Validée par": "",
+    "Responsable": "CHAKIB EL FIL"
   },
   {
     "Entite": "Commercial Traditionnel SOM/VMM Agadir",
@@ -778,7 +832,8 @@ export const initialCollaborateurs = [
     "Absence jour férié aprém": "",
     "Absence autorisée matin": "",
     "Absence autorisée aprém": "",
-    "Validée par": ""
+    "Validée par": "",
+    "Responsable": "MOHAMMED MAAIZ"
   },
   {
     "Entite": "Commercial Traditionnel SOM/VMM Agadir",
@@ -793,7 +848,8 @@ export const initialCollaborateurs = [
     "Absence jour férié aprém": "",
     "Absence autorisée matin": "",
     "Absence autorisée aprém": "",
-    "Validée par": ""
+    "Validée par": "",
+    "Responsable": "BENSALEM NOUREDDINE"
   },
   {
     "Entite": "Commercial Traditionnel SOM/VMM Agadir",
@@ -808,7 +864,8 @@ export const initialCollaborateurs = [
     "Absence jour férié aprém": "",
     "Absence autorisée matin": "",
     "Absence autorisée aprém": "",
-    "Validée par": ""
+    "Validée par": "",
+    "Responsable": "CHAKIB EL FIL"
   },
   {
     "Entite": "Commercial Traditionnel SOM/VMM Agadir",
@@ -823,7 +880,8 @@ export const initialCollaborateurs = [
     "Absence jour férié aprém": "",
     "Absence autorisée matin": "",
     "Absence autorisée aprém": "",
-    "Validée par": ""
+    "Validée par": "",
+    "Responsable": "CHAKIB EL FIL"
   },
   {
     "Entite": "Commercial Traditionnel SOM/VMM Agadir",
@@ -838,7 +896,8 @@ export const initialCollaborateurs = [
     "Absence jour férié aprém": "",
     "Absence autorisée matin": "",
     "Absence autorisée aprém": "",
-    "Validée par": ""
+    "Validée par": "",
+    "Responsable": "EL BESTIRI SOUFIANE"
   },
   {
     "Entite": "Commercial Traditionnel SOM/VMM Agadir",
@@ -853,7 +912,8 @@ export const initialCollaborateurs = [
     "Absence jour férié aprém": "",
     "Absence autorisée matin": "",
     "Absence autorisée aprém": "",
-    "Validée par": ""
+    "Validée par": "",
+    "Responsable": "CHAKIB EL FIL"
   },
   {
     "Entite": "Commercial Traditionnel SOM/VMM Agadir",
@@ -868,7 +928,8 @@ export const initialCollaborateurs = [
     "Absence jour férié aprém": "",
     "Absence autorisée matin": "",
     "Absence autorisée aprém": "",
-    "Validée par": ""
+    "Validée par": "",
+    "Responsable": "BENSALEM NOUREDDINE"
   },
   {
     "Entite": "Commercial Traditionnel SOM/VMM Agadir",
@@ -883,7 +944,8 @@ export const initialCollaborateurs = [
     "Absence jour férié aprém": "",
     "Absence autorisée matin": "",
     "Absence autorisée aprém": "",
-    "Validée par": ""
+    "Validée par": "",
+    "Responsable": "EL MOSTAFA BOUTMEZGUINE"
   },
   {
     "Entite": "Commercial Traditionnel SOM/VMM Agadir",
@@ -898,7 +960,8 @@ export const initialCollaborateurs = [
     "Absence jour férié aprém": "",
     "Absence autorisée matin": "",
     "Absence autorisée aprém": "",
-    "Validée par": ""
+    "Validée par": "",
+    "Responsable": "CHAKIB EL FIL"
   },
   {
     "Entite": "Commercial Traditionnel SOM/VMM Agadir",
@@ -913,7 +976,8 @@ export const initialCollaborateurs = [
     "Absence jour férié aprém": "",
     "Absence autorisée matin": "",
     "Absence autorisée aprém": "",
-    "Validée par": ""
+    "Validée par": "",
+    "Responsable": "EL BESTIRI SOUFIANE"
   },
   {
     "Entite": "Commercial Traditionnel SOM/VMM Agadir",
@@ -928,7 +992,8 @@ export const initialCollaborateurs = [
     "Absence jour férié aprém": "",
     "Absence autorisée matin": "",
     "Absence autorisée aprém": "",
-    "Validée par": ""
+    "Validée par": "",
+    "Responsable": "EL MOSTAFA BOUTMEZGUINE"
   },
   {
     "Entite": "Commercial Traditionnel SOM/VMM Agadir",
@@ -943,7 +1008,8 @@ export const initialCollaborateurs = [
     "Absence jour férié aprém": "",
     "Absence autorisée matin": "",
     "Absence autorisée aprém": "",
-    "Validée par": ""
+    "Validée par": "",
+    "Responsable": "MOHAMMED MAAIZ"
   },
   {
     "Entite": "Commercial Traditionnel SOM/VMM Agadir",
@@ -958,7 +1024,8 @@ export const initialCollaborateurs = [
     "Absence jour férié aprém": "",
     "Absence autorisée matin": "",
     "Absence autorisée aprém": "",
-    "Validée par": ""
+    "Validée par": "",
+    "Responsable": "EL MOSTAFA BOUTMEZGUINE"
   },
   {
     "Entite": "Commercial Traditionnel SOM/VMM Agadir",
@@ -973,7 +1040,8 @@ export const initialCollaborateurs = [
     "Absence jour férié aprém": "",
     "Absence autorisée matin": "",
     "Absence autorisée aprém": "",
-    "Validée par": ""
+    "Validée par": "",
+    "Responsable": "EL MOSTAFA BOUTMEZGUINE"
   },
   {
     "Entite": "Commercial Traditionnel SOM/VMM Agadir",
@@ -988,7 +1056,8 @@ export const initialCollaborateurs = [
     "Absence jour férié aprém": "",
     "Absence autorisée matin": "",
     "Absence autorisée aprém": "",
-    "Validée par": ""
+    "Validée par": "",
+    "Responsable": "BENSALEM NOUREDDINE"
   },
   {
     "Entite": "Commercial Traditionnel SOM/VMM Agadir",
@@ -1003,7 +1072,8 @@ export const initialCollaborateurs = [
     "Absence jour férié aprém": "",
     "Absence autorisée matin": "",
     "Absence autorisée aprém": "",
-    "Validée par": ""
+    "Validée par": "",
+    "Responsable": "EL MOSTAFA BOUTMEZGUINE"
   },
   {
     "Entite": "Commercial Traditionnel SOM/VMM Agadir",
@@ -1018,7 +1088,8 @@ export const initialCollaborateurs = [
     "Absence jour férié aprém": "",
     "Absence autorisée matin": "",
     "Absence autorisée aprém": "",
-    "Validée par": ""
+    "Validée par": "",
+    "Responsable": "MOHAMMED MAAIZ"
   },
   {
     "Entite": "Commercial Traditionnel SOM/VMM Agadir",
@@ -1033,7 +1104,8 @@ export const initialCollaborateurs = [
     "Absence jour férié aprém": "",
     "Absence autorisée matin": "",
     "Absence autorisée aprém": "",
-    "Validée par": ""
+    "Validée par": "",
+    "Responsable": "MOHAMMED MAAIZ"
   },
   {
     "Entite": "Commercial Traditionnel SOM/VMM Agadir",
@@ -1048,7 +1120,8 @@ export const initialCollaborateurs = [
     "Absence jour férié aprém": "",
     "Absence autorisée matin": "",
     "Absence autorisée aprém": "",
-    "Validée par": ""
+    "Validée par": "",
+    "Responsable": "MOHAMMED MAAIZ"
   },
   {
     "Entite": "Commercial Traditionnel SOM/VMM Agadir",
@@ -1063,7 +1136,8 @@ export const initialCollaborateurs = [
     "Absence jour férié aprém": "",
     "Absence autorisée matin": "",
     "Absence autorisée aprém": "",
-    "Validée par": ""
+    "Validée par": "",
+    "Responsable": "CHAKIB EL FIL"
   },
   {
     "Entite": "Commercial Traditionnel SOM/VMM Agadir",
@@ -1078,7 +1152,8 @@ export const initialCollaborateurs = [
     "Absence jour férié aprém": "",
     "Absence autorisée matin": "",
     "Absence autorisée aprém": "",
-    "Validée par": ""
+    "Validée par": "",
+    "Responsable": "MOHAMMED MAAIZ"
   },
   {
     "Entite": "Commercial Traditionnel SOM/VMM Agadir",
@@ -1093,7 +1168,8 @@ export const initialCollaborateurs = [
     "Absence jour férié aprém": "",
     "Absence autorisée matin": "",
     "Absence autorisée aprém": "",
-    "Validée par": ""
+    "Validée par": "",
+    "Responsable": "BENSALEM NOUREDDINE"
   },
   {
     "Entite": "Commercial Traditionnel SOM/VMM Agadir",
@@ -1108,7 +1184,8 @@ export const initialCollaborateurs = [
     "Absence jour férié aprém": "",
     "Absence autorisée matin": "",
     "Absence autorisée aprém": "",
-    "Validée par": ""
+    "Validée par": "",
+    "Responsable": "CHAKIB EL FIL"
   },
   {
     "Entite": "Commercial Traditionnel SOM/VMM Agadir",
@@ -1123,7 +1200,8 @@ export const initialCollaborateurs = [
     "Absence jour férié aprém": "",
     "Absence autorisée matin": "",
     "Absence autorisée aprém": "",
-    "Validée par": ""
+    "Validée par": "",
+    "Responsable": "CHAKIB EL FIL"
   }
 ];
 

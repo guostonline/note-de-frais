@@ -254,6 +254,39 @@ export function getUniqueFonctions(collabList = []) {
   return Array.from(allSet).sort();
 }
 
+export const DEFAULT_CDZ_RESPONSABLES = [
+  'CHAKIB EL FIL',
+  'EL BESTIRI SOUFIANE',
+  'EL MOSTAFA BOUTMEZGUINE',
+  'MOHAMMED MAAIZ',
+  'BENSALEM NOUREDDINE'
+];
+
+/**
+ * Ensures every collaborator has a valid CDZ / CDA Responsable assigned
+ */
+export function ensureCollaborateursHasResponsable(collabList = []) {
+  if (!Array.isArray(collabList)) return [];
+  return collabList.map((collab, index) => {
+    if (!collab || typeof collab !== 'object') return collab;
+    if (collab.Responsable) return collab;
+
+    // Hash deterministic assignment fallback
+    const name = collab.Nom || `collab_${index}`;
+    let hash = 0;
+    for (let i = 0; i < name.length; i++) {
+      hash = (hash << 5) - hash + name.charCodeAt(i);
+      hash |= 0;
+    }
+    const assignedResponsable = DEFAULT_CDZ_RESPONSABLES[Math.abs(hash + index) % DEFAULT_CDZ_RESPONSABLES.length];
+
+    return {
+      ...collab,
+      Responsable: assignedResponsable
+    };
+  });
+}
+
 /**
  * Extracts unique CDZ and CDA Responsables from collaborateurs list
  */
