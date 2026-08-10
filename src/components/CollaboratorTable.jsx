@@ -489,6 +489,7 @@ export default function CollaboratorTable({
         cdzCdaList={cdzCdaList}
         monthFilter={monthFilter}
         weekFilter={weekFilter}
+        selectedCdzFilter={selectedCdz}
       />
     </div>
   );

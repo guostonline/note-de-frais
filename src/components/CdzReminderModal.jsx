@@ -15,10 +15,28 @@ export default function CdzReminderModal({
   rows = [],
   cdzCdaList = [],
   monthFilter = 'ALL',
-  weekFilter = 'ALL'
+  weekFilter = 'ALL',
+  selectedCdzFilter = 'ALL'
 }) {
   const [selectedCdz, setSelectedCdz] = useState('ALL');
   const [copied, setCopied] = useState(false);
+
+  // Sync active CDZ filter from toolbar when modal opens
+  useEffect(() => {
+    if (isOpen) {
+      if (Array.isArray(selectedCdzFilter)) {
+        if (selectedCdzFilter.length === 1 && selectedCdzFilter[0] !== 'ALL') {
+          setSelectedCdz(selectedCdzFilter[0]);
+        } else {
+          setSelectedCdz('ALL');
+        }
+      } else if (typeof selectedCdzFilter === 'string' && selectedCdzFilter !== 'ALL') {
+        setSelectedCdz(selectedCdzFilter);
+      } else {
+        setSelectedCdz('ALL');
+      }
+    }
+  }, [isOpen, selectedCdzFilter]);
 
   // Filter missing rows (hasSubmitted === false)
   const missingRows = useMemo(() => {
