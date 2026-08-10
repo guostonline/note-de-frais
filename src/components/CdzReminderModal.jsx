@@ -9,6 +9,14 @@ const CDZ_EMAILS = {
   'BENSALEM NOUREDDINE': 'n.bensalem@madec.co.ma'
 };
 
+const CDZ_PHONES = {
+  'CHAKIB EL FIL': '212669994101',
+  'EL BESTIRI SOUFIANE': '212669645134',
+  'EL MOSTAFA BOUTMEZGUINE': '212664728315',
+  'MOHAMMED MAAIZ': '212660958087',
+  'BENSALEM NOUREDDINE': '212660191458'
+};
+
 export default function CdzReminderModal({
   isOpen,
   onClose,
@@ -90,7 +98,13 @@ export default function CdzReminderModal({
   const handleSendWhatsApp = () => {
     const text = generateMessageText(true);
     const encodedText = encodeURIComponent(text);
-    window.open(`https://api.whatsapp.com/send?text=${encodedText}`, '_blank');
+    const targetPhone = CDZ_PHONES[selectedCdz] || '';
+    
+    if (targetPhone) {
+      window.open(`https://api.whatsapp.com/send?phone=${targetPhone}&text=${encodedText}`, '_blank');
+    } else {
+      window.open(`https://api.whatsapp.com/send?text=${encodedText}`, '_blank');
+    }
   };
 
   const handleSendEmail = () => {
@@ -138,7 +152,7 @@ export default function CdzReminderModal({
           <label className="block text-xs font-bold text-[#1E2024] uppercase tracking-wider">
             Sélectionner le Responsable CDZ / CDA à relancer :
           </label>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
             <select
               value={selectedCdz}
               onChange={(e) => setSelectedCdz(e.target.value)}
@@ -157,9 +171,16 @@ export default function CdzReminderModal({
             </select>
 
             <div className="flex items-center justify-between bg-white border border-stone-200 rounded-xl px-3 py-2 text-xs">
-              <span className="text-stone-500 font-medium">Email associé :</span>
+              <span className="text-stone-500 font-medium">WhatsApp :</span>
+              <span className="font-bold text-emerald-600 truncate font-mono">
+                {CDZ_PHONES[selectedCdz] ? `+212 ${CDZ_PHONES[selectedCdz].slice(3)}` : 'Tous CDZ'}
+              </span>
+            </div>
+
+            <div className="flex items-center justify-between bg-white border border-stone-200 rounded-xl px-3 py-2 text-xs">
+              <span className="text-stone-500 font-medium">Email :</span>
               <span className="font-bold text-[#1E2024] truncate">
-                {CDZ_EMAILS[selectedCdz] || 'Tous les emails'}
+                {CDZ_EMAILS[selectedCdz] || 'Tous emails'}
               </span>
             </div>
           </div>
