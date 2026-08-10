@@ -151,9 +151,10 @@ export default function App() {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [collaboratorToDelete, setCollaboratorToDelete] = useState(null);
 
-  // Exclude 'AIDE LIVREUR' & 'AIDE VENDEUR' from collaborators for expense note calculations
+  // Exclude 'AIDE LIVREUR', 'AIDE VENDEUR' and employees marked 'IgnoredThisMonth' from active calculations
   const activeCollabList = useMemo(() => {
     return collabList.filter(c => {
+      if (c.IgnoredThisMonth) return false;
       if (!c.Fonction) return true;
       const lower = c.Fonction.toLowerCase();
       return !lower.includes('aide livreur') && !lower.includes('aide vendeur');

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { X, UserPlus, UserCheck, AlertCircle, ShieldCheck } from 'lucide-react';
+import { X, UserPlus, UserCheck, AlertCircle, ShieldCheck, EyeOff } from 'lucide-react';
 
 export default function CollaboratorModal({ 
   isOpen, 
@@ -17,6 +17,7 @@ export default function CollaboratorModal({
   const [fonction, setFonction] = useState('');
   const [customFonction, setCustomFonction] = useState('');
   const [responsable, setResponsable] = useState('');
+  const [ignoredThisMonth, setIgnoredThisMonth] = useState(false);
   const [error, setError] = useState('');
 
   const isEditMode = !!collaboratorToEdit;
@@ -25,6 +26,7 @@ export default function CollaboratorModal({
     if (collaboratorToEdit) {
       setNom(collaboratorToEdit.Nom || '');
       setMatricule(collaboratorToEdit.Matricule || '');
+      setIgnoredThisMonth(!!collaboratorToEdit.IgnoredThisMonth);
       
       // Entite setup
       if (existingEntities.includes(collaboratorToEdit.Entite)) {
@@ -58,6 +60,7 @@ export default function CollaboratorModal({
       setFonction('');
       setCustomFonction('');
       setResponsable('');
+      setIgnoredThisMonth(false);
     }
     setError('');
   }, [collaboratorToEdit, isOpen, existingEntities, existingFonctions]);
@@ -89,7 +92,8 @@ export default function CollaboratorModal({
         Matricule: matricule ? (isNaN(matricule) ? matricule : Number(matricule)) : '',
         Entite: finalEntite,
         Fonction: finalFonction,
-        Responsable: responsable
+        Responsable: responsable,
+        IgnoredThisMonth: ignoredThisMonth
       }
     });
 
@@ -258,6 +262,25 @@ export default function CollaboratorModal({
               />
             </div>
           )}
+
+          {/* Ignorer ce mois-ci (Congé, Suspension, Maladie) */}
+          <div className="p-3.5 bg-amber-50/70 border border-amber-200/80 rounded-2xl flex items-center justify-between gap-3 shadow-2xs">
+            <div className="space-y-0.5">
+              <label className="text-xs font-bold text-amber-900 cursor-pointer flex items-center gap-1.5">
+                <EyeOff className="w-4 h-4 text-amber-600 shrink-0" />
+                <span>Ignorer ce mois-ci (Congé / Suspension)</span>
+              </label>
+              <p className="text-[11px] text-amber-700 font-medium leading-tight">
+                Cochez pour masquer ce collaborateur des listes de retardataires et des calculs.
+              </p>
+            </div>
+            <input
+              type="checkbox"
+              checked={ignoredThisMonth}
+              onChange={(e) => setIgnoredThisMonth(e.target.checked)}
+              className="w-5 h-5 accent-[#22252A] rounded cursor-pointer shrink-0"
+            />
+          </div>
 
           {/* Modal Footer */}
           <div className="pt-4 flex items-center justify-end gap-2 border-t border-slate-100 mt-6">

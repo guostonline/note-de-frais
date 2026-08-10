@@ -292,7 +292,14 @@ export default function CollaboratorsManager({
                         {index + 1}
                       </td>
                       <td className="py-3 px-4 font-bold text-slate-900">
-                        {collab.Nom}
+                        <div className="flex items-center gap-2 flex-wrap">
+                          <span>{collab.Nom}</span>
+                          {collab.IgnoredThisMonth && (
+                            <span className="px-2 py-0.5 rounded-full bg-amber-100 text-amber-800 border border-amber-300 text-[10px] font-bold flex items-center gap-1">
+                              <span>🚫 Ignoré ce mois</span>
+                            </span>
+                          )}
+                        </div>
                       </td>
                       <td className="py-3 px-4 font-mono text-slate-600 text-[11px]">
                         {collab.Matricule ? `#${collab.Matricule}` : '-'}
