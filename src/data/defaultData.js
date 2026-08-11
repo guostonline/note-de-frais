@@ -129,7 +129,7 @@ export const initialCollaborateurs = [
     "Absence autorisée matin": "",
     "Absence autorisée aprém": "",
     "Validée par": "",
-    "Responsable": "BENSALEM NOUREDDINE"
+    "Responsable": "MOHAMMED MAAIZ"
   },
   {
     "Entite": "Commercial Traditionnel Vital Agadir",
@@ -161,7 +161,7 @@ export const initialCollaborateurs = [
     "Absence autorisée matin": "",
     "Absence autorisée aprém": "",
     "Validée par": "",
-    "Responsable": "CHAKIB EL FIL"
+    "Responsable": "MOHAMMED MAAIZ"
   },
   {
     "Entite": "Livreurs Vital Agadir",
@@ -529,7 +529,7 @@ export const initialCollaborateurs = [
     "Absence autorisée matin": "",
     "Absence autorisée aprém": "",
     "Validée par": "",
-    "Responsable": "MOHAMMED MAAIZ"
+    "Responsable": "CHAKIB EL FIL"
   },
   {
     "Entite": "Livreurs Agadir",
@@ -577,7 +577,7 @@ export const initialCollaborateurs = [
     "Absence autorisée matin": "",
     "Absence autorisée aprém": "",
     "Validée par": "",
-    "Responsable": "EL MOSTAFA BOUTMEZGUINE"
+    "Responsable": "MOHAMMED MAAIZ"
   },
   {
     "Entite": "Livreurs Agadir",
@@ -721,7 +721,7 @@ export const initialCollaborateurs = [
     "Absence autorisée matin": "",
     "Absence autorisée aprém": "",
     "Validée par": "",
-    "Responsable": "EL BESTIRI SOUFIANE"
+    "Responsable": "BENSALEM NOUREDDINE"
   },
   {
     "Entite": "Commercial Traditionnel SOM/VMM Agadir",
@@ -961,7 +961,7 @@ export const initialCollaborateurs = [
     "Absence autorisée matin": "",
     "Absence autorisée aprém": "",
     "Validée par": "",
-    "Responsable": "CHAKIB EL FIL"
+    "Responsable": "BENSALEM NOUREDDINE"
   },
   {
     "Entite": "Commercial Traditionnel SOM/VMM Agadir",
@@ -1169,7 +1169,7 @@ export const initialCollaborateurs = [
     "Absence autorisée matin": "",
     "Absence autorisée aprém": "",
     "Validée par": "",
-    "Responsable": "BENSALEM NOUREDDINE"
+    "Responsable": "MOHAMMED MAAIZ"
   },
   {
     "Entite": "Commercial Traditionnel SOM/VMM Agadir",
