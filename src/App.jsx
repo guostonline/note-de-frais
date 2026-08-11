@@ -111,22 +111,46 @@ export default function App() {
       const dbFrais = await dbGetAllFrais();
       const dbAliases = await dbGetAliasMap();
 
-      if (dbCollabs && dbCollabs.length > 0) {
+      if (dbCollabs && dbCollabs.length >= preparedCollabs.length) {
         const enriched = ensureCollaborateursHasResponsable(dbCollabs);
         setCollabList(enriched);
         await dbSaveCollaborateursBatch(enriched);
       } else {
         setCollabList(preparedCollabs);
+        await dbSaveCollaborateursBatch(preparedCollabs);
+        try { localStorage.setItem('ndf_collab_list', JSON.stringify(preparedCollabs)); } catch (e) {}
       }
-      if (dbFrais && dbFrais.length > 0) setFraisList(dbFrais);
+
+      if (dbFrais && dbFrais.length >= initialFrais.length) {
+        setFraisList(dbFrais);
+      } else {
+        setFraisList(initialFrais);
+        await dbSaveFraisBatch(initialFrais);
+      }
+
       if (dbAliases && Object.keys(dbAliases).length > 0) setAliasMap(dbAliases);
       setIsDbLoaded(true);
     }
     initDb();
   }, []);
 
+  // Derived options lists
+  const months = useMemo(() => getUniqueMonths(fraisList), [fraisList]);
+
+  // Default month: pick current month if it has data (>= 5 records), else pick most recent month in dataset (Juillet)
+  const defaultMonth = useMemo(() => {
+    if (!months || months.length === 0) return 'ALL';
+    const current = getCurrentFrenchMonth();
+    const currentCount = (fraisList || []).filter(f => f.Mois === current).length;
+    if (currentCount >= 5) return current;
+    return months[months.length - 1] || 'ALL';
+  }, [months, fraisList]);
+
   // Filtering states
-  const [selectedMonth, setSelectedMonth] = useState(() => getCurrentFrenchMonth());
+  const [selectedMonthState, setSelectedMonthState] = useState(null);
+  const selectedMonth = selectedMonthState !== null ? selectedMonthState : defaultMonth;
+  const setSelectedMonth = (val) => setSelectedMonthState(val);
+
   const [selectedWeek, setSelectedWeek] = useState('ALL');
   const [selectedEntity, setSelectedEntity] = useState('ALL');
   const [selectedCdz, setSelectedCdz] = useState('ALL');
@@ -140,7 +164,6 @@ export default function App() {
   };
 
   // Derived options lists
-  const months = useMemo(() => getUniqueMonths(fraisList), [fraisList]);
   const weeks = useMemo(() => getUniqueWeeks(fraisList, selectedMonth), [fraisList, selectedMonth]);
   const entities = useMemo(() => getUniqueEntities(collabList), [collabList]);
   const fonctions = useMemo(() => getUniqueFonctions(collabList), [collabList]);
