@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { Lock, Mail, KeyRound, Eye, EyeOff, FileSpreadsheet, AlertCircle } from 'lucide-react';
+import { Lock, Mail, KeyRound, Eye, EyeOff, AlertCircle } from 'lucide-react';
+import logoImg from '../../assets/logo.png';
 
 export const AUTHORIZED_USERS = [
   { email: 'c.elfil@madec.co.ma', name: 'CHAKIB EL FIL', role: 'Responsable CDZ' },
@@ -46,8 +47,8 @@ export default function LoginModal({ isOpen, onLoginSuccess }) {
         <div className="p-6 bg-gradient-to-br from-slate-900 via-slate-800 to-sky-950 text-white text-center relative overflow-hidden">
           <div className="absolute -right-8 -bottom-8 w-32 h-32 bg-sky-500/10 rounded-full blur-2xl pointer-events-none"></div>
           
-          <div className="mx-auto w-14 h-14 bg-gradient-to-br from-sky-500 to-blue-600 rounded-2xl flex items-center justify-center shadow-lg shadow-sky-500/30 mb-3 border border-white/10">
-            <FileSpreadsheet className="w-8 h-8 text-white" />
+          <div className="mx-auto px-5 py-2.5 bg-white rounded-full flex items-center justify-center shadow-lg w-fit mb-3">
+            <img src={logoImg} alt="MADEC Logo" className="h-10 w-auto object-contain" />
           </div>
 
           <h2 className="text-xl font-bold tracking-tight">Note de Frais <span className="text-sky-400">Comparator</span></h2>

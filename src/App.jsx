@@ -39,6 +39,16 @@ import {
   dbSaveCollaborateursBatch
 } from './data/db';
 
+const FRENCH_MONTHS = {
+  1: 'Janvier', 2: 'Février', 3: 'Mars', 4: 'Avril',
+  5: 'Mai', 6: 'Juin', 7: 'Juillet', 8: 'Août',
+  9: 'Septembre', 10: 'Octobre', 11: 'Novembre', 12: 'Décembre'
+};
+
+function getCurrentFrenchMonth() {
+  return FRENCH_MONTHS[new Date().getMonth() + 1] || 'ALL';
+}
+
 const defaultAliasMap = {
   "CHAKIB ELFIL": "CHAKIB EL FIL",
   "BOUTMEZGUINE EL MOSTAFA": "EL MOSTAFA BOUTMEZGUINE",
@@ -116,12 +126,18 @@ export default function App() {
   }, []);
 
   // Filtering states
-  const [selectedMonth, setSelectedMonth] = useState('ALL');
+  const [selectedMonth, setSelectedMonth] = useState(() => getCurrentFrenchMonth());
   const [selectedWeek, setSelectedWeek] = useState('ALL');
   const [selectedEntity, setSelectedEntity] = useState('ALL');
   const [selectedCdz, setSelectedCdz] = useState('ALL');
   const [searchQuery, setSearchQuery] = useState('');
   const [viewMode, setViewMode] = useState('table'); // 'table', 'collaborateurs', 'matrix', 'analytics'
+  const [activeTab, setActiveTab] = useState('ALL'); // 'ALL', 'SUBMITTED', 'MISSING'
+
+  const handleKpiCardClick = (tab) => {
+    setViewMode('table');
+    setActiveTab(tab);
+  };
 
   // Derived options lists
   const months = useMemo(() => getUniqueMonths(fraisList), [fraisList]);
@@ -293,7 +309,7 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen pb-12">
+    <div className="min-h-screen pb-16 pb-safe">
       {/* Header Bar */}
       <Header
         totalCollab={totalCollab}
@@ -306,7 +322,7 @@ export default function App() {
         onLogout={handleLogout}
       />
 
-      <main className="max-w-7xl mx-auto px-4 sm:px-6">
+      <main className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-6">
         {/* KPI Metric Summary Cards */}
         <KpiCards
           totalCollab={totalCollab}
@@ -315,6 +331,10 @@ export default function App() {
           totalSubmissionsInPeriod={filteredFraisCount}
           monthFilter={selectedMonth}
           weekFilter={selectedWeek}
+          activeTab={activeTab}
+          onCollaborateursClick={() => handleKpiCardClick('ALL')}
+          onSubmittedClick={() => handleKpiCardClick('SUBMITTED')}
+          onMissingClick={() => handleKpiCardClick('MISSING')}
         />
 
         {/* Global Filter Toolbar */}
@@ -355,6 +375,8 @@ export default function App() {
             onOpenEditModal={handleOpenEditCollab}
             onOpenDeleteModal={handleOpenDeleteCollab}
             onUpdateResponsable={handleUpdateResponsable}
+            activeTab={activeTab}
+            setActiveTab={setActiveTab}
           />
         )}
 

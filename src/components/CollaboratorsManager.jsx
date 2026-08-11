@@ -26,7 +26,7 @@ export default function CollaboratorsManager({
   const [localEntity, setLocalEntity] = useState('ALL');
   const [localResponsable, setLocalResponsable] = useState('ALL');
   const [localFonction, setLocalFonction] = useState('ALL');
-  const [displayMode, setDisplayMode] = useState('table'); // 'table' | 'cards'
+  const [displayMode, setDisplayMode] = useState(() => typeof window !== 'undefined' && window.innerWidth < 640 ? 'cards' : 'table');
 
   const selectedEntity = propEntity !== undefined ? propEntity : localEntity;
   const setSelectedEntity = propSetEntity || setLocalEntity;
@@ -104,7 +104,7 @@ export default function CollaboratorsManager({
   return (
     <div className="space-y-6 animate-fade-in">
       {/* Top Header Card & Stats */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
         <div className="glass-panel p-4 rounded-2xl flex items-center gap-4">
           <div className="p-3 bg-sky-500/10 text-sky-600 rounded-xl border border-sky-500/20">
             <Users className="w-6 h-6" />
@@ -150,7 +150,7 @@ export default function CollaboratorsManager({
       <div className="glass-panel rounded-2xl overflow-hidden">
         {/* Toolbar & Filters */}
         <div className="p-5 border-b border-slate-200 space-y-4">
-          <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
             <div className="flex items-center gap-3">
               <div className="p-2.5 bg-sky-500 text-white rounded-xl shadow-md shadow-sky-500/20">
                 <Users className="w-5 h-5" />

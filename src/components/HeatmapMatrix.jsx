@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { CheckCircle2, XCircle, Calendar, Info } from 'lucide-react';
-import { getUniqueWeeks, matchDemandeurToCollaborateur } from '../utils/matching';
+import { getUniqueWeeks, matchDemandeurToCollaborateur, cleanStr } from '../utils/matching';
 
 export default function HeatmapMatrix({ 
   collabList, 
@@ -10,21 +10,39 @@ export default function HeatmapMatrix({
   searchQuery, 
   aliasMap 
 }) {
-  // Determine relevant month (if ALL, pick first available or Juin)
-  const currentMonth = monthFilter === 'ALL' ? (fraisList[0]?.Mois || 'Juin') : monthFilter;
+  // Extract month list from filter (array, string, or ALL)
+  const selectedMonths = useMemo(() => {
+    if (!monthFilter || monthFilter === 'ALL') return [];
+    if (Array.isArray(monthFilter)) {
+      return monthFilter.filter(m => m !== 'ALL');
+    }
+    return [monthFilter];
+  }, [monthFilter]);
 
-  // Get weeks for currentMonth
-  const weeks = getUniqueWeeks(fraisList, currentMonth);
+  // Display title text
+  const displayMonthText = selectedMonths.length > 0
+    ? selectedMonths.join(', ')
+    : (fraisList[0]?.Mois || 'Toutes les périodes');
 
-  // Filter colaboradores by Entity & Search
+  // Get weeks for the selected month(s)
+  const weeks = getUniqueWeeks(fraisList, monthFilter);
+
+  // Filter collaborateurs by Entity & Search
   const filteredCollabs = collabList.filter(c => {
-    if (selectedEntity !== 'ALL' && c.Entite !== selectedEntity) return false;
+    if (Array.isArray(selectedEntity) && selectedEntity.length > 0) {
+      if (!selectedEntity.includes(c.Entite)) return false;
+    } else if (typeof selectedEntity === 'string' && selectedEntity !== 'ALL') {
+      if (c.Entite !== selectedEntity) return false;
+    }
+
     if (searchQuery) {
       const q = searchQuery.toLowerCase();
-      const matchNom = c.Nom?.toLowerCase().includes(q);
-      const matchMat = String(c.Matricule || '').toLowerCase().includes(q);
-      const matchEnt = c.Entite?.toLowerCase().includes(q);
-      if (!matchNom && !matchMat && !matchEnt) return false;
+      const matchNom   = c.Nom?.toLowerCase().includes(q);
+      const matchMat   = String(c.Matricule || '').toLowerCase().includes(q);
+      const matchEnt   = c.Entite?.toLowerCase().includes(q);
+      const matchFonct = c.Fonction?.toLowerCase().includes(q);
+      const matchResp  = c.Responsable?.toLowerCase().includes(q);
+      if (!matchNom && !matchMat && !matchEnt && !matchFonct && !matchResp) return false;
     }
     return true;
   });
@@ -38,15 +56,27 @@ export default function HeatmapMatrix({
     });
   });
 
-  // Fill matrix with frais data for currentMonth
-  fraisList
-    .filter(f => f.Mois === currentMonth)
-    .forEach(f => {
-      const { collaborateur } = matchDemandeurToCollaborateur(f.Demandeur, collabList, aliasMap);
-      if (collaborateur && matrixData[collaborateur.Nom] && matrixData[collaborateur.Nom][f.Semaine]) {
-        matrixData[collaborateur.Nom][f.Semaine].push(f);
-      }
+  // Filter frais items matching the selected month(s)
+  const targetFrais = (fraisList || []).filter(f => {
+    if (selectedMonths.length === 0) return true;
+    return selectedMonths.some(m => {
+      if (f.Mois === m) return true;
+      // Handle variations like "Août" vs "Aot" or case variations
+      return cleanStr(f.Mois) === cleanStr(m);
     });
+  });
+
+  // Fill matrix with frais data
+  targetFrais.forEach(f => {
+    const { collaborateur } = matchDemandeurToCollaborateur(f.Demandeur, collabList, aliasMap);
+    if (collaborateur && matrixData[collaborateur.Nom]) {
+      // Find matching week key
+      const weekKey = weeks.find(w => w === f.Semaine || cleanStr(w) === cleanStr(f.Semaine));
+      if (weekKey && matrixData[collaborateur.Nom][weekKey]) {
+        matrixData[collaborateur.Nom][weekKey].push(f);
+      }
+    }
+  });
 
   return (
     <div className="glass-panel rounded-2xl overflow-hidden p-5">
@@ -54,7 +84,7 @@ export default function HeatmapMatrix({
         <div>
           <h3 className="text-base font-bold text-slate-900 flex items-center gap-2">
             <Calendar className="w-5 h-5 text-sky-600" />
-            Matrice de Suivi Hebdomadaire — <span className="text-sky-600">{currentMonth}</span>
+            Matrice de Suivi Hebdomadaire — <span className="text-sky-600">{displayMonthText}</span>
           </h3>
           <p className="text-xs text-slate-500">
             Aperçu visuel des dépôts de notes de frais par collaborateur pour chaque semaine du mois

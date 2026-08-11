@@ -121,3 +121,23 @@
 .animate-scale-in {
   animation: scale-in 0.25s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
+
+/* Hide scrollbar for horizontal scroll containers (tabs, chips) */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+/* Safe area insets for iOS notch / home indicator */
+.pt-safe { padding-top: env(safe-area-inset-top, 0px); }
+.pb-safe { padding-bottom: env(safe-area-inset-bottom, 0px); }
+
+/* Better mobile tap targets */
+@media (max-width: 640px) {
+  button, select, input[type="text"], input[type="email"], input[type="password"] {
+    min-height: 36px;
+  }
+}

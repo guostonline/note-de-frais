@@ -30,25 +30,25 @@ function SubmissionsModal({ isOpen, onClose, collaborateur, submissions }) {
       />
 
       {/* Modal */}
-      <div className="fixed inset-0 z-50 flex items-center justify-center p-4 pointer-events-none">
+      <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 pointer-events-none">
         <div
-          className="relative w-full max-w-4xl max-h-[90vh] flex flex-col bg-white rounded-3xl shadow-2xl border border-stone-200/80 pointer-events-auto animate-scale-in overflow-hidden"
+          className="relative w-full sm:max-w-4xl max-h-[92vh] sm:max-h-[90vh] flex flex-col bg-white rounded-t-3xl sm:rounded-3xl shadow-2xl border-t sm:border border-stone-200/80 pointer-events-auto animate-scale-in overflow-hidden"
           onClick={(e) => e.stopPropagation()}
         >
           {/* Modal Header */}
-          <div className="px-6 py-5 bg-gradient-to-r from-[#22252A] to-[#2e3238] text-white flex items-start justify-between shrink-0">
-            <div className="flex items-center gap-4">
+          <div className="px-5 sm:px-6 py-4 sm:py-5 bg-gradient-to-r from-[#22252A] to-[#2e3238] text-white flex items-start justify-between shrink-0">
+            <div className="flex items-center gap-3 sm:gap-4">
               {/* Avatar */}
-              <div className="w-12 h-12 rounded-2xl bg-[#F3CF55] flex items-center justify-center shadow-md shrink-0">
-                <span className="text-[#1E2024] font-extrabold text-lg">
+              <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-2xl bg-[#F3CF55] flex items-center justify-center shadow-md shrink-0">
+                <span className="text-[#1E2024] font-extrabold text-base sm:text-lg">
                   {(collaborateur.Nom || '?')[0].toUpperCase()}
                 </span>
               </div>
               <div>
-                <h2 className="font-extrabold text-lg tracking-tight text-white leading-tight">
+                <h2 className="font-extrabold text-base sm:text-lg tracking-tight text-white leading-tight">
                   {collaborateur.Nom}
                 </h2>
-                <div className="flex items-center gap-3 mt-1 flex-wrap">
+                <div className="flex items-center gap-2 sm:gap-3 mt-1 flex-wrap">
                   {collaborateur.Matricule && (
                     <span className="flex items-center gap-1 text-[11px] text-stone-300 font-mono">
                       <Hash className="w-3 h-3" />{collaborateur.Matricule}
@@ -59,20 +59,14 @@ function SubmissionsModal({ isOpen, onClose, collaborateur, submissions }) {
                       {collaborateur.Fonction}
                     </span>
                   )}
-                  {collaborateur.Responsable && (
-                    <span className="text-[11px] text-stone-300">
-                      📍 {collaborateur.Responsable}
-                    </span>
-                  )}
                 </div>
               </div>
             </div>
 
-            <div className="flex items-center gap-3">
-              {/* Count badge */}
-              <div className="px-3 py-1.5 bg-[#F3CF55] text-[#1E2024] rounded-full text-xs font-extrabold flex items-center gap-1.5 shadow-md">
+            <div className="flex items-center gap-2 sm:gap-3">
+              <div className="px-2.5 sm:px-3 py-1.5 bg-[#F3CF55] text-[#1E2024] rounded-full text-xs font-extrabold flex items-center gap-1.5 shadow-md">
                 <ClipboardList className="w-3.5 h-3.5" />
-                {submissions.length} note{submissions.length > 1 ? 's' : ''} soumise{submissions.length > 1 ? 's' : ''}
+                {submissions.length} note{submissions.length > 1 ? 's' : ''}
               </div>
               <button
                 onClick={onClose}
@@ -84,61 +78,61 @@ function SubmissionsModal({ isOpen, onClose, collaborateur, submissions }) {
           </div>
 
           {/* Submissions Table */}
-          <div className="flex-1 overflow-y-auto">
+          <div className="flex-1 overflow-y-auto overflow-x-auto">
             {submissions.length === 0 ? (
               <div className="flex flex-col items-center justify-center py-16 text-slate-400 gap-3">
                 <FileSpreadsheet className="w-10 h-10 opacity-30" />
                 <span className="text-sm font-medium">Aucune note de frais soumise</span>
               </div>
             ) : (
-              <table className="w-full text-left text-xs text-slate-700 border-collapse">
+              <table className="w-full text-left text-xs text-slate-700 border-collapse min-w-[600px]">
                 <thead className="sticky top-0 z-10">
                   <tr className="bg-stone-50 text-stone-500 font-bold border-b border-stone-200 text-[11px] uppercase tracking-wider">
-                    <th className="py-3 px-5">#</th>
-                    <th className="py-3 px-5">Référence</th>
-                    <th className="py-3 px-5">Société</th>
-                    <th className="py-3 px-5">
+                    <th className="py-3 px-4">#</th>
+                    <th className="py-3 px-4">Référence</th>
+                    <th className="py-3 px-4">Société</th>
+                    <th className="py-3 px-4">
                       <span className="flex items-center gap-1">
                         <Calendar className="w-3.5 h-3.5 text-stone-400" />
                         Mois / Semaine
                       </span>
                     </th>
-                    <th className="py-3 px-5">Date Création</th>
-                    <th className="py-3 px-5">État Demande</th>
-                    <th className="py-3 px-5 text-right">Document GED</th>
+                    <th className="py-3 px-4">Date Création</th>
+                    <th className="py-3 px-4">État Demande</th>
+                    <th className="py-3 px-4 text-right">Document GED</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-stone-100">
                   {submissions.map((sub, i) => (
                     <tr key={i} className="hover:bg-stone-50/70 transition-colors group">
-                      <td className="py-3.5 px-5 text-stone-400 font-mono text-[11px]">
+                      <td className="py-3.5 px-4 text-stone-400 font-mono text-[11px]">
                         {String(i + 1).padStart(2, '0')}
                       </td>
-                      <td className="py-3.5 px-5">
+                      <td className="py-3.5 px-4">
                         <span className="font-mono font-bold text-sky-700 text-[11px]">
                           {sub['Référence'] || sub.Reference || 'N/A'}
                         </span>
                       </td>
-                      <td className="py-3.5 px-5">
+                      <td className="py-3.5 px-4">
                         <span className="flex items-center gap-1.5 text-[11px] font-semibold text-slate-700">
                           <Building2 className="w-3 h-3 text-stone-400" />
                           {sub['Société'] || sub.Societe || '-'}
                         </span>
                       </td>
-                      <td className="py-3.5 px-5 text-[11px] text-slate-600">
+                      <td className="py-3.5 px-4 text-[11px] text-slate-600">
                         <span className="px-2 py-0.5 rounded-full bg-stone-100 text-stone-700 font-medium border border-stone-200">
                           {sub.Mois} · {sub.Semaine}
                         </span>
                       </td>
-                      <td className="py-3.5 px-5 text-[11px] text-slate-500 font-mono">
+                      <td className="py-3.5 px-4 text-[11px] text-slate-500 font-mono">
                         {sub['Date de création'] || '-'}
                       </td>
-                      <td className="py-3.5 px-5">
+                      <td className="py-3.5 px-4">
                         <span className={`px-2.5 py-1 rounded-full text-[10px] font-semibold border ${getEtatColor(sub['Etat de la demande'])}`}>
                           {sub['Etat de la demande'] || 'N/A'}
                         </span>
                       </td>
-                      <td className="py-3.5 px-5 text-right">
+                      <td className="py-3.5 px-4 text-right">
                         {sub['URL du document'] ? (
                           <a
                             href={sub['URL du document']}
@@ -161,7 +155,7 @@ function SubmissionsModal({ isOpen, onClose, collaborateur, submissions }) {
           </div>
 
           {/* Modal Footer */}
-          <div className="px-6 py-3.5 bg-stone-50 border-t border-stone-200 flex items-center justify-between shrink-0">
+          <div className="px-5 sm:px-6 py-3.5 bg-stone-50 border-t border-stone-200 flex items-center justify-between shrink-0">
             <span className="text-[11px] text-stone-500">
               {submissions.length} soumission{submissions.length > 1 ? 's' : ''} trouvée{submissions.length > 1 ? 's' : ''}
             </span>
@@ -192,29 +186,27 @@ export default function CollaboratorTable({
   onOpenAddModal,
   onOpenEditModal,
   onOpenDeleteModal,
-  onUpdateResponsable
+  onUpdateResponsable,
+  activeTab: propActiveTab,
+  setActiveTab: propSetActiveTab,
 }) {
-  const [activeTab, setActiveTab] = useState('ALL');
+  const [localActiveTab, setLocalActiveTab] = useState('ALL');
+  const activeTab = propActiveTab !== undefined ? propActiveTab : localActiveTab;
+  const setActiveTab = propSetActiveTab || setLocalActiveTab;
   const [copiedEmail, setCopiedEmail] = useState(false);
   const [isCdzModalOpen, setIsCdzModalOpen] = useState(false);
   const [sortField, setSortField] = useState('Nom');
   const [sortOrder, setSortOrder] = useState('asc');
-
-  // Popup modal state
   const [detailsModal, setDetailsModal] = useState({ isOpen: false, collaborateur: null, submissions: [] });
 
   // Convert submissionMap to array
   const rows = collabList.map(c => {
     const data = submissionMap[c.Nom] || { submissions: [], hasSubmitted: false };
-    return {
-      collaborateur: c,
-      hasSubmitted: data.hasSubmitted,
-      submissions: data.submissions
-    };
+    return { collaborateur: c, hasSubmitted: data.hasSubmitted, submissions: data.submissions };
   });
 
-  // Filter rows by Search, Entity, CDZ, and Fonction (supporting multi-select arrays)
-  const filteredRows = rows.filter(({ collaborateur, hasSubmitted }) => {
+  // Filter rows based on search & filters (excluding activeTab)
+  const baseFilteredRows = rows.filter(({ collaborateur }) => {
     if (Array.isArray(selectedEntity) && selectedEntity.length > 0) {
       if (!selectedEntity.includes(collaborateur.Entite)) return false;
     } else if (typeof selectedEntity === 'string' && selectedEntity !== 'ALL') {
@@ -239,85 +231,69 @@ export default function CollaboratorTable({
 
     if (searchQuery) {
       const q = searchQuery.toLowerCase();
-      const matchNom = collaborateur.Nom?.toLowerCase().includes(q);
-      const matchMat = String(collaborateur.Matricule || '').toLowerCase().includes(q);
-      const matchEnt = collaborateur.Entite?.toLowerCase().includes(q);
+      const matchNom   = collaborateur.Nom?.toLowerCase().includes(q);
+      const matchMat   = String(collaborateur.Matricule || '').toLowerCase().includes(q);
+      const matchEnt   = collaborateur.Entite?.toLowerCase().includes(q);
       const matchFonct = collaborateur.Fonction?.toLowerCase().includes(q);
-      const matchResp = collaborateur.Responsable?.toLowerCase().includes(q);
+      const matchResp  = collaborateur.Responsable?.toLowerCase().includes(q);
       if (!matchNom && !matchMat && !matchEnt && !matchFonct && !matchResp) return false;
     }
-
-    if (activeTab === 'SUBMITTED' && !hasSubmitted) return false;
-    if (activeTab === 'MISSING' && hasSubmitted) return false;
 
     return true;
   });
 
-  // Sorting
+  // Tab counts derived from active filters
+  const allCount = baseFilteredRows.length;
+  const submittedCount = baseFilteredRows.filter(r => r.hasSubmitted).length;
+  const missingCount = allCount - submittedCount;
+
+  // Filter for activeTab
+  const filteredRows = baseFilteredRows.filter(({ hasSubmitted }) => {
+    if (activeTab === 'SUBMITTED' && !hasSubmitted) return false;
+    if (activeTab === 'MISSING'   &&  hasSubmitted) return false;
+    return true;
+  });
+
+  // Sort
   const sortedRows = [...filteredRows].sort((a, b) => {
     let valA = a.collaborateur[sortField] || '';
     let valB = b.collaborateur[sortField] || '';
-
-    if (sortField === 'Status') {
-      valA = a.hasSubmitted ? '1' : '0';
-      valB = b.hasSubmitted ? '1' : '0';
-    }
-
+    if (sortField === 'Status') { valA = a.hasSubmitted ? '1' : '0'; valB = b.hasSubmitted ? '1' : '0'; }
     if (valA < valB) return sortOrder === 'asc' ? -1 : 1;
-    if (valA > valB) return sortOrder === 'asc' ? 1 : -1;
+    if (valA > valB) return sortOrder === 'asc' ?  1 : -1;
     return 0;
   });
 
   const toggleSort = (field) => {
-    if (sortField === field) {
-      setSortOrder(prev => (prev === 'asc' ? 'desc' : 'asc'));
-    } else {
-      setSortField(field);
-      setSortOrder('asc');
-    }
+    if (sortField === field) setSortOrder(prev => prev === 'asc' ? 'desc' : 'asc');
+    else { setSortField(field); setSortOrder('asc'); }
   };
 
-  // Counts for tabs
-  const allCount = rows.filter(({ collaborateur }) => {
-    if (selectedEntity !== 'ALL' && collaborateur.Entite !== selectedEntity) return false;
-    return true;
-  }).length;
-
-  const submittedCount = rows.filter(({ collaborateur, hasSubmitted }) => {
-    if (selectedEntity !== 'ALL' && collaborateur.Entite !== selectedEntity) return false;
-    return hasSubmitted;
-  }).length;
-
-  const missingCount = allCount - submittedCount;
-
-  // Export Missing Collaborators to Excel
+  // Export missing
   const exportMissingToExcel = () => {
-    const missingData = sortedRows
-      .filter(r => !r.hasSubmitted)
-      .map(r => ({
-        Matricule: r.collaborateur.Matricule,
-        Nom: r.collaborateur.Nom,
-        Entité: r.collaborateur.Entite,
-        Fonction: r.collaborateur.Fonction,
-        Responsable_CDZ_CDA: r.collaborateur.Responsable || 'Non assigné',
-        Statut: 'NON REMPLI',
-        Mois: monthFilter === 'ALL' ? 'Tous' : monthFilter,
-        Semaine: weekFilter === 'ALL' ? 'Toutes' : weekFilter
-      }));
-
+    const missingData = sortedRows.filter(r => !r.hasSubmitted).map(r => ({
+      Matricule: r.collaborateur.Matricule,
+      Nom: r.collaborateur.Nom,
+      Entité: r.collaborateur.Entite,
+      Fonction: r.collaborateur.Fonction,
+      Responsable_CDZ_CDA: r.collaborateur.Responsable || 'Non assigné',
+      Statut: 'NON REMPLI',
+      Mois: monthFilter === 'ALL' ? 'Tous' : monthFilter,
+      Semaine: weekFilter === 'ALL' ? 'Toutes' : weekFilter
+    }));
     const ws = XLSX.utils.json_to_sheet(missingData);
     const wb = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, "Retardataires Note de Frais");
     XLSX.writeFile(wb, `Retardataires_Frais_${monthFilter}_${weekFilter}.xlsx`);
   };
 
-  // Copy Email Reminder Template
+  // Copy email template
   const copyEmailReminder = () => {
-    const missingNames = sortedRows.filter(r => !r.hasSubmitted).map(r => `- ${r.collaborateur.Nom} (${r.collaborateur.Entite} - Resp: ${r.collaborateur.Responsable || 'N/A'})`);
+    const missingNames = sortedRows.filter(r => !r.hasSubmitted).map(r =>
+      `- ${r.collaborateur.Nom} (${r.collaborateur.Entite} - Resp: ${r.collaborateur.Responsable || 'N/A'})`
+    );
     const periodText = `${monthFilter === 'ALL' ? 'du mois' : `de ${monthFilter}`} ${weekFilter === 'ALL' ? '' : `(${weekFilter})`}`;
-
     const text = `Bonjour,\n\nMerci de noter que les collaborateurs suivants n'ont pas encore soumis leur Note de Frais pour la période ${periodText} :\n\n${missingNames.join('\n')}\n\nMerci de régulariser la situation dans les meilleurs délais.\nCordialement,\nService Contrôle de Gestion & RH`;
-
     navigator.clipboard.writeText(text);
     setCopiedEmail(true);
     setTimeout(() => setCopiedEmail(false), 3000);
@@ -329,108 +305,211 @@ export default function CollaboratorTable({
   };
 
   return (
-    <div className="glass-panel rounded-3xl overflow-hidden shadow-sm border border-stone-200/80">
-      {/* Header Tabs & Actions Toolbar */}
-      <div className="p-5 border-b border-stone-200/80 flex flex-col xl:flex-row xl:items-center justify-between gap-4">
-        {/* Crextio Pill Tabs */}
-        <div className="flex items-center gap-1.5 bg-[#EFE8D6]/60 p-1.5 rounded-full border border-stone-200/80 self-start xl:self-auto flex-wrap shadow-inner">
-          <button
-            onClick={() => setActiveTab('ALL')}
-            className={`px-4 py-2 text-xs font-bold rounded-full transition-all whitespace-nowrap flex items-center gap-2 ${
-              activeTab === 'ALL'
-                ? 'bg-[#22252A] text-white shadow-md shadow-[#22252A]/15'
-                : 'text-stone-600 hover:text-stone-900 hover:bg-[#EFE8D6]'
-            }`}
-          >
-            <span>Tous les Collaborateurs</span>
-            <span className={`px-2 py-0.5 rounded-full text-[10px] font-extrabold ${activeTab === 'ALL' ? 'bg-[#F3CF55] text-[#1E2024]' : 'bg-stone-200 text-stone-700'}`}>
-              {allCount}
-            </span>
-          </button>
+    <div className="glass-panel rounded-2xl sm:rounded-3xl overflow-hidden shadow-sm border border-stone-200/80">
 
-          <button
-            onClick={() => setActiveTab('SUBMITTED')}
-            className={`px-4 py-2 text-xs font-bold rounded-full transition-all whitespace-nowrap flex items-center gap-2 ${
-              activeTab === 'SUBMITTED'
-                ? 'bg-[#22252A] text-white shadow-md shadow-[#22252A]/15'
-                : 'text-stone-600 hover:text-stone-900 hover:bg-[#EFE8D6]'
-            }`}
-          >
-            <CheckCircle2 className={`w-3.5 h-3.5 ${activeTab === 'SUBMITTED' ? 'text-[#F3CF55]' : 'text-emerald-600'}`} />
-            <span>Ont Rempli</span>
-            <span className={`px-2 py-0.5 rounded-full text-[10px] font-extrabold ${activeTab === 'SUBMITTED' ? 'bg-[#F3CF55] text-[#1E2024]' : 'bg-emerald-100 text-emerald-800'}`}>
-              {submittedCount}
-            </span>
-          </button>
+      {/* ── Toolbar ── */}
+      <div className="p-4 sm:p-5 border-b border-stone-200/80 space-y-3 sm:space-y-0 sm:flex sm:items-center sm:justify-between sm:gap-4">
 
-          <button
-            onClick={() => setActiveTab('MISSING')}
-            className={`px-4 py-2 text-xs font-bold rounded-full transition-all whitespace-nowrap flex items-center gap-2 ${
-              activeTab === 'MISSING'
-                ? 'bg-[#22252A] text-white shadow-md shadow-[#22252A]/15'
-                : 'text-stone-600 hover:text-stone-900 hover:bg-[#EFE8D6]'
-            }`}
-          >
-            <XCircle className={`w-3.5 h-3.5 ${activeTab === 'MISSING' ? 'text-rose-400' : 'text-rose-600'}`} />
-            <span>Non Remplis (En Retard)</span>
-            <span className={`px-2 py-0.5 rounded-full text-[10px] font-extrabold ${activeTab === 'MISSING' ? 'bg-rose-500 text-white' : 'bg-rose-100 text-rose-800'}`}>
-              {missingCount}
-            </span>
-          </button>
+        {/* Pill tabs — horizontally scrollable on mobile */}
+        <div className="overflow-x-auto scrollbar-hide -mx-1 px-1">
+          <div className="flex items-center gap-1.5 bg-[#EFE8D6]/60 p-1.5 rounded-full border border-stone-200/80 self-start shadow-inner w-max">
+            <button
+              onClick={() => setActiveTab('ALL')}
+              className={`px-3 sm:px-4 py-2 text-xs font-bold rounded-full transition-all whitespace-nowrap flex items-center gap-1.5 sm:gap-2 ${
+                activeTab === 'ALL'
+                  ? 'bg-[#22252A] text-white shadow-md shadow-[#22252A]/15'
+                  : 'text-stone-600 hover:text-stone-900 hover:bg-[#EFE8D6]'
+              }`}
+            >
+              <span className="sm:hidden">Tous</span>
+              <span className="hidden sm:inline">Tous les Collaborateurs</span>
+              <span className={`px-1.5 sm:px-2 py-0.5 rounded-full text-[10px] font-extrabold ${activeTab === 'ALL' ? 'bg-[#F3CF55] text-[#1E2024]' : 'bg-stone-200 text-stone-700'}`}>
+                {allCount}
+              </span>
+            </button>
+
+            <button
+              onClick={() => setActiveTab('SUBMITTED')}
+              className={`px-3 sm:px-4 py-2 text-xs font-bold rounded-full transition-all whitespace-nowrap flex items-center gap-1.5 sm:gap-2 ${
+                activeTab === 'SUBMITTED'
+                  ? 'bg-[#22252A] text-white shadow-md shadow-[#22252A]/15'
+                  : 'text-stone-600 hover:text-stone-900 hover:bg-[#EFE8D6]'
+              }`}
+            >
+              <CheckCircle2 className={`w-3.5 h-3.5 ${activeTab === 'SUBMITTED' ? 'text-[#F3CF55]' : 'text-emerald-600'}`} />
+              <span className="sm:hidden">Remplis</span>
+              <span className="hidden sm:inline">Ont Rempli</span>
+              <span className={`px-1.5 sm:px-2 py-0.5 rounded-full text-[10px] font-extrabold ${activeTab === 'SUBMITTED' ? 'bg-[#F3CF55] text-[#1E2024]' : 'bg-emerald-100 text-emerald-800'}`}>
+                {submittedCount}
+              </span>
+            </button>
+
+            <button
+              onClick={() => setActiveTab('MISSING')}
+              className={`px-3 sm:px-4 py-2 text-xs font-bold rounded-full transition-all whitespace-nowrap flex items-center gap-1.5 sm:gap-2 ${
+                activeTab === 'MISSING'
+                  ? 'bg-[#22252A] text-white shadow-md shadow-[#22252A]/15'
+                  : 'text-stone-600 hover:text-stone-900 hover:bg-[#EFE8D6]'
+              }`}
+            >
+              <XCircle className={`w-3.5 h-3.5 ${activeTab === 'MISSING' ? 'text-rose-400' : 'text-rose-600'}`} />
+              <span className="sm:hidden">En Retard</span>
+              <span className="hidden sm:inline">Non Remplis</span>
+              <span className={`px-1.5 sm:px-2 py-0.5 rounded-full text-[10px] font-extrabold ${activeTab === 'MISSING' ? 'bg-rose-500 text-white' : 'bg-rose-100 text-rose-800'}`}>
+                {missingCount}
+              </span>
+            </button>
+          </div>
         </div>
 
-        {/* Action Buttons (aligned right) */}
-        <div className="flex items-center gap-2 flex-wrap xl:ml-auto justify-end">
+        {/* Action buttons */}
+        <div className="flex items-center gap-2 flex-wrap sm:flex-nowrap sm:ml-auto">
           <button
             onClick={onOpenAddModal}
-            className="flex items-center gap-2 px-4 py-2 text-xs font-bold text-[#1E2024] bg-white hover:bg-stone-50 border border-stone-200/80 rounded-full transition-all shadow-xs"
-            title="Ajouter un nouveau collaborateur"
+            className="flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-2 text-xs font-bold text-[#1E2024] bg-white hover:bg-stone-50 border border-stone-200/80 rounded-full transition-all shadow-xs"
+            title="Ajouter un collaborateur"
           >
             <UserPlus className="w-4 h-4 text-[#22252A]" />
-            <span>+ Collaborateur</span>
+            <span className="hidden sm:inline">+ Collaborateur</span>
           </button>
 
           {missingCount > 0 && (
             <>
               <button
                 onClick={() => setIsCdzModalOpen(true)}
-                className="flex items-center gap-2 px-4 py-2 text-xs font-bold text-white bg-[#25D366] hover:bg-[#20bd5a] rounded-full shadow-md shadow-emerald-500/20 transition-all cursor-pointer transform hover:-translate-y-0.5 active:translate-y-0"
-                title="Envoyer la liste des retardataires à un CDZ spécifique via WhatsApp ou Email"
+                className="flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-2 text-xs font-bold text-white bg-[#25D366] hover:bg-[#20bd5a] rounded-full shadow-md shadow-emerald-500/20 transition-all cursor-pointer"
+                title="Relancer via WhatsApp / Email"
               >
                 <MessageSquare className="w-4 h-4" />
-                <span>Relancer CDZ (WhatsApp & Email)</span>
+                <span className="hidden sm:inline">Relancer CDZ</span>
               </button>
 
               <button
                 onClick={copyEmailReminder}
-                className="flex items-center gap-2 px-4 py-2 text-xs font-bold text-[#1E2024] bg-[#F3CF55] hover:bg-[#EBC046] rounded-full shadow-md shadow-[#F3CF55]/20 transition-all cursor-pointer"
-                title="Copier un modèle d'email de relance pour les retardataires"
+                className="flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-2 text-xs font-bold text-[#1E2024] bg-[#F3CF55] hover:bg-[#EBC046] rounded-full shadow-md shadow-[#F3CF55]/20 transition-all"
+                title="Copier le modèle d'email de relance"
               >
                 {copiedEmail ? <Check className="w-4 h-4 text-[#1E2024]" /> : <Mail className="w-4 h-4 text-[#1E2024]" />}
-                <span>{copiedEmail ? 'Email Copié !' : 'Relance Rapide'}</span>
+                <span className="hidden sm:inline">{copiedEmail ? 'Copié !' : 'Relance Rapide'}</span>
               </button>
 
               <button
                 onClick={exportMissingToExcel}
-                className="flex items-center gap-2 px-4 py-2 text-xs font-bold text-stone-700 bg-white hover:bg-stone-50 border border-stone-200/80 rounded-full transition-all shadow-xs"
-                title="Télécharger la liste Excel des retardataires"
+                className="flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-2 text-xs font-bold text-stone-700 bg-white hover:bg-stone-50 border border-stone-200/80 rounded-full transition-all shadow-xs"
+                title="Exporter retardataires Excel"
               >
                 <Download className="w-4 h-4 text-emerald-600" />
-                <span>Exporter Retardataires</span>
+                <span className="hidden sm:inline">Exporter</span>
               </button>
             </>
           )}
         </div>
       </div>
 
-      {/* Data Table */}
-      <div className="overflow-x-auto">
+      {/* ── Mobile Card View (< sm) ── */}
+      <div className="block sm:hidden divide-y divide-slate-100">
+        {sortedRows.length === 0 ? (
+          <div className="py-12 text-center text-slate-500 text-xs px-4">
+            Aucun collaborateur ne correspond aux critères sélectionnés.
+          </div>
+        ) : (
+          sortedRows.map(({ collaborateur, hasSubmitted, submissions }) => (
+            <div
+              key={collaborateur.Nom}
+              className={`p-4 transition-colors ${hasSubmitted ? 'bg-emerald-50/30' : 'bg-rose-50/30'}`}
+            >
+              <div className="flex items-start gap-3">
+                {/* Avatar */}
+                <div className={`w-9 h-9 rounded-xl flex items-center justify-center text-sm font-extrabold shrink-0 ${
+                  hasSubmitted ? 'bg-emerald-100 text-emerald-700' : 'bg-rose-100 text-rose-700'
+                }`}>
+                  {(collaborateur.Nom || '?')[0].toUpperCase()}
+                </div>
+
+                <div className="flex-1 min-w-0">
+                  {/* Name + Status */}
+                  <div className="flex items-start justify-between gap-2">
+                    <div className="min-w-0">
+                      <div className="font-bold text-slate-900 text-xs truncate">{collaborateur.Nom}</div>
+                      {collaborateur.Matricule && (
+                        <div className="text-[10px] text-slate-400 font-mono">#{collaborateur.Matricule}</div>
+                      )}
+                    </div>
+                    {hasSubmitted ? (
+                      <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-semibold bg-emerald-100 text-emerald-800 border border-emerald-200 shrink-0">
+                        <CheckCircle2 className="w-3 h-3" /> Rempli
+                      </span>
+                    ) : (
+                      <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-semibold bg-rose-100 text-rose-800 border border-rose-200 shrink-0">
+                        <XCircle className="w-3 h-3" /> Non Rempli
+                      </span>
+                    )}
+                  </div>
+
+                  {/* Fonction + Notes */}
+                  <div className="mt-2 flex flex-wrap items-center gap-2">
+                    {collaborateur.Fonction && (
+                      <span className={`px-2 py-0.5 rounded border text-[10px] ${getFonctionBadgeColor(collaborateur.Fonction)}`}>
+                        {collaborateur.Fonction}
+                      </span>
+                    )}
+                    {submissions.length > 0 && (
+                      <button
+                        onClick={() => openDetails(collaborateur, submissions)}
+                        className="inline-flex items-center gap-1 px-2 py-0.5 rounded-lg text-[10px] bg-sky-100 text-sky-800 border border-sky-200 font-bold"
+                      >
+                        <Eye className="w-3 h-3" />
+                        {submissions.length} note{submissions.length > 1 ? 's' : ''}
+                      </button>
+                    )}
+                  </div>
+
+                  {/* Responsable + Actions */}
+                  <div className="mt-2.5 flex items-center gap-2">
+                    <select
+                      value={collaborateur.Responsable || ''}
+                      onChange={(e) => { if (onUpdateResponsable) onUpdateResponsable(collaborateur.Nom, e.target.value); }}
+                      onClick={(e) => e.stopPropagation()}
+                      className={`flex-1 min-w-0 px-2 py-1 text-[10px] font-medium rounded-lg border outline-none cursor-pointer transition-all ${getResponsableSelectStyle(collaborateur.Responsable)}`}
+                    >
+                      <option value="">⚠️ Non assigné</option>
+                      {cdzCdaList.map((resp) => (
+                        <option key={resp} value={resp}>👤 {resp}</option>
+                      ))}
+                    </select>
+
+                    <div className="flex items-center gap-1 shrink-0">
+                      <button
+                        onClick={() => { if (onOpenEditModal) onOpenEditModal(collaborateur); }}
+                        className="p-1.5 text-slate-500 hover:text-sky-600 hover:bg-sky-50 rounded-lg transition-colors"
+                        title="Modifier"
+                      >
+                        <Edit3 className="w-3.5 h-3.5" />
+                      </button>
+                      <button
+                        onClick={() => { if (onOpenDeleteModal) onOpenDeleteModal(collaborateur); }}
+                        className="p-1.5 text-slate-500 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition-colors"
+                        title="Supprimer"
+                      >
+                        <Trash2 className="w-3.5 h-3.5" />
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          ))
+        )}
+      </div>
+
+      {/* ── Desktop Table View (sm+) ── */}
+      <div className="hidden sm:block overflow-x-auto">
         <table className="w-full text-left text-xs text-slate-700 border-collapse">
           <thead>
             <tr className="bg-slate-100 text-slate-600 font-semibold border-b border-slate-200">
               <th
                 onClick={() => toggleSort('Nom')}
-                className="py-3 px-4 cursor-pointer hover:text-slate-900 transition-colors"
+                className="py-3 px-4 cursor-pointer hover:text-slate-900 transition-colors sticky left-0 bg-slate-100 z-10"
               >
                 Collaborateur {sortField === 'Nom' && (sortOrder === 'asc' ? '↑' : '↓')}
               </th>
@@ -462,9 +541,8 @@ export default function CollaboratorTable({
                   } ${submissions.length > 0 ? 'hover:bg-slate-100/80 cursor-pointer' : ''}`}
                   onClick={() => openDetails(collaborateur, submissions)}
                 >
-                  <td className="py-3 px-4 font-semibold text-slate-900">
+                  <td className="py-3 px-4 font-semibold text-slate-900 sticky left-0 bg-inherit z-10">
                     <div className="flex items-center gap-2">
-                      {/* Mini avatar */}
                       <div className={`w-7 h-7 rounded-full flex items-center justify-center text-[10px] font-extrabold shrink-0 ${hasSubmitted ? 'bg-emerald-100 text-emerald-700' : 'bg-rose-100 text-rose-700'}`}>
                         {(collaborateur.Nom || '?')[0].toUpperCase()}
                       </div>
@@ -488,18 +566,12 @@ export default function CollaboratorTable({
                   <td className="py-3 px-4" onClick={(e) => e.stopPropagation()}>
                     <select
                       value={collaborateur.Responsable || ''}
-                      onChange={(e) => {
-                        if (onUpdateResponsable) {
-                          onUpdateResponsable(collaborateur.Nom, e.target.value);
-                        }
-                      }}
+                      onChange={(e) => { if (onUpdateResponsable) onUpdateResponsable(collaborateur.Nom, e.target.value); }}
                       className={`px-2.5 py-1 text-[11px] font-medium rounded-lg border outline-none cursor-pointer transition-all ${getResponsableSelectStyle(collaborateur.Responsable)}`}
                     >
                       <option value="">⚠️ Non assigné</option>
                       {cdzCdaList.map((resp) => (
-                        <option key={resp} value={resp}>
-                          👤 {resp}
-                        </option>
+                        <option key={resp} value={resp}>👤 {resp}</option>
                       ))}
                     </select>
                   </td>
@@ -521,36 +593,28 @@ export default function CollaboratorTable({
                       <button
                         onClick={(e) => { e.stopPropagation(); openDetails(collaborateur, submissions); }}
                         className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs bg-sky-100 text-sky-800 border border-sky-200 font-bold hover:bg-sky-200 transition-colors"
-                        title="Voir le détail des notes de frais"
+                        title="Voir le détail"
                       >
                         <Eye className="w-3.5 h-3.5" />
                         {submissions.length} note{submissions.length > 1 ? 's' : ''}
                       </button>
                     ) : (
-                      <span className="px-2.5 py-1 rounded-lg text-xs bg-slate-100 text-slate-500">
-                        0 note
-                      </span>
+                      <span className="px-2.5 py-1 rounded-lg text-xs bg-slate-100 text-slate-500">0 note</span>
                     )}
                   </td>
                   <td className="py-3 px-4 text-center" onClick={(e) => e.stopPropagation()}>
                     <div className="flex items-center justify-center gap-1">
                       <button
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          if (onOpenEditModal) onOpenEditModal(collaborateur);
-                        }}
+                        onClick={(e) => { e.stopPropagation(); if (onOpenEditModal) onOpenEditModal(collaborateur); }}
                         className="p-1.5 text-slate-500 hover:text-sky-600 hover:bg-sky-50 rounded-lg transition-colors"
-                        title="Modifier ce collaborateur"
+                        title="Modifier"
                       >
                         <Edit3 className="w-3.5 h-3.5" />
                       </button>
                       <button
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          if (onOpenDeleteModal) onOpenDeleteModal(collaborateur);
-                        }}
+                        onClick={(e) => { e.stopPropagation(); if (onOpenDeleteModal) onOpenDeleteModal(collaborateur); }}
                         className="p-1.5 text-slate-500 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition-colors"
-                        title="Supprimer ce collaborateur"
+                        title="Supprimer"
                       >
                         <Trash2 className="w-3.5 h-3.5" />
                       </button>
@@ -563,12 +627,12 @@ export default function CollaboratorTable({
         </table>
       </div>
 
-      {/* Footer Info */}
+      {/* Footer */}
       <div className="p-3 bg-slate-50 border-t border-slate-200 text-[11px] text-slate-500 flex items-center justify-between">
         <span>Affichage de {sortedRows.length} collaborateur(s)</span>
-        <span className="flex items-center gap-1 text-slate-500">
+        <span className="hidden sm:flex items-center gap-1 text-slate-500">
           <Eye className="w-3.5 h-3.5 text-slate-400" />
-          Cliquez sur le bouton <strong className="text-sky-700 mx-1">X notes</strong> pour voir le détail des soumissions
+          Cliquez sur <strong className="text-sky-700 mx-1">X notes</strong> pour voir le détail
         </span>
       </div>
 
@@ -580,7 +644,7 @@ export default function CollaboratorTable({
         submissions={detailsModal.submissions}
       />
 
-      {/* CDZ WhatsApp & Email Reminder Modal */}
+      {/* CDZ Reminder Modal */}
       <CdzReminderModal
         isOpen={isCdzModalOpen}
         onClose={() => setIsCdzModalOpen(false)}
