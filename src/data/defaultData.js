@@ -433,7 +433,7 @@ export const initialCollaborateurs = [
     "Absence autorisée matin": "",
     "Absence autorisée aprém": "",
     "Validée par": "",
-    "Responsable": "MOHAMMED MAAIZ"
+    "Responsable": "CHAKIB EL FIL"
   },
   {
     "Entite": "Livreurs Agadir",
