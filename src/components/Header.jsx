@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Upload, Link, RefreshCw, UserPlus, LogOut, MoreHorizontal, X, Mail } from 'lucide-react';
+import { Upload, Link, RefreshCw, UserPlus, LogOut, MoreHorizontal, X, Mail, Database } from 'lucide-react';
 import logoImg from '../../assets/logo.png';
 
 export default function Header({ 
@@ -72,6 +72,16 @@ export default function Header({
               <Upload className="w-4 h-4" />
               <span>Importer Frais Excel</span>
             </button>
+
+            <a
+              href="./database.sqlite"
+              download="database.sqlite"
+              className="flex items-center gap-2 px-4 py-2 text-xs font-semibold text-[#1E2024] bg-white hover:bg-stone-50 border border-stone-200/80 rounded-full transition-all shadow-xs"
+              title="Télécharger la base de données SQLite"
+            >
+              <Database className="w-4 h-4 text-sky-600" />
+              <span>Base SQLite</span>
+            </a>
 
             <button
               onClick={onResetData}
@@ -218,6 +228,17 @@ export default function Header({
               <Link className="w-4 h-4 text-[#22252A]" />
               <span>Correspondances de Noms</span>
             </button>
+
+            {/* SQLite Download */}
+            <a
+              href="./database.sqlite"
+              download="database.sqlite"
+              onClick={() => setMobileMenuOpen(false)}
+              className="w-full flex items-center gap-2.5 px-4 py-2.5 text-xs font-semibold text-[#1E2024] bg-white hover:bg-stone-50 border border-stone-200/80 rounded-2xl transition-all"
+            >
+              <Database className="w-4 h-4 text-sky-600" />
+              <span>Télécharger Base SQLite (.sqlite)</span>
+            </a>
           </div>
         )}
       </div>
