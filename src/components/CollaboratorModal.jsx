@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { X, UserPlus, UserCheck, AlertCircle, ShieldCheck, EyeOff } from 'lucide-react';
+import { CdzAvatarBadge } from '../utils/cdzAvatars';
 
 export default function CollaboratorModal({ 
   isOpen, 
@@ -174,18 +175,21 @@ export default function CollaboratorModal({
               <ShieldCheck className="w-4 h-4 text-sky-600" />
               <span>Responsable CDZ / CDA</span>
             </label>
-            <select
-              value={responsable}
-              onChange={(e) => setResponsable(e.target.value)}
-              className="w-full px-3.5 py-2 text-xs rounded-xl border border-sky-200 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-transparent transition-all bg-white font-medium text-slate-800"
-            >
-              <option value="">-- Aucun Responsable assigné --</option>
-              {cdzCdaList.map((resp) => (
-                <option key={resp} value={resp}>
-                  👤 {resp}
-                </option>
-              ))}
-            </select>
+            <div className="flex items-center gap-2">
+              <CdzAvatarBadge name={responsable} size="md" />
+              <select
+                value={responsable}
+                onChange={(e) => setResponsable(e.target.value)}
+                className="flex-1 min-w-0 px-3.5 py-2 text-xs rounded-xl border border-sky-200 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-transparent transition-all bg-white font-medium text-slate-800"
+              >
+                <option value="">-- Aucun Responsable assigné --</option>
+                {cdzCdaList.map((resp) => (
+                  <option key={resp} value={resp}>
+                    {resp}
+                  </option>
+                ))}
+              </select>
+            </div>
             <p className="text-[11px] text-sky-700 font-normal">
               Sélectionnez le Responsable CDZ ou CDA qui supervise ce collaborateur.
             </p>

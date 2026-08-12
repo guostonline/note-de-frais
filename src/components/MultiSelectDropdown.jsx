@@ -186,8 +186,8 @@ export default function MultiSelectDropdown({
                           : 'hover:bg-[#F6F4EB] text-stone-700'
                       }`}
                     >
-                      <div className="flex items-center gap-2 min-w-0">
-                        {hasCdzImg && <CdzAvatarBadge name={displayLabel} size="xs" />}
+                      <div className="flex items-center gap-2.5 min-w-0">
+                        {hasCdzImg && <CdzAvatarBadge name={displayLabel} size="sm" />}
                         <span className="truncate">{displayLabel}</span>
                       </div>
                       {isSelected && <Check className="w-3.5 h-3.5 text-[#F3CF55] shrink-0 ml-2" />}
