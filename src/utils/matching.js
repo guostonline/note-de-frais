@@ -1,6 +1,7 @@
 /**
  * Intelligent Name Matching and Analysis Engine
  */
+import { initialCollaborateurs } from '../data/defaultData';
 
 export function cleanStr(str) {
   if (!str || typeof str !== 'string') return '';
@@ -267,11 +268,36 @@ export const DEFAULT_CDZ_RESPONSABLES = [
  */
 export function ensureCollaborateursHasResponsable(collabList = []) {
   if (!Array.isArray(collabList)) return [];
+
+  // Build a lookup map of known real responsables from default dataset
+  const knownRespMap = new Map();
+  if (Array.isArray(initialCollaborateurs)) {
+    initialCollaborateurs.forEach(c => {
+      if (c && c.Nom && c.Responsable) {
+        knownRespMap.set(getSortedWords(c.Nom), c.Responsable);
+        knownRespMap.set(cleanStr(c.Nom), c.Responsable);
+      }
+    });
+  }
+
   return collabList.map((collab, index) => {
     if (!collab || typeof collab !== 'object') return collab;
+
+    // First check if a known standard responsable exists for this collaborator
+    const cleanName = cleanStr(collab.Nom);
+    const sortedName = getSortedWords(collab.Nom);
+    const knownResp = knownRespMap.get(sortedName) || knownRespMap.get(cleanName);
+
+    if (knownResp) {
+      return {
+        ...collab,
+        Responsable: knownResp
+      };
+    }
+
     if (collab.Responsable) return collab;
 
-    // Hash deterministic assignment fallback
+    // Hash deterministic assignment fallback for custom entries
     const name = collab.Nom || `collab_${index}`;
     let hash = 0;
     for (let i = 0; i < name.length; i++) {

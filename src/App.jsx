@@ -1,4 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
+import { Analytics } from '@vercel/analytics/react';
+import { SpeedInsights } from '@vercel/speed-insights/react';
 import Header from './components/Header';
 import KpiCards from './components/KpiCards';
 import FilterBar from './components/FilterBar';
@@ -73,7 +75,14 @@ export default function App() {
       return ensureCollaborateursHasResponsable(initialCollaborateurs);
     }
   });
-  const [fraisList, setFraisList] = useState(initialFrais);
+  const [fraisList, setFraisList] = useState(() => {
+    try {
+      const saved = localStorage.getItem('ndf_frais_list');
+      return saved ? JSON.parse(saved) : initialFrais;
+    } catch (e) {
+      return initialFrais;
+    }
+  });
   const [aliasMap, setAliasMap] = useState(defaultAliasMap);
   const [isDbLoaded, setIsDbLoaded] = useState(false);
 
@@ -115,13 +124,14 @@ export default function App() {
         const enriched = ensureCollaborateursHasResponsable(dbCollabs);
         setCollabList(enriched);
         await dbSaveCollaborateursBatch(enriched);
+        try { localStorage.setItem('ndf_collab_list', JSON.stringify(enriched)); } catch (e) {}
       } else {
         setCollabList(preparedCollabs);
         await dbSaveCollaborateursBatch(preparedCollabs);
         try { localStorage.setItem('ndf_collab_list', JSON.stringify(preparedCollabs)); } catch (e) {}
       }
 
-      if (dbFrais && dbFrais.length >= initialFrais.length) {
+      if (dbFrais && dbFrais.length > 0) {
         setFraisList(dbFrais);
       } else {
         setFraisList(initialFrais);
@@ -229,11 +239,16 @@ export default function App() {
       setCollabList(newCollab);
       await db.collaborateurs.clear();
       await db.collaborateurs.bulkPut(newCollab);
+      try { localStorage.setItem('ndf_collab_list', JSON.stringify(newCollab)); } catch (e) {}
     }
     if (newFrais && newFrais.length > 0) {
       const normalizedFrais = normalizeFraisData(newFrais);
+      // Completely overwrite old frais with new frais only
       setFraisList(normalizedFrais);
       await dbSaveFraisBatch(normalizedFrais);
+      try { localStorage.setItem('ndf_frais_list', JSON.stringify(normalizedFrais)); } catch (e) {}
+      setSelectedMonthState(null);
+      setSelectedWeek('ALL');
     }
     notifyAutoSave();
   };
@@ -242,10 +257,14 @@ export default function App() {
   const handleResetData = async () => {
     if (window.confirm("Voulez-vous réinitialiser la base de données vers les fichiers originaux ?")) {
       await dbResetToDefaults(initialCollaborateurs, initialFrais, defaultAliasMap);
+      try {
+        localStorage.removeItem('ndf_frais_list');
+        localStorage.removeItem('ndf_collab_list');
+      } catch (e) {}
       setCollabList(initialCollaborateurs);
       setFraisList(initialFrais);
       setAliasMap(defaultAliasMap);
-      setSelectedMonth('ALL');
+      setSelectedMonthState(null);
       setSelectedWeek('ALL');
       setSelectedEntity('ALL');
       setSearchQuery('');
@@ -491,6 +510,9 @@ export default function App() {
           <span>Modification enregistrée en base de données</span>
         </div>
       )}
+      {/* Vercel Analytics & Speed Insights Tracking */}
+      <Analytics />
+      <SpeedInsights />
     </div>
   );
 }
