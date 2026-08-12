@@ -38,25 +38,25 @@ export function CdzAvatarBadge({ name, size = 'md', className = '' }) {
     .join('');
 
   const sizeClasses = {
-    xs: 'w-5 h-5 text-[9px]',
-    sm: 'w-6 h-6 text-[10px]',
-    md: 'w-7 h-7 text-xs',
-    lg: 'w-9 h-9 text-sm',
-    xl: 'w-12 h-12 text-base'
-  }[size] || 'w-7 h-7 text-xs';
+    xs: 'w-7 h-7 text-xs',
+    sm: 'w-8 h-8 text-xs',
+    md: 'w-10 h-10 text-sm',
+    lg: 'w-12 h-12 text-base',
+    xl: 'w-16 h-16 text-lg'
+  }[size] || 'w-9 h-9 text-xs';
 
   if (avatarUrl) {
     return (
       <img
         src={avatarUrl}
         alt={name}
-        className={`${sizeClasses} rounded-full object-cover border border-amber-300/80 shadow-xs shrink-0 ${className}`}
+        className={`${sizeClasses} rounded-full object-cover ring-2 ring-[#F3CF55]/70 border border-stone-200 shadow-md shrink-0 transition-transform hover:scale-110 ${className}`}
       />
     );
   }
 
   return (
-    <div className={`${sizeClasses} rounded-full bg-[#F3CF55] text-[#1E2024] font-extrabold flex items-center justify-center border border-amber-400/80 shadow-xs shrink-0 ${className}`}>
+    <div className={`${sizeClasses} rounded-full bg-[#F3CF55] text-[#1E2024] font-extrabold flex items-center justify-center border border-amber-400/80 shadow-md shrink-0 ${className}`}>
       {initials}
     </div>
   );

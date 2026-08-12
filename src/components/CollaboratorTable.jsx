@@ -468,8 +468,8 @@ export default function CollaboratorTable({
                   {/* Responsable + Actions */}
                   <div className="mt-2.5 flex items-center justify-between gap-2">
                     {collaborateur.Responsable ? (
-                      <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-semibold border border-stone-200 bg-[#F6F4EB] text-slate-800 shrink-0">
-                        <CdzAvatarBadge name={collaborateur.Responsable} size="xs" />
+                      <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-[11px] font-bold border border-stone-300/80 bg-[#F6F4EB] text-slate-900 shadow-2xs shrink-0">
+                        <CdzAvatarBadge name={collaborateur.Responsable} size="sm" />
                         <span>{collaborateur.Responsable}</span>
                       </div>
                     ) : (
@@ -563,8 +563,8 @@ export default function CollaboratorTable({
                   </td>
                   <td className="py-3 px-4">
                     {collaborateur.Responsable ? (
-                      <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-[11px] font-semibold border border-stone-200 bg-[#F6F4EB] text-slate-800 shadow-2xs">
-                        <CdzAvatarBadge name={collaborateur.Responsable} size="xs" />
+                      <div className="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full text-xs font-bold border border-stone-300/80 bg-[#F6F4EB] text-slate-900 shadow-xs hover:shadow-md transition-all">
+                        <CdzAvatarBadge name={collaborateur.Responsable} size="sm" />
                         <span>{collaborateur.Responsable}</span>
                       </div>
                     ) : (
