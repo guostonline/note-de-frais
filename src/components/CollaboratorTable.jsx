@@ -466,21 +466,17 @@ export default function CollaboratorTable({
                   </div>
 
                   {/* Responsable + Actions */}
-                  <div className="mt-2.5 flex items-center gap-2">
-                    <CdzAvatarBadge name={collaborateur.Responsable} size="xs" />
-                    <select
-                      value={collaborateur.Responsable || ''}
-                      onChange={(e) => { if (onUpdateResponsable) onUpdateResponsable(collaborateur.Nom, e.target.value); }}
-                      onClick={(e) => e.stopPropagation()}
-                      className={`flex-1 min-w-0 px-2 py-1 text-[10px] font-medium rounded-lg border outline-none cursor-pointer transition-all ${getResponsableSelectStyle(collaborateur.Responsable)}`}
-                    >
-                      <option value="">⚠️ Non assigné</option>
-                      {cdzCdaList.map((resp) => (
-                        <option key={resp} value={resp}>{resp}</option>
-                      ))}
-                    </select>
+                  <div className="mt-2.5 flex items-center justify-between gap-2">
+                    {collaborateur.Responsable ? (
+                      <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-semibold border border-stone-200 bg-[#F6F4EB] text-slate-800 shrink-0">
+                        <CdzAvatarBadge name={collaborateur.Responsable} size="xs" />
+                        <span>{collaborateur.Responsable}</span>
+                      </div>
+                    ) : (
+                      <span className="text-slate-400 font-mono text-[10px]">⚠️ Non assigné</span>
+                    )}
 
-                    <div className="flex items-center gap-1 shrink-0">
+                    <div className="flex items-center gap-1 shrink-0 ml-auto">
                       <button
                         onClick={() => { if (onOpenEditModal) onOpenEditModal(collaborateur); }}
                         className="p-1.5 text-slate-500 hover:text-sky-600 hover:bg-sky-50 rounded-lg transition-colors"
@@ -565,20 +561,15 @@ export default function CollaboratorTable({
                       <span className="text-slate-400 font-mono text-[10px]">-</span>
                     )}
                   </td>
-                  <td className="py-3 px-4" onClick={(e) => e.stopPropagation()}>
-                    <div className="flex items-center gap-2">
-                      <CdzAvatarBadge name={collaborateur.Responsable} size="sm" />
-                      <select
-                        value={collaborateur.Responsable || ''}
-                        onChange={(e) => { if (onUpdateResponsable) onUpdateResponsable(collaborateur.Nom, e.target.value); }}
-                        className={`px-2.5 py-1 text-[11px] font-medium rounded-lg border outline-none cursor-pointer transition-all ${getResponsableSelectStyle(collaborateur.Responsable)}`}
-                      >
-                        <option value="">⚠️ Non assigné</option>
-                        {cdzCdaList.map((resp) => (
-                          <option key={resp} value={resp}>{resp}</option>
-                        ))}
-                      </select>
-                    </div>
+                  <td className="py-3 px-4">
+                    {collaborateur.Responsable ? (
+                      <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-[11px] font-semibold border border-stone-200 bg-[#F6F4EB] text-slate-800 shadow-2xs">
+                        <CdzAvatarBadge name={collaborateur.Responsable} size="xs" />
+                        <span>{collaborateur.Responsable}</span>
+                      </div>
+                    ) : (
+                      <span className="text-slate-400 font-mono text-[10px]">⚠️ Non assigné</span>
+                    )}
                   </td>
                   <td className="py-3 px-4 text-center">
                     {hasSubmitted ? (
