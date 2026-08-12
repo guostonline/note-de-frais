@@ -62,8 +62,8 @@ export default function UploadModal({ isOpen, onClose, onDataUploaded }) {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-sm animate-fade-in">
-      <div className="glass-panel w-full max-w-lg rounded-2xl border border-slate-200 shadow-2xl p-6 relative">
+    <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 bg-slate-900/50 backdrop-blur-xs animate-fade-in">
+      <div className="glass-panel w-full max-w-lg rounded-t-3xl sm:rounded-3xl border-t sm:border border-slate-200 shadow-2xl p-5 sm:p-6 relative max-h-[90vh] overflow-y-auto pb-safe animate-slide-up-mobile sm:animate-scale-in">
         <button
           onClick={onClose}
           className="absolute top-4 right-4 text-slate-400 hover:text-slate-800 p-1 rounded-lg hover:bg-slate-100 transition-colors"

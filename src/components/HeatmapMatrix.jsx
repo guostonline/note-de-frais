@@ -130,15 +130,15 @@ export default function HeatmapMatrix({
         </div>
       </div>
 
-      <div className="overflow-x-auto max-h-[600px] overflow-y-auto">
+      <div className="overflow-x-auto touch-scroll max-h-[600px] overflow-y-auto">
         <table className="w-full text-left text-xs border-collapse">
-          <thead className="sticky top-0 bg-slate-100 z-10">
+          <thead className="sticky top-0 bg-slate-100 z-20">
             <tr className="border-b border-slate-200 text-slate-600">
-              <th className="py-3 px-4 font-semibold min-w-[200px] bg-slate-100">Collaborateur</th>
-              <th className="py-3 px-3 font-semibold min-w-[140px] bg-slate-100">Entité</th>
+              <th className="py-3 px-3 sm:px-4 font-semibold min-w-[160px] sm:min-w-[200px] bg-slate-100 sticky left-0 z-30 border-r border-slate-200/80">Collaborateur</th>
+              <th className="py-3 px-3 font-semibold min-w-[130px] sm:min-w-[140px] bg-slate-100">Entité</th>
               {weeks.map(w => (
-                <th key={w} className="py-3 px-3 font-semibold text-center min-w-[100px] bg-slate-100">
-                  <span className="px-2.5 py-1 rounded-md bg-white border border-slate-200 text-sky-700 font-mono text-[11px] font-bold shadow-2xs">
+                <th key={w} className="py-3 px-3 font-semibold text-center min-w-[90px] sm:min-w-[100px] bg-slate-100">
+                  <span className="px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-md bg-white border border-slate-200 text-sky-700 font-mono text-[10px] sm:text-[11px] font-bold shadow-2xs">
                     {w}
                   </span>
                 </th>
@@ -156,12 +156,12 @@ export default function HeatmapMatrix({
               filteredCollabs.map(c => {
                 const cMap = matrixData[c.Nom] || {};
                 return (
-                  <tr key={c.Nom} className="hover:bg-slate-100/80 transition-colors">
-                    <td className="py-2.5 px-4 font-semibold text-slate-900">
+                  <tr key={c.Nom} className="group hover:bg-slate-100/80 transition-colors">
+                    <td className="py-2.5 px-3 sm:px-4 font-semibold text-slate-900 sticky left-0 bg-white group-hover:bg-slate-50 z-10 border-r border-slate-200/80 text-[11px] sm:text-xs">
                       {c.Nom}
                     </td>
-                    <td className="py-2.5 px-3 text-slate-500 text-[11px]">
-                      <span className="truncate block max-w-[130px]">{c.Entite}</span>
+                    <td className="py-2.5 px-3 text-slate-500 text-[10px] sm:text-[11px]">
+                      <span className="truncate block max-w-[110px] sm:max-w-[130px]">{c.Entite}</span>
                     </td>
                     {weeks.map(w => {
                       const submissions = cMap[w] || [];
