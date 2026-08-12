@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { ChevronDown, Check, X, Search, Filter } from 'lucide-react';
+import { CdzAvatarBadge, getCdzAvatar } from '../utils/cdzAvatars';
 
 export default function MultiSelectDropdown({
   label,
@@ -62,6 +63,8 @@ export default function MultiSelectDropdown({
     return `${selectedValues.length} sélectionnés`;
   };
 
+  const singleSelectedAvatar = selectedValues.length === 1 ? getCdzAvatar(selectedValues[0]) : null;
+
   return (
     <div className="relative" ref={dropdownRef}>
       {/* Trigger button */}
@@ -71,7 +74,11 @@ export default function MultiSelectDropdown({
         className="w-full flex items-center justify-between gap-2 bg-white border border-stone-200/80 hover:border-stone-300 rounded-2xl px-3.5 py-2.5 text-left shadow-2xs transition-all outline-none"
       >
         <div className="flex items-center gap-2.5 min-w-0">
-          {Icon && <Icon className={`w-4 h-4 shrink-0 ${colorClass}`} />}
+          {singleSelectedAvatar ? (
+            <CdzAvatarBadge name={selectedValues[0]} size="sm" />
+          ) : (
+            Icon && <Icon className={`w-4 h-4 shrink-0 ${colorClass}`} />
+          )}
           <div className="min-w-0">
             <span className="block text-[10px] font-bold text-stone-400 uppercase tracking-wider leading-tight">
               {label}
@@ -111,7 +118,7 @@ export default function MultiSelectDropdown({
             left-0 sm:left-0
             right-0 sm:right-auto
             top-auto sm:top-full
-            w-full sm:w-auto sm:min-w-[230px]
+            w-full sm:w-auto sm:min-w-[240px]
             rounded-t-3xl sm:rounded-2xl
             p-4 sm:p-2.5
             mt-0 sm:mt-1.5
@@ -166,6 +173,7 @@ export default function MultiSelectDropdown({
                   const val = opt.value !== undefined ? opt.value : opt;
                   const displayLabel = opt.label !== undefined ? opt.label : opt;
                   const isSelected = selectedValues.includes(val);
+                  const hasCdzImg = getCdzAvatar(displayLabel);
 
                   return (
                     <button
@@ -178,7 +186,10 @@ export default function MultiSelectDropdown({
                           : 'hover:bg-[#F6F4EB] text-stone-700'
                       }`}
                     >
-                      <span className="truncate">{displayLabel}</span>
+                      <div className="flex items-center gap-2 min-w-0">
+                        {hasCdzImg && <CdzAvatarBadge name={displayLabel} size="xs" />}
+                        <span className="truncate">{displayLabel}</span>
+                      </div>
                       {isSelected && <Check className="w-3.5 h-3.5 text-[#F3CF55] shrink-0 ml-2" />}
                     </button>
                   );

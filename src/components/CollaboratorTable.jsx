@@ -8,6 +8,7 @@ import {
 import * as XLSX from 'xlsx';
 import { getEntityBadgeColor, getFonctionBadgeColor, getResponsableSelectStyle } from '../utils/colors';
 import CdzReminderModal from './CdzReminderModal';
+import { CdzAvatarBadge } from '../utils/cdzAvatars';
 
 // ── Submissions Detail Popup Modal ───────────────────────────────────────────
 function SubmissionsModal({ isOpen, onClose, collaborateur, submissions }) {
@@ -466,6 +467,7 @@ export default function CollaboratorTable({
 
                   {/* Responsable + Actions */}
                   <div className="mt-2.5 flex items-center gap-2">
+                    <CdzAvatarBadge name={collaborateur.Responsable} size="xs" />
                     <select
                       value={collaborateur.Responsable || ''}
                       onChange={(e) => { if (onUpdateResponsable) onUpdateResponsable(collaborateur.Nom, e.target.value); }}
@@ -474,7 +476,7 @@ export default function CollaboratorTable({
                     >
                       <option value="">⚠️ Non assigné</option>
                       {cdzCdaList.map((resp) => (
-                        <option key={resp} value={resp}>👤 {resp}</option>
+                        <option key={resp} value={resp}>{resp}</option>
                       ))}
                     </select>
 
@@ -564,16 +566,19 @@ export default function CollaboratorTable({
                     )}
                   </td>
                   <td className="py-3 px-4" onClick={(e) => e.stopPropagation()}>
-                    <select
-                      value={collaborateur.Responsable || ''}
-                      onChange={(e) => { if (onUpdateResponsable) onUpdateResponsable(collaborateur.Nom, e.target.value); }}
-                      className={`px-2.5 py-1 text-[11px] font-medium rounded-lg border outline-none cursor-pointer transition-all ${getResponsableSelectStyle(collaborateur.Responsable)}`}
-                    >
-                      <option value="">⚠️ Non assigné</option>
-                      {cdzCdaList.map((resp) => (
-                        <option key={resp} value={resp}>👤 {resp}</option>
-                      ))}
-                    </select>
+                    <div className="flex items-center gap-2">
+                      <CdzAvatarBadge name={collaborateur.Responsable} size="sm" />
+                      <select
+                        value={collaborateur.Responsable || ''}
+                        onChange={(e) => { if (onUpdateResponsable) onUpdateResponsable(collaborateur.Nom, e.target.value); }}
+                        className={`px-2.5 py-1 text-[11px] font-medium rounded-lg border outline-none cursor-pointer transition-all ${getResponsableSelectStyle(collaborateur.Responsable)}`}
+                      >
+                        <option value="">⚠️ Non assigné</option>
+                        {cdzCdaList.map((resp) => (
+                          <option key={resp} value={resp}>{resp}</option>
+                        ))}
+                      </select>
+                    </div>
                   </td>
                   <td className="py-3 px-4 text-center">
                     {hasSubmitted ? (

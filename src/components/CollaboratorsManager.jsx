@@ -5,6 +5,7 @@ import {
 } from 'lucide-react';
 import * as XLSX from 'xlsx';
 import { getEntityBadgeColor, getFonctionBadgeColor, getResponsableSelectStyle } from '../utils/colors';
+import { CdzAvatarBadge } from '../utils/cdzAvatars';
 
 export default function CollaboratorsManager({
   collabList,
@@ -315,18 +316,21 @@ export default function CollaboratorsManager({
                         </span>
                       </td>
                       <td className="py-3 px-4">
-                        <select
-                          value={collab.Responsable || ''}
-                          onChange={(e) => onUpdateResponsable && onUpdateResponsable(collab.Nom, e.target.value)}
-                          className={`px-2.5 py-1 text-[11px] font-medium rounded-lg border outline-none cursor-pointer transition-all ${getResponsableSelectStyle(collab.Responsable)}`}
-                        >
-                          <option value="">⚠️ Non assigné</option>
-                          {cdzCdaList.map(resp => (
-                            <option key={resp} value={resp}>
-                              👤 {resp}
-                            </option>
-                          ))}
-                        </select>
+                        <div className="flex items-center gap-2">
+                          <CdzAvatarBadge name={collab.Responsable} size="sm" />
+                          <select
+                            value={collab.Responsable || ''}
+                            onChange={(e) => onUpdateResponsable && onUpdateResponsable(collab.Nom, e.target.value)}
+                            className={`px-2.5 py-1 text-[11px] font-medium rounded-lg border outline-none cursor-pointer transition-all ${getResponsableSelectStyle(collab.Responsable)}`}
+                          >
+                            <option value="">⚠️ Non assigné</option>
+                            {cdzCdaList.map(resp => (
+                              <option key={resp} value={resp}>
+                                {resp}
+                              </option>
+                            ))}
+                          </select>
+                        </div>
                       </td>
                       <td className="py-3 px-4 text-center">
                         <div className="flex items-center justify-center gap-1">
@@ -387,7 +391,8 @@ export default function CollaboratorsManager({
                   </div>
 
                   <div className="pt-3 border-t border-slate-100 flex items-center justify-between gap-2">
-                    <div className="flex-1">
+                    <div className="flex-1 flex items-center gap-2">
+                      <CdzAvatarBadge name={collab.Responsable} size="xs" />
                       <select
                         value={collab.Responsable || ''}
                         onChange={(e) => onUpdateResponsable && onUpdateResponsable(collab.Nom, e.target.value)}
@@ -395,7 +400,7 @@ export default function CollaboratorsManager({
                       >
                         <option value="">⚠️ Resp. CDZ/CDA non assigné</option>
                         {cdzCdaList.map(resp => (
-                          <option key={resp} value={resp}>👤 {resp}</option>
+                          <option key={resp} value={resp}>{resp}</option>
                         ))}
                       </select>
                     </div>

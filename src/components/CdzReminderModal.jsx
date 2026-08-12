@@ -1,5 +1,6 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import { X, Send, Mail, Copy, Check, ShieldCheck, Users, AlertCircle, MessageSquare } from 'lucide-react';
+import { CdzAvatarBadge } from '../utils/cdzAvatars';
 
 const CDZ_EMAILS = {
   'CHAKIB EL FIL': 'c.elfil@madec.co.ma',
@@ -153,22 +154,25 @@ export default function CdzReminderModal({
             Sélectionner le Responsable CDZ / CDA à relancer :
           </label>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
-            <select
-              value={selectedCdz}
-              onChange={(e) => setSelectedCdz(e.target.value)}
-              className="w-full bg-white border border-stone-200 rounded-xl px-3 py-2 text-xs font-bold text-[#1E2024] outline-none cursor-pointer focus:border-[#EBC046]"
-            >
-              <option value="ALL">Tous les CDZ ({missingRows.length} retardataires)</option>
-              <option value="NONE">-- Non assignés -- ({missingRows.filter(r => !r.collaborateur.Responsable).length})</option>
-              {cdzCdaList.map(resp => {
-                const count = missingRows.filter(r => r.collaborateur.Responsable === resp).length;
-                return (
-                  <option key={resp} value={resp}>
-                    👤 {resp} ({count} retardataires)
-                  </option>
-                );
-              })}
-            </select>
+            <div className="flex items-center gap-2 bg-white border border-stone-200 rounded-xl px-2.5 py-1">
+              <CdzAvatarBadge name={selectedCdz} size="sm" />
+              <select
+                value={selectedCdz}
+                onChange={(e) => setSelectedCdz(e.target.value)}
+                className="w-full bg-transparent text-xs font-bold text-[#1E2024] outline-none cursor-pointer"
+              >
+                <option value="ALL">Tous les CDZ ({missingRows.length} retardataires)</option>
+                <option value="NONE">-- Non assignés -- ({missingRows.filter(r => !r.collaborateur.Responsable).length})</option>
+                {cdzCdaList.map(resp => {
+                  const count = missingRows.filter(r => r.collaborateur.Responsable === resp).length;
+                  return (
+                    <option key={resp} value={resp}>
+                      {resp} ({count} retardataires)
+                    </option>
+                  );
+                })}
+              </select>
+            </div>
 
             <div className="flex items-center justify-between bg-white border border-stone-200 rounded-xl px-3 py-2 text-xs">
               <span className="text-stone-500 font-medium">WhatsApp :</span>
