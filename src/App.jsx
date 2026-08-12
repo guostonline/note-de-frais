@@ -446,7 +446,10 @@ export default function App() {
             collabList={activeCollabList}
             fraisList={fraisList}
             monthFilter={selectedMonth}
+            selectedWeek={selectedWeek}
             selectedEntity={selectedEntity}
+            selectedCdz={selectedCdz}
+            selectedFonction={activeSelectedFonction}
             searchQuery={searchQuery}
             aliasMap={aliasMap}
           />

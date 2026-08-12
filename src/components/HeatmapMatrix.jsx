@@ -6,9 +6,12 @@ export default function HeatmapMatrix({
   collabList, 
   fraisList, 
   monthFilter, 
-  selectedEntity, 
-  searchQuery, 
-  aliasMap 
+  selectedWeek = 'ALL',
+  selectedEntity = 'ALL', 
+  selectedCdz = 'ALL',
+  selectedFonction = 'ALL',
+  searchQuery = '', 
+  aliasMap = {}
 }) {
   // Extract month list from filter (array, string, or ALL)
   const selectedMonths = useMemo(() => {
@@ -25,16 +28,41 @@ export default function HeatmapMatrix({
     : (fraisList[0]?.Mois || 'Toutes les périodes');
 
   // Get weeks for the selected month(s)
-  const weeks = getUniqueWeeks(fraisList, monthFilter);
+  const allWeeks = getUniqueWeeks(fraisList, monthFilter);
 
-  // Filter collaborateurs by Entity & Search
+  const weeks = useMemo(() => {
+    if (!selectedWeek || selectedWeek === 'ALL') return allWeeks;
+    if (Array.isArray(selectedWeek)) {
+      if (selectedWeek.length === 0 || selectedWeek.includes('ALL')) return allWeeks;
+      return allWeeks.filter(w => selectedWeek.includes(w));
+    }
+    return allWeeks.filter(w => w === selectedWeek);
+  }, [allWeeks, selectedWeek]);
+
+  // Filter collaborateurs by Entity, CDZ Responsable, Fonction, and Search Query
   const filteredCollabs = collabList.filter(c => {
+    // Entity Filter
     if (Array.isArray(selectedEntity) && selectedEntity.length > 0) {
-      if (!selectedEntity.includes(c.Entite)) return false;
-    } else if (typeof selectedEntity === 'string' && selectedEntity !== 'ALL') {
+      if (!selectedEntity.includes('ALL') && !selectedEntity.includes(c.Entite)) return false;
+    } else if (typeof selectedEntity === 'string' && selectedEntity !== 'ALL' && selectedEntity !== '') {
       if (c.Entite !== selectedEntity) return false;
     }
 
+    // CDZ Responsable Filter
+    if (Array.isArray(selectedCdz) && selectedCdz.length > 0) {
+      if (!selectedCdz.includes('ALL') && !selectedCdz.includes(c.Responsable)) return false;
+    } else if (typeof selectedCdz === 'string' && selectedCdz !== 'ALL' && selectedCdz !== '') {
+      if (c.Responsable !== selectedCdz) return false;
+    }
+
+    // Fonction Filter
+    if (Array.isArray(selectedFonction) && selectedFonction.length > 0) {
+      if (!selectedFonction.includes('ALL') && !selectedFonction.includes(c.Fonction?.toUpperCase())) return false;
+    } else if (typeof selectedFonction === 'string' && selectedFonction !== 'ALL' && selectedFonction !== '') {
+      if (c.Fonction?.toUpperCase() !== selectedFonction.toUpperCase()) return false;
+    }
+
+    // Search Query
     if (searchQuery) {
       const q = searchQuery.toLowerCase();
       const matchNom   = c.Nom?.toLowerCase().includes(q);
