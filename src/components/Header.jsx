@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Upload, Link, RefreshCw, UserPlus, LogOut, MoreHorizontal, X, Mail } from 'lucide-react';
+import { Upload, Link, RotateCcw, UserPlus, LogOut, MoreHorizontal, X, Mail } from 'lucide-react';
 import logoImg from '../../assets/logo.png';
 
 export default function Header({ 
@@ -76,10 +76,11 @@ export default function Header({
 
             <button
               onClick={onResetData}
-              className="p-2.5 text-stone-500 hover:text-stone-900 bg-white hover:bg-stone-100 border border-stone-200/80 rounded-full transition-all shadow-xs"
-              title="Réinitialiser les données par défaut"
+              className="flex items-center gap-1.5 px-3 py-2 text-xs font-semibold text-rose-700 bg-rose-50 hover:bg-rose-100 border border-rose-200/80 rounded-full transition-all shadow-2xs"
+              title="Réinitialiser la base aux fichiers d'origine (Reset Usine)"
             >
-              <RefreshCw className="w-4 h-4" />
+              <RotateCcw className="w-3.5 h-3.5 text-rose-600" />
+              <span className="hidden xl:inline">Réinitialiser Usine</span>
             </button>
 
             {/* ── Avatar circle with dropdown ── */}
@@ -140,10 +141,10 @@ export default function Header({
             {/* Reset — icon only */}
             <button
               onClick={onResetData}
-              className="p-2 text-stone-500 hover:text-stone-900 bg-white hover:bg-stone-100 border border-stone-200/80 rounded-full transition-all"
-              title="Réinitialiser"
+              className="p-2 text-rose-600 hover:text-rose-800 bg-rose-50 hover:bg-rose-100 border border-rose-200/80 rounded-full transition-all"
+              title="Réinitialiser la base aux fichiers d'origine"
             >
-              <RefreshCw className="w-4 h-4" />
+              <RotateCcw className="w-4 h-4" />
             </button>
 
             {/* Avatar circle (mobile) */}

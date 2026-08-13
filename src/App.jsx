@@ -253,9 +253,10 @@ export default function App() {
     notifyAutoSave();
   };
 
-  // Reset to initial files
+  // Reset to initial files (Factory reset)
   const handleResetData = async () => {
-    if (window.confirm("Voulez-vous réinitialiser la base de données vers les fichiers originaux ?")) {
+    const confirmMessage = "⚠️ ATTENTION : Cette action va effacer TOUTES vos modifications (collaborateurs ajoutés, modifiés ou supprimés) et rétablir la base de données d'origine.\n\nVoulez-vous vraiment réinitialiser la base de données aux fichiers originaux ?";
+    if (window.confirm(confirmMessage)) {
       await dbResetToDefaults(initialCollaborateurs, initialFrais, defaultAliasMap);
       try {
         localStorage.removeItem('ndf_frais_list');
