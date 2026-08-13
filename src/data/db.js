@@ -57,6 +57,7 @@ export async function dbSaveCollaborateur(collab) {
  * Bulk save Collaborateurs
  */
 export async function dbSaveCollaborateursBatch(collabArray) {
+  await db.collaborateurs.clear();
   return await db.collaborateurs.bulkPut(collabArray);
 }
 

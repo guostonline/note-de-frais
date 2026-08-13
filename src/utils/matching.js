@@ -301,6 +301,9 @@ export function ensureCollaborateursHasResponsable(collabList = []) {
   return collabList.map((collab, index) => {
     if (!collab || typeof collab !== 'object') return collab;
 
+    // If already has a Responsable set, preserve it!
+    if (collab.Responsable) return collab;
+
     // First check if a known standard responsable exists for this collaborator
     const cleanName = cleanStr(collab.Nom);
     const sortedName = getSortedWords(collab.Nom);

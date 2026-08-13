@@ -120,7 +120,7 @@ export default function App() {
       const dbFrais = await dbGetAllFrais();
       const dbAliases = await dbGetAliasMap();
 
-      if (dbCollabs && dbCollabs.length >= preparedCollabs.length) {
+      if (dbCollabs && dbCollabs.length > 0) {
         const enriched = ensureCollaborateursHasResponsable(dbCollabs);
         setCollabList(enriched);
         await dbSaveCollaborateursBatch(enriched);
@@ -345,6 +345,7 @@ export default function App() {
       localStorage.setItem('ndf_collab_list', JSON.stringify(nextList));
     } catch (e) {}
     await dbDeleteCollaborateur(collaboratorToDelete.Nom);
+    await dbSaveCollaborateursBatch(nextList);
     setIsDeleteModalOpen(false);
     setCollaboratorToDelete(null);
     notifyAutoSave();
