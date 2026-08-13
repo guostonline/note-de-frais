@@ -58,45 +58,63 @@ export function calculateSimilarity(name1, name2) {
   return tokenScore;
 }
 
+// Memoization cache for fast demandeur matching
+const matchCache = new Map();
+
 /**
  * Finds best collaborator match for a given Frais demandeur
  */
 export function matchDemandeurToCollaborateur(demandeurName, colaboradoresList, aliasMap = {}) {
   if (!demandeurName) return { collaborateur: null, score: 0, isAlias: false };
 
+  const cacheKey = `${demandeurName}_${(colaboradoresList || []).length}_${aliasMap[demandeurName] || ''}`;
+  if (matchCache.has(cacheKey)) {
+    return matchCache.get(cacheKey);
+  }
+
+  let result = null;
+
   // 1. Check user custom manual alias mapping
   if (aliasMap[demandeurName]) {
-    const matchedCollab = colaboradoresList.find(c => c.Nom === aliasMap[demandeurName]);
+    const matchedCollab = (colaboradoresList || []).find(c => c.Nom === aliasMap[demandeurName]);
     if (matchedCollab) {
-      return { collaborateur: matchedCollab, score: 1.0, isAlias: true };
+      result = { collaborateur: matchedCollab, score: 1.0, isAlias: true };
     }
   }
 
-  // 2. Direct exact or sorted word match
-  const sortedDemandeur = getSortedWords(demandeurName);
-  for (const collab of colaboradoresList) {
-    if (getSortedWords(collab.Nom) === sortedDemandeur) {
-      return { collaborateur: collab, score: 1.0, isAlias: false };
+  if (!result) {
+    // 2. Direct exact or sorted word match
+    const sortedDemandeur = getSortedWords(demandeurName);
+    for (const collab of (colaboradoresList || [])) {
+      if (getSortedWords(collab.Nom) === sortedDemandeur) {
+        result = { collaborateur: collab, score: 1.0, isAlias: false };
+        break;
+      }
     }
   }
 
-  // 3. Fuzzy search for best candidate
-  let bestCollab = null;
-  let maxScore = 0;
+  if (!result) {
+    // 3. Fuzzy search for best candidate
+    let bestCollab = null;
+    let maxScore = 0;
 
-  for (const collab of colaboradoresList) {
-    const score = calculateSimilarity(demandeurName, collab.Nom);
-    if (score > maxScore) {
-      maxScore = score;
-      bestCollab = collab;
+    for (const collab of (colaboradoresList || [])) {
+      const score = calculateSimilarity(demandeurName, collab.Nom);
+      if (score > maxScore) {
+        maxScore = score;
+        bestCollab = collab;
+      }
     }
+
+    result = {
+      collaborateur: maxScore >= 0.6 ? bestCollab : null,
+      score: maxScore,
+      isAlias: false
+    };
   }
 
-  return {
-    collaborateur: maxScore >= 0.6 ? bestCollab : null,
-    score: maxScore,
-    isAlias: false
-  };
+  matchCache.set(cacheKey, result);
+  return result;
 }
 
 /**
@@ -286,7 +304,18 @@ export function ensureCollaborateursHasResponsable(collabList = []) {
     // First check if a known standard responsable exists for this collaborator
     const cleanName = cleanStr(collab.Nom);
     const sortedName = getSortedWords(collab.Nom);
-    const knownResp = knownRespMap.get(sortedName) || knownRespMap.get(cleanName);
+    let knownResp = knownRespMap.get(sortedName) || knownRespMap.get(cleanName);
+
+    if (!knownResp && Array.isArray(initialCollaborateurs)) {
+      for (const initCollab of initialCollaborateurs) {
+        if (initCollab && initCollab.Nom && initCollab.Responsable) {
+          if (calculateSimilarity(collab.Nom, initCollab.Nom) >= 0.75) {
+            knownResp = initCollab.Responsable;
+            break;
+          }
+        }
+      }
+    }
 
     if (knownResp) {
       return {

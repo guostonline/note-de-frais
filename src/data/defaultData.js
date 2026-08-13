@@ -142,7 +142,7 @@ export const initialCollaborateurs = [
   },
   {
     "Matricule": 503458,
-    "Nom": "BOUGHALM MUSTAPHA",
+    "Nom": "MUSTAPHA BOUGHLAM",
     "Entite": "Commercial Traditionnel SOM/VMM Agadir",
     "Fonction": "PREVENDEUR REMPLACANT",
     "Responsable": "MOHAMMED MAAIZ"

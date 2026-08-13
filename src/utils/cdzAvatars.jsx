@@ -19,7 +19,7 @@ export function getCdzAvatar(name) {
 
   if (upper.includes('CHAKIB') || upper.includes('ELFIL') || upper.includes('EL FIL')) return chakibImg;
   if (upper.includes('MAAIZ') || upper.includes('MAIZ')) return maizImg;
-  if (upper.includes('BOUTMEZGUINE') || upper.includes('MUSTAPHA')) return mustaphaImg;
+  if (upper.includes('BOUTMEZGUINE') || (upper.includes('MOSTAFA') && upper.includes('BOUTMEZGUINE'))) return mustaphaImg;
   if (upper.includes('BESTIRI') || upper.includes('SOUFIANE')) return soufianeImg;
 
   return null;

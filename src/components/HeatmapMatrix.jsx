@@ -75,36 +75,40 @@ export default function HeatmapMatrix({
     return true;
   });
 
-  // Pre-calculate submissions map: CollabNom -> { WeekStr: [fraisObj] }
-  const matrixData = {};
-  filteredCollabs.forEach(c => {
-    matrixData[c.Nom] = {};
-    weeks.forEach(w => {
-      matrixData[c.Nom][w] = [];
-    });
-  });
-
   // Filter frais items matching the selected month(s)
-  const targetFrais = (fraisList || []).filter(f => {
-    if (selectedMonths.length === 0) return true;
-    return selectedMonths.some(m => {
-      if (f.Mois === m) return true;
-      // Handle variations like "Août" vs "Aot" or case variations
-      return cleanStr(f.Mois) === cleanStr(m);
+  const targetFrais = useMemo(() => {
+    return (fraisList || []).filter(f => {
+      if (selectedMonths.length === 0) return true;
+      return selectedMonths.some(m => {
+        if (f.Mois === m) return true;
+        // Handle variations like "Août" vs "Aot" or case variations
+        return cleanStr(f.Mois) === cleanStr(m);
+      });
     });
-  });
+  }, [fraisList, selectedMonths]);
 
-  // Fill matrix with frais data
-  targetFrais.forEach(f => {
-    const { collaborateur } = matchDemandeurToCollaborateur(f.Demandeur, collabList, aliasMap);
-    if (collaborateur && matrixData[collaborateur.Nom]) {
-      // Find matching week key
-      const weekKey = weeks.find(w => w === f.Semaine || cleanStr(w) === cleanStr(f.Semaine));
-      if (weekKey && matrixData[collaborateur.Nom][weekKey]) {
-        matrixData[collaborateur.Nom][weekKey].push(f);
+  // Pre-calculate submissions map: CollabNom -> { WeekStr: [fraisObj] }
+  const matrixData = useMemo(() => {
+    const data = {};
+    filteredCollabs.forEach(c => {
+      data[c.Nom] = {};
+      weeks.forEach(w => {
+        data[c.Nom][w] = [];
+      });
+    });
+
+    targetFrais.forEach(f => {
+      const { collaborateur } = matchDemandeurToCollaborateur(f.Demandeur, collabList, aliasMap);
+      if (collaborateur && data[collaborateur.Nom]) {
+        const weekKey = weeks.find(w => w === f.Semaine || cleanStr(w) === cleanStr(f.Semaine));
+        if (weekKey && data[collaborateur.Nom][weekKey]) {
+          data[collaborateur.Nom][weekKey].push(f);
+        }
       }
-    }
-  });
+    });
+
+    return data;
+  }, [filteredCollabs, weeks, targetFrais, collabList, aliasMap]);
 
   return (
     <div className="glass-panel rounded-2xl overflow-hidden p-5">
