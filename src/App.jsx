@@ -276,11 +276,14 @@ export default function App() {
   // Save alias map changes
   const handleSaveAliasMap = async (newMap) => {
     setAliasMap(newMap);
+    try {
+      localStorage.setItem('ndf_alias_map', JSON.stringify(newMap));
+    } catch (e) {}
     await dbSaveAliasMap(newMap);
     notifyAutoSave();
   };
 
-  // CRUD Collaborateurs Handlers with IndexedDB persistence
+  // CRUD Collaborateurs Handlers with dual LocalStorage & IndexedDB persistence
   const handleOpenAddCollab = () => {
     setCollaboratorToEdit(null);
     setIsCollabModalOpen(true);
@@ -297,15 +300,20 @@ export default function App() {
   };
 
   const handleSaveCollaborator = async ({ originalNom, collaborator }) => {
+    let nextList;
     if (originalNom) {
       if (originalNom !== collaborator.Nom) {
         await dbDeleteCollaborateur(originalNom);
       }
-      setCollabList(prev => prev.map(c => c.Nom === originalNom ? { ...c, ...collaborator } : c));
+      nextList = collabList.map(c => c.Nom === originalNom ? { ...c, ...collaborator } : c);
     } else {
-      setCollabList(prev => [collaborator, ...prev]);
+      nextList = [collaborator, ...collabList];
     }
-    await dbSaveCollaborateur(collaborator);
+    setCollabList(nextList);
+    try {
+      localStorage.setItem('ndf_collab_list', JSON.stringify(nextList));
+    } catch (e) {}
+    await dbSaveCollaborateursBatch(nextList);
     notifyAutoSave();
   };
 
@@ -323,18 +331,14 @@ export default function App() {
     if (!target) return;
 
     const updatedCollab = { ...target, Responsable: newResponsable };
-
-    // Update React state
     const nextList = collabList.map(c => c.Nom === collabNom ? updatedCollab : c);
     setCollabList(nextList);
 
-    // Save synchronously to LocalStorage
     try {
       localStorage.setItem('ndf_collab_list', JSON.stringify(nextList));
     } catch (e) {}
 
-    // Save to IndexedDB
-    await dbSaveCollaborateur(updatedCollab);
+    await dbSaveCollaborateursBatch(nextList);
     notifyAutoSave();
   };
 
