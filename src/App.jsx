@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { Analytics } from '@vercel/analytics/react';
 import { SpeedInsights } from '@vercel/speed-insights/react';
 import Header from './components/Header';
@@ -38,7 +38,8 @@ import {
   dbGetAliasMap, 
   dbSaveAliasMap, 
   dbResetToDefaults,
-  dbSaveCollaborateursBatch
+  dbSaveCollaborateursBatch,
+  checkCloudDatabaseStatus
 } from './data/db';
 
 const FRENCH_MONTHS = {
@@ -65,7 +66,7 @@ export default function App() {
     localStorage.removeItem('theme');
   }, []);
 
-  // State for dataset (Synchronous LocalStorage fallback + IndexedDB async sync)
+  // State for dataset (Synchronous LocalStorage fallback + IndexedDB async sync + Cloud sync)
   const [collabList, setCollabList] = useState(() => {
     try {
       const saved = localStorage.getItem('ndf_collab_list');
@@ -85,6 +86,10 @@ export default function App() {
   });
   const [aliasMap, setAliasMap] = useState(defaultAliasMap);
   const [isDbLoaded, setIsDbLoaded] = useState(false);
+
+  // Cloud Synchronization State
+  const [isCloudConnected, setIsCloudConnected] = useState(false);
+  const [isSyncing, setIsSyncing] = useState(false);
 
   // Authentication State
   const [currentUser, setCurrentUser] = useState(() => {
@@ -111,38 +116,101 @@ export default function App() {
     setIsLoginOpen(true);
   };
 
+  // Sync data across cloud and local IndexedDB with smart initial merge
+  const syncData = useCallback(async (silent = false) => {
+    if (!silent) setIsSyncing(true);
+    try {
+      const isCloudOk = await checkCloudDatabaseStatus();
+      setIsCloudConnected(isCloudOk);
+
+      if (isCloudOk) {
+        // Detect any local modifications/additions created offline or on older version and push to Cloud
+        try {
+          const localCollabs = await db.collaborateurs.toArray();
+          const cloudCollabs = await fetch('/api/collaborateurs').then(r => r.ok ? r.json() : null).catch(() => null);
+
+          if (Array.isArray(cloudCollabs) && Array.isArray(localCollabs) && localCollabs.length > 0) {
+            const toPush = [];
+            for (const local of localCollabs) {
+              const cloudMatch = cloudCollabs.find(c => 
+                (local.Matricule && Number(c.Matricule) === Number(local.Matricule)) || 
+                (c.Nom && local.Nom && c.Nom.trim().toUpperCase() === local.Nom.trim().toUpperCase())
+              );
+              if (!cloudMatch || cloudMatch.Responsable !== local.Responsable || cloudMatch.Fonction !== local.Fonction || cloudMatch.Entite !== local.Entite) {
+                toPush.push(local);
+              }
+            }
+            if (toPush.length > 0) {
+              await dbSaveCollaborateursBatch(toPush);
+            }
+          }
+        } catch (mergeErr) {
+          console.warn('Smart sync merge notice:', mergeErr);
+        }
+      }
+
+      const [dbCollabs, dbFrais, dbAliases] = await Promise.all([
+        dbGetAllCollaborateurs(),
+        dbGetAllFrais(),
+        dbGetAliasMap()
+      ]);
+
+      if (dbCollabs && dbCollabs.length > 0) {
+        const enriched = ensureCollaborateursHasResponsable(dbCollabs);
+        setCollabList(enriched);
+        try { localStorage.setItem('ndf_collab_list', JSON.stringify(enriched)); } catch (e) {}
+      }
+
+      if (dbFrais && dbFrais.length > 0) {
+        setFraisList(dbFrais);
+        try { localStorage.setItem('ndf_frais_list', JSON.stringify(dbFrais)); } catch (e) {}
+      }
+
+      if (dbAliases && Object.keys(dbAliases).length > 0) {
+        setAliasMap(dbAliases);
+        try { localStorage.setItem('ndf_alias_map', JSON.stringify(dbAliases)); } catch (e) {}
+      }
+    } catch (err) {
+      console.error('Error syncing data:', err);
+    } finally {
+      if (!silent) setIsSyncing(false);
+    }
+  }, []);
+
   // Initialize and seed fast IndexedDB database on app start
   useEffect(() => {
     async function initDb() {
       const preparedCollabs = ensureCollaborateursHasResponsable(initialCollaborateurs);
       await seedDatabaseIfEmpty(preparedCollabs, initialFrais, defaultAliasMap);
-      const dbCollabs = await dbGetAllCollaborateurs();
-      const dbFrais = await dbGetAllFrais();
-      const dbAliases = await dbGetAliasMap();
-
-      if (dbCollabs && dbCollabs.length > 0) {
-        const enriched = ensureCollaborateursHasResponsable(dbCollabs);
-        setCollabList(enriched);
-        await dbSaveCollaborateursBatch(enriched);
-        try { localStorage.setItem('ndf_collab_list', JSON.stringify(enriched)); } catch (e) {}
-      } else {
-        setCollabList(preparedCollabs);
-        await dbSaveCollaborateursBatch(preparedCollabs);
-        try { localStorage.setItem('ndf_collab_list', JSON.stringify(preparedCollabs)); } catch (e) {}
-      }
-
-      if (dbFrais && dbFrais.length > 0) {
-        setFraisList(dbFrais);
-      } else {
-        setFraisList(initialFrais);
-        await dbSaveFraisBatch(initialFrais);
-      }
-
-      if (dbAliases && Object.keys(dbAliases).length > 0) setAliasMap(dbAliases);
+      await syncData(true);
       setIsDbLoaded(true);
     }
     initDb();
-  }, []);
+  }, [syncData]);
+
+  // Periodic and Window Focus auto-sync (syncs changes made on other laptops)
+  useEffect(() => {
+    const handleFocus = () => syncData(true);
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === 'visible') {
+        syncData(true);
+      }
+    };
+
+    window.addEventListener('focus', handleFocus);
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+
+    // Auto-poll cloud every 45 seconds
+    const intervalId = setInterval(() => {
+      syncData(true);
+    }, 45000);
+
+    return () => {
+      window.removeEventListener('focus', handleFocus);
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+      clearInterval(intervalId);
+    };
+  }, [syncData]);
 
   // Derived options lists
   const months = useMemo(() => getUniqueMonths(fraisList), [fraisList]);
@@ -237,13 +305,11 @@ export default function App() {
   const handleDataUploaded = async ({ newCollab, newFrais }) => {
     if (newCollab && newCollab.length > 0) {
       setCollabList(newCollab);
-      await db.collaborateurs.clear();
-      await db.collaborateurs.bulkPut(newCollab);
+      await dbSaveCollaborateursBatch(newCollab);
       try { localStorage.setItem('ndf_collab_list', JSON.stringify(newCollab)); } catch (e) {}
     }
     if (newFrais && newFrais.length > 0) {
       const normalizedFrais = normalizeFraisData(newFrais);
-      // Completely overwrite old frais with new frais only
       setFraisList(normalizedFrais);
       await dbSaveFraisBatch(normalizedFrais);
       try { localStorage.setItem('ndf_frais_list', JSON.stringify(normalizedFrais)); } catch (e) {}
@@ -283,7 +349,7 @@ export default function App() {
     notifyAutoSave();
   };
 
-  // CRUD Collaborateurs Handlers with dual LocalStorage & IndexedDB persistence
+  // CRUD Collaborateurs Handlers with dual Cloud & IndexedDB persistence
   const handleOpenAddCollab = () => {
     setCollaboratorToEdit(null);
     setIsCollabModalOpen(true);
@@ -313,18 +379,9 @@ export default function App() {
     try {
       localStorage.setItem('ndf_collab_list', JSON.stringify(nextList));
     } catch (e) {}
-    await dbSaveCollaborateursBatch(nextList);
+    await dbSaveCollaborateur(collaborator);
     notifyAutoSave();
   };
-
-  // Auto-sync collabList to LocalStorage & IndexedDB whenever collabList changes
-  useEffect(() => {
-    if (!isDbLoaded || !collabList || collabList.length === 0) return;
-    try {
-      localStorage.setItem('ndf_collab_list', JSON.stringify(collabList));
-      dbSaveCollaborateursBatch(collabList);
-    } catch (e) {}
-  }, [collabList, isDbLoaded]);
 
   const handleUpdateResponsable = async (collabNom, newResponsable) => {
     const target = collabList.find(c => c.Nom === collabNom);
@@ -338,7 +395,7 @@ export default function App() {
       localStorage.setItem('ndf_collab_list', JSON.stringify(nextList));
     } catch (e) {}
 
-    await dbSaveCollaborateursBatch(nextList);
+    await dbSaveCollaborateur(updatedCollab);
     notifyAutoSave();
   };
 
@@ -349,8 +406,7 @@ export default function App() {
     try {
       localStorage.setItem('ndf_collab_list', JSON.stringify(nextList));
     } catch (e) {}
-    await dbDeleteCollaborateur(collaboratorToDelete.Nom);
-    await dbSaveCollaborateursBatch(nextList);
+    await dbDeleteCollaborateur(collaboratorToDelete.Nom, collaboratorToDelete.Matricule);
     setIsDeleteModalOpen(false);
     setCollaboratorToDelete(null);
     notifyAutoSave();
@@ -368,6 +424,9 @@ export default function App() {
         onOpenAddCollab={handleOpenAddCollab}
         currentUser={currentUser}
         onLogout={handleLogout}
+        isCloudConnected={isCloudConnected}
+        isSyncing={isSyncing}
+        onSync={() => syncData(false)}
       />
 
       <main className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-6">
@@ -516,7 +575,7 @@ export default function App() {
           <div className="p-1 bg-emerald-500/20 text-emerald-400 rounded-lg">
             <CheckCircle2 className="w-4 h-4" />
           </div>
-          <span>Modification enregistrée en base de données</span>
+          <span>Modification enregistrée avec succès</span>
         </div>
       )}
       {/* Vercel Analytics & Speed Insights Tracking */}

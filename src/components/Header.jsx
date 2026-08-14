@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Upload, Link, RotateCcw, UserPlus, LogOut, MoreHorizontal, X, Mail } from 'lucide-react';
+import { Upload, Link, RotateCcw, UserPlus, LogOut, MoreHorizontal, X, Mail, Cloud, RefreshCw } from 'lucide-react';
 import logoImg from '../../assets/logo.png';
 
 export default function Header({ 
@@ -10,7 +10,10 @@ export default function Header({
   onResetData,
   onOpenAddCollab,
   currentUser,
-  onLogout
+  onLogout,
+  isCloudConnected,
+  isSyncing,
+  onSync
 }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [profileOpen, setProfileOpen] = useState(false);
@@ -45,6 +48,23 @@ export default function Header({
           {/* ── Desktop actions (md+) ── */}
           <div className="hidden md:flex items-center gap-2.5">
 
+            {/* Cloud Sync Status Indicator & Manual Refresh */}
+            {onSync && (
+              <button
+                onClick={onSync}
+                disabled={isSyncing}
+                className={`flex items-center gap-1.5 px-3 py-1.5 text-[11px] font-medium rounded-full border transition-all ${
+                  isCloudConnected
+                    ? 'text-emerald-700 bg-emerald-50/80 hover:bg-emerald-100 border-emerald-200/80'
+                    : 'text-stone-600 bg-stone-50 hover:bg-stone-100 border-stone-200'
+                }`}
+                title={isCloudConnected ? 'Base de données Cloud synchronisée (cliquer pour actualiser)' : 'Mode local / Cliquez pour synchroniser'}
+              >
+                <RefreshCw className={`w-3 h-3 ${isSyncing ? 'animate-spin text-amber-600' : isCloudConnected ? 'text-emerald-600' : 'text-stone-400'}`} />
+                <span>{isSyncing ? 'Synchro...' : isCloudConnected ? 'Cloud Actif' : 'Actualiser'}</span>
+              </button>
+            )}
+
             {onOpenAddCollab && (
               <button
                 onClick={onOpenAddCollab}
@@ -72,7 +92,6 @@ export default function Header({
               <Upload className="w-4 h-4" />
               <span>Importer Frais Excel</span>
             </button>
-
 
             <button
               onClick={onResetData}
@@ -129,6 +148,18 @@ export default function Header({
 
           {/* ── Mobile actions (< md) ── */}
           <div className="flex md:hidden items-center gap-2">
+            {/* Sync icon */}
+            {onSync && (
+              <button
+                onClick={onSync}
+                disabled={isSyncing}
+                className="p-2 text-stone-600 bg-white hover:bg-stone-50 border border-stone-200/80 rounded-full transition-all"
+                title="Actualiser les données"
+              >
+                <RefreshCw className={`w-3.5 h-3.5 ${isSyncing ? 'animate-spin text-amber-600' : 'text-stone-500'}`} />
+              </button>
+            )}
+
             {/* Upload — always visible gold */}
             <button
               onClick={onOpenUpload}
