@@ -47,6 +47,11 @@ export default async function handler(req, res) {
 
       // Check if batch replace or bulk update
       if (Array.isArray(body)) {
+        const isReplace = req.query?.mode === 'replace' || req.url?.includes('mode=replace');
+        if (isReplace) {
+          await sql`TRUNCATE TABLE collaborateurs;`;
+        }
+
         // Bulk replace/upsert
         for (const c of body) {
           const mat = Number(c.Matricule) || 0;

@@ -55,7 +55,7 @@ export default async function handler(req, res) {
       }
 
       const fraisArray = Array.isArray(body) ? body : [body];
-      const isReplace = req.query?.mode === 'replace';
+      const isReplace = req.query?.mode === 'replace' || req.url?.includes('mode=replace');
 
       if (isReplace) {
         await sql`TRUNCATE TABLE frais RESTART IDENTITY;`;
