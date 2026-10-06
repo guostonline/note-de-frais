@@ -120,7 +120,7 @@
   },
   {
     "Entite": "Commercial Traditionnel Charcuterie Agadir",
-    "Matricule": 0,
+    "Matricule": 900018,
     "Nom": "BIZGUERM MOHAMED",
     "Fonction": "PREVENDEUR",
     "Responsable": "EL MOSTAFA BOUTMEZGUINE"
@@ -149,7 +149,7 @@
   {
     "Entite": "Commercial Traditionnel SOM/VMM Agadir",
     "Matricule": 101941,
-    "Nom": "BOUMADIANE MOHAMED",
+    "Nom": "MOHAMED BOUMDIANE",
     "Fonction": "PREVENDEUR",
     "Responsable": "CHAKIB EL FIL"
   },
@@ -173,6 +173,13 @@
     "Nom": "CHAKIB EL FIL",
     "Fonction": "CDZ",
     "Responsable": "CHAKIB EL FIL"
+  },
+  {
+    "Entite": "Commercial Traditionnel Charcuterie Agadir",
+    "Matricule": 900026,
+    "Nom": "CHARAF EDDIN HASNAOUI",
+    "Fonction": "PREVENDEUR",
+    "Responsable": "EL BESTIRI SOUFIANE"
   },
   {
     "Entite": "Livreurs Agadir",
@@ -257,6 +264,13 @@
     "Nom": "EL OUAHMI ACHRAF",
     "Fonction": "PREVENDEUR",
     "Responsable": "EL MOSTAFA BOUTMEZGUINE"
+  },
+  {
+    "Entite": "WF",
+    "Matricule": 900039,
+    "Nom": "ELHACHEM BENGAIOU",
+    "Fonction": "PREVENDEUR",
+    "Responsable": "EL BESTIRI SOUFIANE"
   },
   {
     "Entite": "Commercial Traditionnel SOM/VMM Agadir",
@@ -348,6 +362,13 @@
     "Nom": "MOHAMMED MAAIZ",
     "Fonction": "CDZ",
     "Responsable": "MOHAMMED MAAIZ"
+  },
+  {
+    "Entite": "Commercial CHD Agadir",
+    "Matricule": 900053,
+    "Nom": "MOUTAIK RACHID",
+    "Fonction": "PREVENDEUR",
+    "Responsable": "EL BESTIRI SOUFIANE"
   },
   {
     "Entite": "Commercial Traditionnel SOM/VMM Agadir",

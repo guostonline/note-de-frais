@@ -20,13 +20,13 @@ for r in data_rows:
     # Columns: ['#', 'Matricule', 'Nom', 'Entite', 'Fonction', 'Responsable_CDZ_CDA']
     num, mat, nom, entite, fonction, resp = r[0], r[1], r[2], r[3], r[4], r[5]
     
-    if not nom or mat in seen_mats:
+    if not nom:
         continue
-    seen_mats.add(mat)
+    mat_val = int(mat) if (mat is not None and str(mat).strip() != '') else (900000 + int(num or len(new_collabs) + 1))
     
     new_collabs.append({
         'Entite': str(entite or '').strip(),
-        'Matricule': int(mat) if mat is not None else 0,
+        'Matricule': mat_val,
         'Nom': str(nom or '').strip(),
         'Fonction': str(fonction or '').strip(),
         'Responsable': str(resp or '').strip()

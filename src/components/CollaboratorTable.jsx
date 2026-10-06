@@ -15,12 +15,19 @@ function SubmissionsModal({ isOpen, onClose, collaborateur, submissions }) {
   if (!isOpen || !collaborateur) return null;
 
   const getEtatColor = (etat = '') => {
-    const e = etat.toLowerCase();
+    const e = (etat || '').toLowerCase();
     if (e.includes('accept')) return 'bg-emerald-100 text-emerald-800 border-emerald-200';
     if (e.includes('attente')) return 'bg-amber-100 text-amber-800 border-amber-200';
-    if (e.includes('refus') || e.includes('rejet')) return 'bg-rose-100 text-rose-800 border-rose-200';
+    if (e.includes('refus') || e.includes('rejet') || e.includes('annul')) return 'bg-rose-100 text-rose-800 border-rose-200';
     return 'bg-sky-100 text-sky-800 border-sky-200';
   };
+
+  const acceptCount = (submissions || []).filter(s => (s['Etat de la demande'] || s.EtatDemande || '').toLowerCase().includes('accept')).length;
+  const pendingCount = (submissions || []).filter(s => (s['Etat de la demande'] || s.EtatDemande || '').toLowerCase().includes('attente')).length;
+  const rejectCount = (submissions || []).filter(s => {
+    const e = (s['Etat de la demande'] || s.EtatDemande || '').toLowerCase();
+    return e.includes('refus') || e.includes('rejet') || e.includes('annul');
+  }).length;
 
   return (
     <>
@@ -33,7 +40,7 @@ function SubmissionsModal({ isOpen, onClose, collaborateur, submissions }) {
       {/* Modal */}
       <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 pointer-events-none">
         <div
-          className="relative w-full sm:max-w-4xl max-h-[92vh] sm:max-h-[90vh] flex flex-col bg-white rounded-t-3xl sm:rounded-3xl shadow-2xl border-t sm:border border-stone-200/80 pointer-events-auto animate-scale-in overflow-hidden"
+          className="relative w-full sm:max-w-5xl max-h-[92vh] sm:max-h-[90vh] flex flex-col bg-white rounded-t-3xl sm:rounded-3xl shadow-2xl border-t sm:border border-stone-200/80 pointer-events-auto animate-scale-in overflow-hidden"
           onClick={(e) => e.stopPropagation()}
         >
           {/* Modal Header */}
@@ -65,9 +72,22 @@ function SubmissionsModal({ isOpen, onClose, collaborateur, submissions }) {
             </div>
 
             <div className="flex items-center gap-2 sm:gap-3">
-              <div className="px-2.5 sm:px-3 py-1.5 bg-[#F3CF55] text-[#1E2024] rounded-full text-xs font-extrabold flex items-center gap-1.5 shadow-md">
-                <ClipboardList className="w-3.5 h-3.5" />
-                {submissions.length} note{submissions.length > 1 ? 's' : ''}
+              <div className="flex items-center gap-1.5 flex-wrap">
+                {acceptCount > 0 && (
+                  <span className="px-2.5 py-1 bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 rounded-full text-[11px] font-bold">
+                    ✓ {acceptCount} Acceptée{acceptCount > 1 ? 's' : ''}
+                  </span>
+                )}
+                {pendingCount > 0 && (
+                  <span className="px-2.5 py-1 bg-amber-500/20 text-amber-300 border border-amber-500/30 rounded-full text-[11px] font-bold">
+                    ⏳ {pendingCount} En attente
+                  </span>
+                )}
+                {rejectCount > 0 && (
+                  <span className="px-2.5 py-1 bg-rose-500/20 text-rose-300 border border-rose-500/30 rounded-full text-[11px] font-bold">
+                    ✕ {rejectCount} Rejetée{rejectCount > 1 ? 's' : ''}
+                  </span>
+                )}
               </div>
               <button
                 onClick={onClose}
@@ -86,7 +106,7 @@ function SubmissionsModal({ isOpen, onClose, collaborateur, submissions }) {
                 <span className="text-sm font-medium">Aucune note de frais soumise</span>
               </div>
             ) : (
-              <table className="w-full text-left text-xs text-slate-700 border-collapse min-w-[600px]">
+              <table className="w-full text-left text-xs text-slate-700 border-collapse min-w-[700px]">
                 <thead className="sticky top-0 z-10">
                   <tr className="bg-stone-50 text-stone-500 font-bold border-b border-stone-200 text-[11px] uppercase tracking-wider">
                     <th className="py-3 px-4">#</th>
@@ -98,8 +118,9 @@ function SubmissionsModal({ isOpen, onClose, collaborateur, submissions }) {
                         Mois / Semaine
                       </span>
                     </th>
-                    <th className="py-3 px-4">Date Création</th>
                     <th className="py-3 px-4">État Demande</th>
+                    <th className="py-3 px-4">Étape en cours</th>
+                    <th className="py-3 px-4">Intervenant(s)</th>
                     <th className="py-3 px-4 text-right">Document GED</th>
                   </tr>
                 </thead>
@@ -125,18 +146,21 @@ function SubmissionsModal({ isOpen, onClose, collaborateur, submissions }) {
                           {sub.Mois} · {sub.Semaine}
                         </span>
                       </td>
-                      <td className="py-3.5 px-4 text-[11px] text-slate-500 font-mono">
-                        {sub['Date de création'] || '-'}
-                      </td>
                       <td className="py-3.5 px-4">
-                        <span className={`px-2.5 py-1 rounded-full text-[10px] font-semibold border ${getEtatColor(sub['Etat de la demande'])}`}>
-                          {sub['Etat de la demande'] || 'N/A'}
+                        <span className={`px-2.5 py-1 rounded-full text-[10px] font-semibold border ${getEtatColor(sub['Etat de la demande'] || sub.EtatDemande)}`}>
+                          {sub['Etat de la demande'] || sub.EtatDemande || 'N/A'}
                         </span>
                       </td>
+                      <td className="py-3.5 px-4 text-[11px] text-slate-600 font-medium">
+                        {sub['Etapes en cours'] || sub.EtapesEnCours || '—'}
+                      </td>
+                      <td className="py-3.5 px-4 text-[11px] text-slate-500 whitespace-pre-line">
+                        {sub['Intervenants en cours'] || sub.IntervenantsEnCours || '—'}
+                      </td>
                       <td className="py-3.5 px-4 text-right">
-                        {sub['URL du document'] ? (
+                        {(sub['URL du document'] || sub.UrlDocument) ? (
                           <a
-                            href={sub['URL du document']}
+                            href={sub['URL du document'] || sub.UrlDocument}
                             target="_blank"
                             rel="noopener noreferrer"
                             className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-bold text-sky-700 bg-sky-50 border border-sky-200 hover:bg-sky-100 hover:text-sky-900 transition-all"
@@ -170,6 +194,64 @@ function SubmissionsModal({ isOpen, onClose, collaborateur, submissions }) {
         </div>
       </div>
     </>
+  );
+}
+
+function renderEtatDemandeBadge(submissions = [], hasSubmitted = false) {
+  if (!hasSubmitted || !submissions || submissions.length === 0) {
+    return (
+      <span className="inline-flex items-center px-2.5 py-1 rounded-full text-[10px] font-semibold bg-stone-100 text-stone-400 border border-stone-200">
+        Non Déposée
+      </span>
+    );
+  }
+
+  const statusCounts = {};
+  submissions.forEach(s => {
+    const st = (s['Etat de la demande'] || s.EtatDemande || 'En cours').trim();
+    statusCounts[st] = (statusCounts[st] || 0) + 1;
+  });
+
+  const uniqueStatuses = Object.keys(statusCounts);
+
+  if (uniqueStatuses.length === 1) {
+    const st = uniqueStatuses[0];
+    const stLower = st.toLowerCase();
+    let badgeStyle = 'bg-sky-100 text-sky-800 border-sky-200';
+    if (stLower.includes('accept')) {
+      badgeStyle = 'bg-emerald-100 text-emerald-800 border-emerald-200';
+    } else if (stLower.includes('attente')) {
+      badgeStyle = 'bg-amber-100 text-amber-800 border-amber-200';
+    } else if (stLower.includes('refus') || stLower.includes('rejet') || stLower.includes('annul')) {
+      badgeStyle = 'bg-rose-100 text-rose-800 border-rose-200';
+    }
+
+    return (
+      <span className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[10px] font-bold border shadow-xs ${badgeStyle}`}>
+        {st}
+      </span>
+    );
+  }
+
+  return (
+    <div className="flex flex-wrap items-center justify-center gap-1">
+      {uniqueStatuses.map((st, idx) => {
+        const stLower = st.toLowerCase();
+        let badgeStyle = 'bg-sky-100 text-sky-800 border-sky-200';
+        if (stLower.includes('accept')) {
+          badgeStyle = 'bg-emerald-100 text-emerald-800 border-emerald-200';
+        } else if (stLower.includes('attente')) {
+          badgeStyle = 'bg-amber-100 text-amber-800 border-amber-200';
+        } else if (stLower.includes('refus') || stLower.includes('rejet') || stLower.includes('annul')) {
+          badgeStyle = 'bg-rose-100 text-rose-800 border-rose-200';
+        }
+        return (
+          <span key={idx} className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold border ${badgeStyle}`}>
+            {st} ({statusCounts[st]})
+          </span>
+        );
+      })}
+    </div>
   );
 }
 
@@ -260,6 +342,10 @@ export default function CollaboratorTable({
     let valA = a.collaborateur[sortField] || '';
     let valB = b.collaborateur[sortField] || '';
     if (sortField === 'Status') { valA = a.hasSubmitted ? '1' : '0'; valB = b.hasSubmitted ? '1' : '0'; }
+    if (sortField === 'EtatDemande') {
+      valA = a.submissions.map(s => s['Etat de la demande'] || s.EtatDemande || '').join(', ');
+      valB = b.submissions.map(s => s['Etat de la demande'] || s.EtatDemande || '').join(', ');
+    }
     if (valA < valB) return sortOrder === 'asc' ? -1 : 1;
     if (valA > valB) return sortOrder === 'asc' ?  1 : -1;
     return 0;
@@ -519,6 +605,12 @@ export default function CollaboratorTable({
               >
                 Statut {sortField === 'Status' && (sortOrder === 'asc' ? '↑' : '↓')}
               </th>
+              <th
+                onClick={() => toggleSort('EtatDemande')}
+                className="py-3 px-4 cursor-pointer hover:text-slate-900 transition-colors text-center"
+              >
+                État Demande {sortField === 'EtatDemande' && (sortOrder === 'asc' ? '↑' : '↓')}
+              </th>
               <th className="py-3 px-4 text-right">Notes Déposées</th>
               <th className="py-3 px-4 text-center">Actions</th>
             </tr>
@@ -526,7 +618,7 @@ export default function CollaboratorTable({
           <tbody className="divide-y divide-slate-200">
             {sortedRows.length === 0 ? (
               <tr>
-                <td colSpan="6" className="py-12 text-center text-slate-500">
+                <td colSpan="7" className="py-12 text-center text-slate-500">
                   Aucun collaborateur ne correspond aux critères sélectionnés.
                 </td>
               </tr>
@@ -583,6 +675,9 @@ export default function CollaboratorTable({
                         Non Rempli
                       </span>
                     )}
+                  </td>
+                  <td className="py-3 px-4 text-center">
+                    {renderEtatDemandeBadge(submissions, hasSubmitted)}
                   </td>
                   <td className="py-3 px-4 text-right">
                     {submissions.length > 0 ? (

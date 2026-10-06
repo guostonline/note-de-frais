@@ -2,10 +2,31 @@ import { neon } from '@neondatabase/serverless';
 import { initialCollaborateurs, initialFrais } from '../src/data/defaultData.js';
 
 const defaultAliasMap = {
+  "BOUMADIANE MOHAMED": "MOHAMED BOUMDIANE",
+  "MOHAMED BOUMADIANE": "MOHAMED BOUMDIANE",
+  "BOUMDIANE MOHAMED": "MOHAMED BOUMDIANE",
+  "MOHAMED BOUMDIANE": "MOHAMED BOUMDIANE",
+  "MUSTAPHA BOUGHLAM": "BOUGHALM MUSTAPHA",
+  "BOUGHLAM MUSTAPHA": "BOUGHALM MUSTAPHA",
+  "MUSTAPHA BOUGHALM": "BOUGHALM MUSTAPHA",
+  "ABDESSLAM AKKA": "AKKA ABDESSALAM",
+  "AKKA ABDESSLAM": "AKKA ABDESSALAM",
+  "AMAR MEGGAR": "MEGGAG AMAR",
+  "MEGGAR AMAR": "MEGGAG AMAR",
+  "MOHAMED BOUSMINE": "BOUMINE MOHAMED",
+  "BOUSMINE MOHAMED": "BOUMINE MOHAMED",
+  "ABDERRAFIA KHIYI": "KHIYI ABDERRAFII",
+  "KHIYI ABDERRAFIA": "KHIYI ABDERRAFII",
+  "MOHAMED BIZGUERN": "BIZGUERM MOHAMED",
+  "BIZGUERN MOHAMED": "BIZGUERM MOHAMED",
+  "MOHCINE TKIK": "TKIK MOUHCINE",
+  "TKIK MOHCINE": "TKIK MOUHCINE",
+  "EL HACHEM BENGAIOU": "ELHACHEM BENGAIOU",
+  "RACHID MOUTAIK": "MOUTAIK RACHID",
   "CHAKIB ELFIL": "CHAKIB EL FIL",
   "BOUTMEZGUINE EL MOSTAFA": "EL MOSTAFA BOUTMEZGUINE",
   "NOUREDDINE BEN SALEM": "BENSALEM NOUREDDINE",
-  "EL HACHEM BENGAIOU": "EL GHANMI MOHAMED"
+  "EL MANSOURI OMAR": "EL MANSOURI OMAR ."
 };
 
 export function getConnectionString() {
@@ -93,14 +114,14 @@ export async function ensureDatabaseSchema() {
       await sql`
         INSERT INTO frais (reference, demandeur, societe, mois, semaine, date_creation, etat_demande, url_document)
         VALUES (
-          ${f.Reference || ''}, 
+          ${f.Reference || f['Référence'] || ''}, 
           ${f.Demandeur || ''}, 
-          ${f.Societe || ''}, 
+          ${f.Societe || f['Société'] || ''}, 
           ${f.Mois || ''}, 
           ${f.Semaine || ''}, 
-          ${f.DateCreation || ''}, 
-          ${f.EtatDemande || ''}, 
-          ${f.UrlDocument || ''}
+          ${f.DateCreation || f['Date de création'] || ''}, 
+          ${f.EtatDemande || f['Etat de la demande'] || ''}, 
+          ${f.UrlDocument || f['URL du document'] || ''}
         );
       `;
     }

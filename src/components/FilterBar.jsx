@@ -8,6 +8,7 @@ export default function FilterBar({
   entities,
   fonctions = [],
   cdzCdaList = [],
+  statuses = [],
   selectedMonth = [],
   setSelectedMonth,
   selectedWeek = [],
@@ -18,6 +19,8 @@ export default function FilterBar({
   setSelectedCdz,
   selectedFonction = [],
   setSelectedFonction,
+  selectedStatus = [],
+  setSelectedStatus,
   searchQuery,
   setSearchQuery,
   viewMode,
@@ -31,6 +34,7 @@ export default function FilterBar({
   const entityArray  = Array.isArray(selectedEntity)  ? selectedEntity  : (selectedEntity  === 'ALL' ? [] : [selectedEntity]);
   const cdzArray     = Array.isArray(selectedCdz)     ? selectedCdz     : (selectedCdz     === 'ALL' ? [] : [selectedCdz]);
   const fonctionArray= Array.isArray(selectedFonction)? selectedFonction: (selectedFonction=== 'ALL' ? [] : [selectedFonction]);
+  const statusArray  = Array.isArray(selectedStatus)  ? selectedStatus  : (selectedStatus  === 'ALL' ? [] : [selectedStatus]);
 
   // Count active filters for badge on mobile toggle
   const activeFilterCount = [
@@ -39,6 +43,7 @@ export default function FilterBar({
     entityArray.length   > 0 ? 1 : 0,
     cdzArray.length      > 0 ? 1 : 0,
     fonctionArray.length > 0 ? 1 : 0,
+    statusArray.length   > 0 ? 1 : 0,
   ].reduce((a, b) => a + b, 0);
 
   const tabs = [
@@ -136,7 +141,7 @@ export default function FilterBar({
       </div>
 
       {/* ── Filter dropdowns: always on sm+, collapsible on mobile ── */}
-      <div className={`${filtersOpen ? 'grid' : 'hidden'} sm:grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3 pt-3 border-t border-slate-200/80`}>
+      <div className={`${filtersOpen ? 'grid' : 'hidden'} sm:grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-3 pt-3 border-t border-slate-200/80`}>
         <MultiSelectDropdown
           label="Mois"
           icon={Calendar}
@@ -188,6 +193,16 @@ export default function FilterBar({
           options={fonctions}
           selectedValues={fonctionArray}
           onChange={(newVal) => setSelectedFonction && setSelectedFonction(newVal)}
+        />
+
+        <MultiSelectDropdown
+          label="Statut NDF"
+          icon={ShieldCheck}
+          colorClass="text-teal-500"
+          placeholder="Tous les Statuts"
+          options={statuses}
+          selectedValues={statusArray}
+          onChange={(newVal) => setSelectedStatus && setSelectedStatus(newVal)}
         />
       </div>
     </div>

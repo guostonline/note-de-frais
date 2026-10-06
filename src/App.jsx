@@ -23,6 +23,7 @@ import {
   getUniqueEntities,
   getUniqueFonctions,
   getUniqueCdzCda,
+  getUniqueStatuses,
   normalizeFraisData,
   ensureCollaborateursHasResponsable
 } from './utils/matching';
@@ -52,11 +53,34 @@ function getCurrentFrenchMonth() {
   return FRENCH_MONTHS[new Date().getMonth() + 1] || 'ALL';
 }
 
+const DATASET_VERSION = '2026-10-02-v5';
+
 const defaultAliasMap = {
+  "BOUMADIANE MOHAMED": "MOHAMED BOUMDIANE",
+  "MOHAMED BOUMADIANE": "MOHAMED BOUMDIANE",
+  "BOUMDIANE MOHAMED": "MOHAMED BOUMDIANE",
+  "MOHAMED BOUMDIANE": "MOHAMED BOUMDIANE",
+  "MUSTAPHA BOUGHLAM": "BOUGHALM MUSTAPHA",
+  "BOUGHLAM MUSTAPHA": "BOUGHALM MUSTAPHA",
+  "MUSTAPHA BOUGHALM": "BOUGHALM MUSTAPHA",
+  "ABDESSLAM AKKA": "AKKA ABDESSALAM",
+  "AKKA ABDESSLAM": "AKKA ABDESSALAM",
+  "AMAR MEGGAR": "MEGGAG AMAR",
+  "MEGGAR AMAR": "MEGGAG AMAR",
+  "MOHAMED BOUSMINE": "BOUMINE MOHAMED",
+  "BOUSMINE MOHAMED": "BOUMINE MOHAMED",
+  "ABDERRAFIA KHIYI": "KHIYI ABDERRAFII",
+  "KHIYI ABDERRAFIA": "KHIYI ABDERRAFII",
+  "MOHAMED BIZGUERN": "BIZGUERM MOHAMED",
+  "BIZGUERN MOHAMED": "BIZGUERM MOHAMED",
+  "MOHCINE TKIK": "TKIK MOUHCINE",
+  "TKIK MOHCINE": "TKIK MOUHCINE",
+  "EL HACHEM BENGAIOU": "ELHACHEM BENGAIOU",
+  "RACHID MOUTAIK": "MOUTAIK RACHID",
   "CHAKIB ELFIL": "CHAKIB EL FIL",
   "BOUTMEZGUINE EL MOSTAFA": "EL MOSTAFA BOUTMEZGUINE",
   "NOUREDDINE BEN SALEM": "BENSALEM NOUREDDINE",
-  "EL HACHEM BENGAIOU": "EL GHANMI MOHAMED"
+  "EL MANSOURI OMAR": "EL MANSOURI OMAR ."
 };
 
 export default function App() {
@@ -69,22 +93,41 @@ export default function App() {
   // State for dataset (Synchronous LocalStorage fallback + IndexedDB async sync + Cloud sync)
   const [collabList, setCollabList] = useState(() => {
     try {
-      const saved = localStorage.getItem('ndf_collab_list');
-      const list = saved ? JSON.parse(saved) : initialCollaborateurs;
-      return ensureCollaborateursHasResponsable(list);
+      const version = localStorage.getItem('ndf_dataset_version');
+      if (version === DATASET_VERSION) {
+        const saved = localStorage.getItem('ndf_collab_list');
+        const list = saved ? JSON.parse(saved) : initialCollaborateurs;
+        return ensureCollaborateursHasResponsable(list);
+      }
+      return ensureCollaborateursHasResponsable(initialCollaborateurs);
     } catch (e) {
       return ensureCollaborateursHasResponsable(initialCollaborateurs);
     }
   });
   const [fraisList, setFraisList] = useState(() => {
     try {
-      const saved = localStorage.getItem('ndf_frais_list');
-      return saved ? JSON.parse(saved) : initialFrais;
+      const version = localStorage.getItem('ndf_dataset_version');
+      if (version === DATASET_VERSION) {
+        const saved = localStorage.getItem('ndf_frais_list');
+        return saved ? JSON.parse(saved) : initialFrais;
+      }
+      return initialFrais;
     } catch (e) {
       return initialFrais;
     }
   });
-  const [aliasMap, setAliasMap] = useState(defaultAliasMap);
+  const [aliasMap, setAliasMap] = useState(() => {
+    try {
+      const version = localStorage.getItem('ndf_dataset_version');
+      if (version === DATASET_VERSION) {
+        const saved = localStorage.getItem('ndf_alias_map');
+        return saved ? JSON.parse(saved) : defaultAliasMap;
+      }
+      return defaultAliasMap;
+    } catch (e) {
+      return defaultAliasMap;
+    }
+  });
   const [isDbLoaded, setIsDbLoaded] = useState(false);
 
   // Cloud Synchronization State
@@ -181,7 +224,21 @@ export default function App() {
   useEffect(() => {
     async function initDb() {
       const preparedCollabs = ensureCollaborateursHasResponsable(initialCollaborateurs);
-      await seedDatabaseIfEmpty(preparedCollabs, initialFrais, defaultAliasMap);
+      const currentVersion = localStorage.getItem('ndf_dataset_version');
+      if (currentVersion !== DATASET_VERSION) {
+        await dbResetToDefaults(preparedCollabs, initialFrais, defaultAliasMap);
+        setCollabList(preparedCollabs);
+        setFraisList(initialFrais);
+        setAliasMap(defaultAliasMap);
+        try {
+          localStorage.setItem('ndf_collab_list', JSON.stringify(preparedCollabs));
+          localStorage.setItem('ndf_frais_list', JSON.stringify(initialFrais));
+          localStorage.setItem('ndf_alias_map', JSON.stringify(defaultAliasMap));
+          localStorage.setItem('ndf_dataset_version', DATASET_VERSION);
+        } catch (e) {}
+      } else {
+        await seedDatabaseIfEmpty(preparedCollabs, initialFrais, defaultAliasMap);
+      }
       await syncData(true);
       setIsDbLoaded(true);
     }
@@ -246,6 +303,9 @@ export default function App() {
   const entities = useMemo(() => getUniqueEntities(collabList), [collabList]);
   const fonctions = useMemo(() => getUniqueFonctions(collabList), [collabList]);
   const cdzCdaList = useMemo(() => getUniqueCdzCda(collabList), [collabList]);
+  const statuses = useMemo(() => getUniqueStatuses(fraisList), [fraisList]);
+
+  const [selectedStatus, setSelectedStatus] = useState('ALL');
 
   // Default functions selection: ALL EXCEPT 'aide livreur' AND 'aide vendeur'
   const defaultFonctions = useMemo(() => {
@@ -278,10 +338,10 @@ export default function App() {
     });
   }, [collabList]);
 
-  // Calculate submission map for current period filter
+  // Calculate submission map for current period & status filter
   const { map: submissionMap, filteredFraisCount } = useMemo(() => {
-    return buildSubmissionMap(activeCollabList, fraisList, selectedMonth, selectedWeek, aliasMap);
-  }, [activeCollabList, fraisList, selectedMonth, selectedWeek, aliasMap]);
+    return buildSubmissionMap(activeCollabList, fraisList, selectedMonth, selectedWeek, aliasMap, selectedStatus);
+  }, [activeCollabList, fraisList, selectedMonth, selectedWeek, aliasMap, selectedStatus]);
 
   // Counts (excluding Aide Livreur)
   const totalCollab = activeCollabList.length;
@@ -309,7 +369,7 @@ export default function App() {
       try { localStorage.setItem('ndf_collab_list', JSON.stringify(newCollab)); } catch (e) {}
     }
     if (newFrais && newFrais.length > 0) {
-      const normalizedFrais = normalizeFraisData(newFrais);
+      const normalizedFrais = normalizeFraisData(newFrais, newCollab || collabList, aliasMap);
       setFraisList(normalizedFrais);
       await dbSaveFraisBatch(normalizedFrais);
       try { localStorage.setItem('ndf_frais_list', JSON.stringify(normalizedFrais)); } catch (e) {}
@@ -451,6 +511,7 @@ export default function App() {
           entities={entities}
           fonctions={fonctions}
           cdzCdaList={cdzCdaList}
+          statuses={statuses}
           selectedMonth={selectedMonth}
           setSelectedMonth={setSelectedMonth}
           selectedWeek={selectedWeek}
@@ -461,6 +522,8 @@ export default function App() {
           setSelectedCdz={setSelectedCdz}
           selectedFonction={activeSelectedFonction}
           setSelectedFonction={setSelectedFonction}
+          selectedStatus={selectedStatus}
+          setSelectedStatus={setSelectedStatus}
           searchQuery={searchQuery}
           setSearchQuery={setSearchQuery}
           viewMode={viewMode}

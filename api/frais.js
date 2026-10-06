@@ -30,13 +30,18 @@ export default async function handler(req, res) {
         SELECT 
           id as "id",
           reference as "Reference",
+          reference as "Référence",
           demandeur as "Demandeur",
           societe as "Societe",
+          societe as "Société",
           mois as "Mois",
           semaine as "Semaine",
           date_creation as "DateCreation",
+          date_creation as "Date de création",
           etat_demande as "EtatDemande",
-          url_document as "UrlDocument"
+          etat_demande as "Etat de la demande",
+          url_document as "UrlDocument",
+          url_document as "URL du document"
         FROM frais
         ORDER BY id ASC;
       `;
@@ -60,14 +65,14 @@ export default async function handler(req, res) {
         await sql`
           INSERT INTO frais (reference, demandeur, societe, mois, semaine, date_creation, etat_demande, url_document, updated_at)
           VALUES (
-            ${f.Reference || ''}, 
+            ${f.Reference || f['Référence'] || ''}, 
             ${f.Demandeur || ''}, 
-            ${f.Societe || ''}, 
+            ${f.Societe || f['Société'] || ''}, 
             ${f.Mois || ''}, 
             ${f.Semaine || ''}, 
-            ${f.DateCreation || ''}, 
-            ${f.EtatDemande || ''}, 
-            ${f.UrlDocument || ''},
+            ${f.DateCreation || f['Date de création'] || ''}, 
+            ${f.EtatDemande || f['Etat de la demande'] || ''}, 
+            ${f.UrlDocument || f['URL du document'] || ''},
             CURRENT_TIMESTAMP
           );
         `;
